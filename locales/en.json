@@ -1,0 +1,70 @@
+{
+  "components": {
+    "audio-player": "components.audio-player",
+    "cancel": "Cancel",
+    "choose-icon": "Selected Icon",
+    "copy-icon": "Copy Icon",
+    "copy-icon-name": "Copy Icon Name",
+    "copy-svg": "Copy SVG",
+    "hide-text": "Hide Text",
+    "icon-lists": "Icon Lists",
+    "icon-picker": "Pick Icon",
+    "show-text": "Show Text",
+    "submit": "Submit",
+    "video-player": "components.video-player"
+  },
+  "message": {
+    "copy-success": "Copy Success!"
+  },
+  "pages": {
+    "about": "About Us",
+    "components": "Components",
+    "directive": {
+      "copy": "v-copy",
+      "debounce-throttle": "v-debounce&v-throttle",
+      "drag": "v-draggable",
+      "flash": "v-flash",
+      "longpress": "v-longpress",
+      "scrollText": "v-scrollText",
+      "watermark": "v-watermark"
+    },
+    "directives": "Directives",
+    "display": {
+      "avatars": "Avatars",
+      "default": "Display Components",
+      "description": "pages.display.description"
+    },
+    "editors": "pages.editors",
+    "form-basic": "Basic Form",
+    "forms": "Forms",
+    "head-message": "Head Messages",
+    "home": "Home",
+    "icons": "Icons",
+    "login": {
+      "code": "Sms Code",
+      "password": "Password",
+      "phone": "Phone Number",
+      "remember": "Remember Me",
+      "repassword": "RePassword",
+      "sign-up": "Sign Up",
+      "submit": "Login",
+      "username": "Username",
+      "welcome": "Welcome"
+    },
+    "menu": {
+      "menu1": "Menu1",
+      "menu1-1": "Menu1-1",
+      "menu1-1-1": "Menu1-1-1",
+      "menu1-2": "Menu1-2",
+      "menu2": "Menu2"
+    },
+    "menus": "pages.menus",
+    "notice": "Notice Component",
+    "pick-icon": "Icon Picker",
+    "players": "pages.players",
+    "table-basic": "Basic Table",
+    "table-high": "High Table",
+    "table-select": "Select Table",
+    "tables": "Tables"
+  }
+}

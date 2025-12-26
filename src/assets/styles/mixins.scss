@@ -1,0 +1,34 @@
+:root {
+  --transition-delay: 0.3s;
+  --transition-timing-function: cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+@mixin placeholder {
+  &::input-placeholder {
+    @content;
+  }
+
+  &:placeholder {
+    @content;
+  }
+
+  &::placeholder {
+    @content;
+  }
+
+  &:input-placeholder {
+    @content;
+  }
+}
+
+@mixin transition-default() {
+
+  &-enter-active,
+  &-leave-active {
+    transition: var(--transition-delay) var(--transition-timing-function) !important;
+  }
+
+  &-move {
+    transition: transform 0.4s;
+  }
+}

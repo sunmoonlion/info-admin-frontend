@@ -1,0 +1,23 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    ':labels(dependencies,devops)',
+    ':maintainLockFilesWeekly',
+    ':enableVulnerabilityAlerts',
+    ':automergeLinters',
+    ':automergeTypes',
+    ':automergeMinor',
+    ':automergePatch'
+  ],
+  baseBranches: ['main'],
+  schedule: ['* * * * *'],
+  ignorePaths: [
+    '**/__tests__/**',
+    '**/Dockerfile-prod',
+    '**/Dockerfile-dev',
+    '**/Dockerfile',
+    '.github/workflows/**/*.yml',
+    '**/docker-compose.yml'
+  ]
+}

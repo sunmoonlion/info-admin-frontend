@@ -1,0 +1,14 @@
+@use './styles/transition.scss' as *;
+
+html {
+  transition: background-color 0.3s ease-in-out;
+  background-color: var(--el-bg-color);
+}
+
+.dark {
+  background-color: var(--el-bg-color);
+}
+
+body {
+  height: var(--body-height);
+}
