@@ -10,7 +10,7 @@ services:
     ports:
       - '4080:80'
     volumes:
-      - /home/website/investment-admin-csr:/usr/share/nginx/html
+      - /home/website/investment-admin-frontend:/usr/share/nginx/html
 
   nginx1:
     container_name: nginx1

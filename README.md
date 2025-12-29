@@ -39,7 +39,7 @@
 ### 目录结构
 
 ```
-investment-admin-csr/
+investment-admin-frontend/
 ├── src/
 │   ├── assets/              # 静态资源
 │   │   ├── icons/          # SVG图标
