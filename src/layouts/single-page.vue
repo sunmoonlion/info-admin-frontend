@@ -3,7 +3,6 @@
     <div class="position-fixed right-10 top-0">
       <el-row class="items-center">
         <VpDarkModeToggle class="mr-2"></VpDarkModeToggle>
-        <VpChangeLocale :locales="locales" @change="handleLocalesChange" class="mr-2"></VpChangeLocale>
       </el-row>
     </div>
     <div v-if="settings.bg" :class="[
@@ -14,7 +13,7 @@
     <div class="flex flex-col items-center justify-center h-screen" :style="marginStyle">
       <div :class="['self-center bg-white dark:bg-dark rounded p-4', formClass]" ref="formRef">
         <!-- title -->
-        <div class="text-2xl mb-10">{{ $t(settings.title) }}</div>
+        <div class="text-2xl mb-10">{{ settings.title }}</div>
         <router-view></router-view>
       </div>
     </div>
@@ -22,10 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { I18nModule } from 'el-admin-components'
-
-const loadLocaleMessages = I18nModule.loadLocaleMessages
-
 const route = useRoute()
 
 const settings = reactive({
@@ -86,22 +81,6 @@ const bgStyle = computed(() => {
   return { backgroundImage: `url(${settings.bg})` }
 })
 
-const locales = ref([
-  {
-    text: '中文',
-    name: 'zh-CN',
-    icon: 'uil:letter-chinese-a'
-  },
-  {
-    text: 'English',
-    name: 'en',
-    icon: 'ri:english-input'
-  }
-])
-
-const handleLocalesChange = (locales: string) => {
-  loadLocaleMessages(locales)
-}
 </script>
 
 <style scoped></style>

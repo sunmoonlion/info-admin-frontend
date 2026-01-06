@@ -57,7 +57,6 @@
         <!-- header: fullscreen, darkmode, theme, menu -->
         <VpHeader
           v-model:collapse="localSettings.collapse"
-          :locales="locales"
           :username="username"
           :src="avatar"
           :data="avatarMenu"
@@ -168,10 +167,12 @@ enum TabActions {
   closeAll = 'closeAll'
 }
 
-interface ThemeSettingsOption extends VpHeaderProps {
+interface ThemeSettingsOption {
+  collapse: boolean
   username: string
   avatar: string
   avatarMenu: VpDropDownMenuItem[]
+  settings: VpThemeSettingsProps
 }
 
 const isMobile = ref(false)
@@ -185,18 +186,6 @@ const tabsStore = useTabsStore()
 const localSettings = reactive<ThemeSettingsOption>({
   // 折叠菜单
   collapse: false,
-  locales: [
-    {
-      text: '中文',
-      name: 'zh-CN',
-      icon: 'uil:letter-chinese-a'
-    },
-    {
-      text: 'English',
-      name: 'en',
-      icon: 'ri:english-input'
-    }
-  ],
   username: 'admin',
   avatar: '',
   // TODO
@@ -206,7 +195,7 @@ const localSettings = reactive<ThemeSettingsOption>({
   } as VpThemeSettingsProps
 })
 
-const { locales, username, avatar, avatarMenu } = toRefs(localSettings)
+const { username, avatar, avatarMenu } = toRefs(localSettings)
 
 function generateMenuData(routes: RouteRecordRaw[]): VpAppRouteMenuItem[] {
   const menuData: VpAppRouteMenuItem[] = []

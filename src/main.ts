@@ -19,7 +19,6 @@ import '@unocss/reset/tailwind-compat.css'
 import 'virtual:uno.css'
 
 import 'virtual:svg-icons-register'
-import { I18nModule } from 'el-admin-components'
 import 'el-admin-components/style'
 
 import './assets/main.scss'
@@ -28,14 +27,12 @@ import { setupStore } from './store'
 
 const app = createApp(App)
 app.use(ElementPlus)
-app.use(I18nModule.i18nPlugin)
 // app.use(ElAdminComponents)
 
 // setupDirectives(app)
 setupStore(app)
 
 app.use(router)
-// app.use(I18n)
 
 app.mount('#app')
 

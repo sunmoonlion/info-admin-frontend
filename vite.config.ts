@@ -1,6 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
 import path from 'path'
-import fs from 'fs'
 
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -22,7 +21,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 import { viteMockServe } from 'vite-plugin-mock'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import I18n from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { cdn } from 'vite-plugin-cdn-next'
 
@@ -35,22 +33,9 @@ import { VpAutoImports, VpComponentsResolver } from 'el-admin-components/vite'
 
 import copy from 'rollup-plugin-copy'
 
-// 过滤element-plus的.mjs的文件，不打包不需要的locales
-// 判断，/locales中对应的文件名的.mjs文件作为过滤条件 -> 保留
 function customExternals(id: string) {
   const isElectron = process.env.ELECTRON === 'true'
   // return true -> external, false -> not external
-  const localesDir = path.resolve(__dirname, 'locales')
-  const localesFiles = fs
-    .readdirSync(localesDir)
-    .map((file) => file.match(/([\w-]+)\.json/)?.[1] || '')
-
-  if (id.includes('element-plus/dist/locale')) {
-    // 获取 id 的basename
-    // 判断这个basename在不在上面的localesFiles中
-    const basename = path.basename(id, '.mjs')
-    return !localesFiles.some((o) => o.toLowerCase() === basename)
-  }
   if (isElectron && id.includes('virtual:pwa-register/vue')) {
     return true
   }
@@ -238,7 +223,6 @@ export default defineConfig(({ mode, command }) => {
                   }
                 ]
               },
-              { name: 'vue-i18n', relativeModule: './dist/vue-i18n.global.prod.js' },
               {
                 name: 'sortablejs',
                 global: 'Sortable',
@@ -288,21 +272,11 @@ export default defineConfig(({ mode, command }) => {
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]'
       }),
-      I18n({
-        include: [path.resolve(__dirname, './locales/**')],
-        // 说明:由于配置了modules/i18n.ts中默认为legacy: false
-        // 所以禁止修改
-        compositionOnly: true,
-        jitCompilation: true
-      }),
       visualizer({
         open: isAnalysis
       }),
       copy({
-        targets: [
-          { src: 'locales/*', dest: 'dist/locales' },
-          { src: 'locales/*', dest: 'public/locales' }
-        ]
+        targets: []
       })
     ],
     resolve: {

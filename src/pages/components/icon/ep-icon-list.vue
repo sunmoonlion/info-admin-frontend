@@ -2,15 +2,15 @@
 <template>
   <div class="mb-2 flex justify-end items-center w-full">
     <div class="mr-4">
-      <el-checkbox v-model="copyIconComponentFlag" :label="$t('components.copy-icon')" size="large" />
+      <el-checkbox v-model="copyIconComponentFlag" label="复制Icon组件" size="large" />
     </div>
     <div class="mr-4">
-      <el-switch v-model="copyTypeFlag" :active-text="$t('components.copy-icon-name')"
-        :inactive-text="$t('components.copy-svg')" />
+      <el-switch v-model="copyTypeFlag" active-text="复制Icon名称"
+        inactive-text="复制SVG图标" />
     </div>
     <div class="mr-4">
-      <el-switch v-model="showTextFlag" :active-text="$t('components.show-text')"
-        :inactive-text="$t('components.hide-text')" />
+      <el-switch v-model="showTextFlag" active-text="显示文字"
+        inactive-text="隐藏文字" />
     </div>
   </div>
   <VpIconList :show-text="showTextFlag" @click="handleClick"></VpIconList>
@@ -19,17 +19,13 @@
 // iconify -> element plus
 import { loadIcon } from '@iconify/vue'
 import { ElMessage } from 'element-plus'
-import { useI18n } from 'vue-i18n'
-// import { i18n } from '@/modules/i18n'
 
 definePage({
   meta: {
-    title: 'components.icon-lists',
+    title: '图标列表',
     icon: 'mdi:bookmark-multiple'
   }
 })
-
-const { t } = useI18n()
 
 // false - CopySvgData
 // true - CopyName
@@ -84,7 +80,7 @@ async function handleClick(i: string) {
   
   if (copied.value) {
     ElMessage({
-      message: t('message.copy-success'),
+      message: '复制成功',
       type: 'success'
     })
   }

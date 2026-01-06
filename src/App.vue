@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-
-const { messages, locale } = useI18n()
-
 // if (!process.env.ELECTRON) {
 //   import('./modules/pwa').then(({ registerPWA }) => {
 //     registerPWA()
@@ -11,7 +7,7 @@ const { messages, locale } = useI18n()
 </script>
 
 <template>
-  <el-config-provider :locale="messages[locale] as any">
+  <el-config-provider>
     <router-view />
   </el-config-provider>
 </template>
