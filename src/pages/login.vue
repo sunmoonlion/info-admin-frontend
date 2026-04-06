@@ -33,8 +33,9 @@ const loginItems = [
   }
 ]
 
-const handleSubmit = (form: any) => {
-  console.log('🚀 ~ file: login.vue:37 ~ handleSubmit ~ form:', form)
+const handleSubmit = () => {
+  // 跳转到后端 BFF 的 OIDC 登录入口，由后端负责与 Casdoor 交互
+  window.location.href = `${import.meta.env.VITE_API_URL}/auth/login`
 }
 </script>
 
