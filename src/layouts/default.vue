@@ -61,6 +61,7 @@
           :src="avatar"
           :data="avatarMenu"
           :settings="settings"
+          :locales="[]"
           :show-collapse="!lockCollapse"
           @settings-change="handleSettigsChange"
           @select="handleSelect"
@@ -191,7 +192,16 @@ const localSettings = reactive<ThemeSettingsOption>({
   // TODO
   avatarMenu: [],
   settings: {
-    menuWidth: 280
+    theme: '#409eff',
+    backgroundColor: '#001529',
+    darkMode: false,
+    menuWidth: 280,
+    showLogo: false,
+    showTabs: true,
+    fixedHead: false,
+    showBreadcrumb: true,
+    mode: 'siderbar',
+    transition: 'Fade'
   } as VpThemeSettingsProps
 })
 

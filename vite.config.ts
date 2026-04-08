@@ -48,7 +48,9 @@ export default defineConfig(({ mode, command }) => {
   // 加载环境变量
   const env = loadEnv(mode, process.cwd()) // 加载 `.env.[mode]`  const isServe = command === 'serve'
   const isProd = mode === 'production'
-  const base = isProd ? process.env.BASE_PATH || '/' : './'
+  // In dev, use absolute base so assets/modules resolve correctly
+  // when accessed via external IP (e.g. http://43.159.148.235:5173).
+  const base = isProd ? process.env.BASE_PATH || '/' : '/'
 
   const isAnalysis = process.env.ANALYSIS === 'true'
   const isSourceMap = process.env.SOURCE_MAP === 'true'
@@ -61,7 +63,7 @@ export default defineConfig(({ mode, command }) => {
   const enableMock = env.VITE_MOCK_ENABLE === 'true'
 
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG
-  const EPComponentsResolver = isProd ? [] : [ElementPlusResolver()]
+  const EPComponentsResolver: never[] = [] // disabled: app.use(ElementPlus) handles global registration
 
   return {
     base,
@@ -75,7 +77,7 @@ export default defineConfig(({ mode, command }) => {
       VueRouter(),
       vue(),
       vueJsx(),
-      vueDevTools(),
+      // vueDevTools(), // disabled: causes path resolution errors when accessed via external IP
       UnoCSS(),
       AutoImport({
         include: [
@@ -94,13 +96,13 @@ export default defineConfig(({ mode, command }) => {
           '@vueuse/core',
           VpAutoImports
         ],
-        resolvers: isProd ? [] : [ElementPlusResolver()],
+        resolvers: [],
         vueTemplate: true
       }),
       Components({
         directoryAsNamespace: false,
         collapseSamePrefixes: true,
-        resolvers: [...EPComponentsResolver, VpComponentsResolver]
+        resolvers: [] // ElementPlus and el-admin-components registered globally in main.ts
       }),
       Layouts({
         layoutsDirs: 'src/layouts',
@@ -283,6 +285,33 @@ export default defineConfig(({ mode, command }) => {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }
+    },
+    optimizeDeps: {
+      include: [
+        'vue',
+        'vue-router',
+        'pinia',
+        'pinia-plugin-persistedstate',
+        '@vueuse/core',
+        'element-plus',
+        'element-plus/es',
+        '@element-plus/icons-vue',
+        'el-admin-components',
+        'vue-i18n',
+        'echarts',
+        'vue-echarts',
+        'sortablejs',
+        'howler',
+        'vditor',
+        'video.js',
+        '@iconify/vue',
+        'axios'
+      ]
     }
   }
 })
+
+
+
+
+

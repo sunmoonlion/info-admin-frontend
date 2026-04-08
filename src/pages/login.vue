@@ -1,8 +1,14 @@
 <template>
-  <LoginForm :login-items="loginItems" @submit="handleSubmit"></LoginForm>
+  <div class="login-wrap">
+    <div class="login-card">
+      <h2 class="title">欢迎回来</h2>
+      <p class="subtitle">使用 Casdoor 单点登录</p>
+      <button class="sso-btn" @click="handleSubmit">使用 Casdoor 登录</button>
+    </div>
+  </div>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 definePage({
   meta: {
     title: '欢迎 回来',
@@ -10,33 +16,49 @@ definePage({
     layout: 'single-page',
     position: 'right',
     backgroundImage: 'https://cdn.pixabay.com/photo/2022/11/03/15/24/coffee-7567749_1280.jpg'
-    // backgroundImage: 'https://cdn.pixabay.com/photo/2022/01/20/17/51/office-desk-6952919_1280.jpg'
   }
 })
 
-const loginItems = [
-  {
-    icon: 'ic:baseline-wechat',
-    url: ''
-  },
-  {
-    icon: 'cib:tencent-qq',
-    url: ''
-  },
-  {
-    icon: 'bi:sina-weibo',
-    url: ''
-  },
-  {
-    icon: 'mdi:github',
-    url: ''
-  }
-]
-
 const handleSubmit = () => {
-  // 跳转到后端 BFF 的 OIDC 登录入口，由后端负责与 Casdoor 交互
-  window.location.href = `${import.meta.env.VITE_API_URL}/auth/login`
+  window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/login`
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.login-wrap {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 360px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  padding: 24px;
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.subtitle {
+  margin: 0 0 18px;
+  color: #6b7280;
+}
+
+.sso-btn {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  background: #1677ff;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+</style>
