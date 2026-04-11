@@ -67,6 +67,20 @@ export default defineConfig(({ mode, command }) => {
 
   return {
     base,
+    // 通过局域网/公网 IP 访问 dev 时，Vite 会校验 Host；不放行则 /@vite、/src 等请求 403，页面空白。
+    ...(isServe
+      ? {
+          server: {
+            host: true,
+            allowedHosts: true
+          }
+        }
+      : {}),
+    // preview / 部分部署方式同样走 Host 校验
+    preview: {
+      host: true,
+      allowedHosts: true
+    },
     build: {
       sourcemap: isSourceMap,
       rollupOptions: {

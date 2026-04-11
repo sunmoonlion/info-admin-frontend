@@ -11,8 +11,10 @@
 <script setup lang="ts">
 definePage({
   meta: {
-    title: '欢迎 回来',
-    hideMenu: true,
+    title: '登录',
+    hideMenu: false,
+    order: 5,
+    icon: 'mdi:login',
     layout: 'single-page',
     position: 'right',
     backgroundImage: 'https://cdn.pixabay.com/photo/2022/11/03/15/24/coffee-7567749_1280.jpg'
