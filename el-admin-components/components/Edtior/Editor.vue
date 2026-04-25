@@ -67,7 +67,7 @@ watch(() => props.options, fn, {
   deep: true
 })
 
-function initEditor(options) {
+function initEditor(options: Record<string, any>) {
   const defaultAfter = options?.after
   const defaultInput = options?.input
   const instance = new Vditor(
@@ -84,7 +84,7 @@ function initEditor(options) {
           modelValue.value = tmp
         }
       },
-      input: (md) => {
+      input: (md: string) => {
         defaultInput && defaultInput(md)
         modelValue.value = md
       }

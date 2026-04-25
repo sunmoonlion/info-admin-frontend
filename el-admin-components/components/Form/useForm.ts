@@ -9,13 +9,12 @@ export function useForm(schema: FormSchema) {
     rules.value = setRules(schema || [])
   })
   function setForm(arr: any[]) {
-    const obj = {}
+    const obj: Record<string, any> = {}
     arr.forEach((item) => {
       if (item.value) {
         obj[item.prop] = item.value
       } else if (item.schema && item.schema.length) {
-        // let j = 0
-        item.schema.forEach((child) => {
+        item.schema.forEach((child: any) => {
           if (child.prop) {
             obj[child.prop] = child.value
           }
@@ -28,7 +27,7 @@ export function useForm(schema: FormSchema) {
   }
 
   function setRules(arr: any[]) {
-    let formRules = {}
+    let formRules: Record<string, any> = {}
     arr.forEach((item) => {
       if (item.prop && item.rules) {
         formRules[item.prop] = item.rules
@@ -40,8 +39,8 @@ export function useForm(schema: FormSchema) {
     return formRules
   }
 
-  function flatObj(obj) {
-    let result = {}
+  function flatObj(obj: Record<string, any>) {
+    let result: Record<string, any> = {}
     if (typeof obj !== 'object') return result
     for (const key in obj) {
       if (

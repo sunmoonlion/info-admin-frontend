@@ -2,8 +2,8 @@
 import { createI18n } from 'vue-i18n'
 // 'zh-cn': () => import('element-plus/dist/locale/zh-cn.mjs'),
 // en: () => import('element-plus/dist/locale/en.mjs')
-import zhCN from 'element-plus/dist/locale/zh-cn.min.mjs'
-import en from 'element-plus/dist/locale/en.min.mjs'
+import zhCN from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
 // import localzhCN from '../../locales/zh-cn.json'
 // import localen from '../../locales/en.json'
 // import localzhCN from 'el-admin-components/locales/zh-cn.json'
@@ -16,7 +16,6 @@ export const i18n = createI18n({
   messages: {}
 })
 
-// @ts-ignore
 export const $t: typeof i18n.global.t = i18n.global.t
 
 const loadedLanguages: string[] = []

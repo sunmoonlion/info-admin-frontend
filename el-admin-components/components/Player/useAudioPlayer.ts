@@ -1,9 +1,9 @@
-export function useAudioPlayer(lists) {
+export function useAudioPlayer(lists: any[]) {
   const current = ref(0)
   const mode = ref(0)
   const oldIndex = ref([] as number[])
 
-  const rand = (current, length) => {
+  const rand = (current: number, length: number) => {
     let num
     do {
       num = Math.floor(Math.random() * length)

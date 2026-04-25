@@ -10,6 +10,7 @@ import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 // import { configureVueProject } from '@vue/eslint-config-typescript'
 // configureVueProject({ scriptLangs: ['ts', 'tsx'] })
 // More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
+// @ts-ignore TS2742: inferred type references internal @typescript-eslint package
 export default defineConfigWithVueTs(
   {
     name: 'app/files-to-lint',

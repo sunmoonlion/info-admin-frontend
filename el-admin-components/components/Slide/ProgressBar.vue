@@ -63,7 +63,7 @@ useResizeObserver(progressRef, (entries) => {
   progressWidth.value = width
 })
 
-function updatePosition(clientX, startX) {
+function updatePosition(clientX: number, startX: number) {
   if (progressRef.value) {
     const rect = progressRef.value?.getBoundingClientRect()
     const originLeft = startX - rect.left
@@ -77,13 +77,15 @@ function updatePosition(clientX, startX) {
   }
 }
 
-function startDrag(e) {
-  e.preventDefault(e)
+function startDrag(e: Event) {
+  e.preventDefault()
   const isTouch = e.type === 'touchstart'
-  const startX = isTouch ? e.touches[0].clientX : e.clientX
+  const startX = isTouch ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX
 
-  const onMove = (moveEvent) => {
-    const clientX = isTouch ? moveEvent.touches[0].clientX : moveEvent.clientX
+  const onMove = (moveEvent: Event) => {
+    const clientX = isTouch
+      ? (moveEvent as TouchEvent).touches[0].clientX
+      : (moveEvent as MouseEvent).clientX
     updatePosition(clientX, startX)
   }
 
@@ -97,10 +99,10 @@ function startDrag(e) {
 }
 
 // 点击跳转
-function jumpTo(e) {
-  e.preventDefault(e)
+function jumpTo(e: Event) {
+  e.preventDefault()
   const isTouch = e.type === 'touchstart'
-  const startX = isTouch ? e.touches[0].clientX : e.clientX
+  const startX = isTouch ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX
   const rect = progressRef.value?.getBoundingClientRect()
   if (!rect) return
   updatePosition(startX, rect.left)

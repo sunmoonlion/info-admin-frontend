@@ -7,6 +7,10 @@
   "exports": {
     ".": "./main.ts",
     "./style": "./style.ts",
-    "./vite": "./vite-plugin.ts"
+    "./vite": "./vite-plugin.js"
+  },
+  "dependencies": {
+    "defu": "^6.1.4",
+    "vue-i18n": "^9.14.2"
   }
 }

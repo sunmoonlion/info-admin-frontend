@@ -124,7 +124,7 @@ import type {
   AudioPlayerEvents,
   ControlsType
 } from './types'
-import { Howl, Howler } from 'howler'
+import { Howl, Howler, type HowlOptions } from 'howler'
 import { exposeEventsUtils, formatTime } from '../../utils'
 
 const keys: HowlerGlobalOptionsKeys[] = [
@@ -238,7 +238,7 @@ watch(
 )
 
 onBeforeMount(() => {
-  init(props.options)
+  if (props.options) init(props.options)
 })
 
 onBeforeUnmount(() => {
@@ -279,7 +279,7 @@ const togglePlay = () => {
 }
 
 // 快进快退
-const seekPlayback = (type) => {
+const seekPlayback = (type: PlayAction) => {
   if (audioInstance.value) {
     if (type === PlayAction.Forward) {
       state.progress = state.progress + 15 > state.duration ? state.duration : state.progress + 15
@@ -336,7 +336,7 @@ const handleLoopChange = () => {
   emits('mode', loop.value)
 }
 
-function runDefault(name, options, ...args) {
+function runDefault(name: string, options: Record<string, any> | undefined, ...args: any[]) {
   if (options) {
     const onfunDefault = options[name]
     onfunDefault && onfunDefault(args)
@@ -344,7 +344,7 @@ function runDefault(name, options, ...args) {
 }
 
 // 初始化
-function init(options) {
+function init(options: Options) {
   // const options = props.options
   if (options) {
     keys.forEach((key) => {
@@ -371,7 +371,7 @@ function init(options) {
         runDefault('onend', options)
         emits('next')
       }
-    })
+    }) as HowlOptions
   )
   emits('init', audioInstance.value)
 }

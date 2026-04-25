@@ -19,7 +19,7 @@ const scrollText: Directive = {
       maxScrollLeft: el.scrollWidth - el.clientWidth
     }
 
-    function step(timestamp) {
+    function step(timestamp: number) {
       if (!(el.__state && el.__state.animating)) return
 
       const { oldScrollLeft, maxScrollLeft, direction } = el.__state

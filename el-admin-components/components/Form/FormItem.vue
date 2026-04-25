@@ -1,7 +1,7 @@
 <template>
   <el-form-item
     v-bind="props"
-    :ref="(ref) => props?.itemRef && props.itemRef(ref as FormItemInstance)"
+    :ref="(ref: FormItemInstance | null) => props?.itemRef && props.itemRef(ref as FormItemInstance)"
   >
     <!-- <template v-if="props?.prefixSlot">
       <component :is="props.prefixSlot" v-bind="props"></component>
@@ -61,7 +61,7 @@
           v-model="modelValue"
           v-bind="attrs"
           v-on="events"
-          :ref="(ref) => props.childRef && props.childRef(ref)"
+          :ref="(ref: unknown) => props.childRef && props.childRef(ref)"
         />
         <span v-else v-bind="attrs">{{ value }}</span>
       </div>

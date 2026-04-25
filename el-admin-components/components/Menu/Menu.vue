@@ -26,6 +26,7 @@ import type { MenuProps as ElMenuProps, SubMenuProps } from 'element-plus'
 import type { AppRouteMenuItem, MenuSelectEvent, IconOptions, MenuOpenCloseEvent } from './types'
 import { useMenu } from './useMenu'
 import { type RouteLocationNormalizedLoaded } from 'vue-router'
+import { type Slots } from 'vue'
 
 interface MenuProps extends Partial<ElMenuProps> {
   data: AppRouteMenuItem[]
@@ -61,7 +62,7 @@ const emits = defineEmits<{
   close: [arg: MenuOpenCloseEvent]
 }>()
 
-const slots = useSlots()
+const slots: Slots = useSlots()
 const { generateMenuKeys, getItem, getParentMenu } = useMenu()
 
 const fileredMenus = computed(() => generateMenuKeys(props.data))

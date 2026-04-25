@@ -41,8 +41,9 @@ if (import.meta.env.MODE !== 'production') {
     let deps: string[] = []
     if (props.option) {
       Object.keys(props.option).forEach((key) => {
-        if (COMPONENTS_MAP[key]) {
-          deps.push(COMPONENTS_MAP[key])
+        const compName = (COMPONENTS_MAP as Record<string, string>)[key]
+        if (compName) {
+          deps.push(compName)
         }
       })
     }
@@ -66,11 +67,15 @@ if (import.meta.env.MODE !== 'production') {
       }
     }
 
+    const chartsMap = CHARTS_MAP as Record<string, string>
+    const chartsNs = Charts as Record<string, any>
+    const componentsNs = ChartsComponents as Record<string, any>
+    const featuresNs = ChartsFeatures as Record<string, any>
     use([
       CanvasRenderer,
-      Charts[CHARTS_MAP[type]],
-      ...deps.map((o) => ChartsComponents[o]),
-      ...features.map((o) => ChartsFeatures[o])
+      chartsNs[chartsMap[type]],
+      ...deps.map((o) => componentsNs[o]),
+      ...features.map((o) => featuresNs[o])
     ])
   })
 }

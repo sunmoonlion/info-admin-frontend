@@ -20,59 +20,60 @@ defineProps({
   }
 })
 
-function beforeEnter(el) {
-  if (!el.dataset) el.dataset = {}
-  el.dataset.oldPaddingTop = el.style.paddingTop
-  el.dataset.oldPaddingBottom = el.style.paddingBottom
-
-  el.style.height = 0
-  el.style.paddingTop = 0
-  el.style.paddingBottom = 0
+function beforeEnter(el: Element) {
+  const h = el as HTMLElement
+h.dataset.oldPaddingTop = h.style.paddingTop
+  h.dataset.oldPaddingBottom = h.style.paddingBottom
+  h.style.height = '0'
+  h.style.paddingTop = '0'
+  h.style.paddingBottom = '0'
 }
 
-function enter(el) {
-  el.dataset.oldOverflow = el.style.overflow
-  if (el.scrollHeight !== 0) {
-    el.style.height = el.scrollHeight + 'px'
-    el.style.paddingTop = el.dataset.oldPaddingTop
-    el.style.paddingBottom = el.dataset.oldPaddingBottom
+function enter(el: Element) {
+  const h = el as HTMLElement
+  h.dataset.oldOverflow = h.style.overflow
+  if (h.scrollHeight !== 0) {
+    h.style.height = h.scrollHeight + 'px'
+    h.style.paddingTop = h.dataset.oldPaddingTop ?? ''
+    h.style.paddingBottom = h.dataset.oldPaddingBottom ?? ''
   } else {
-    el.style.height = ''
-    el.style.paddingTop = el.dataset.oldPaddingTop
-    el.style.paddingBottom = el.dataset.oldPaddingBottom
+    h.style.height = ''
+    h.style.paddingTop = h.dataset.oldPaddingTop ?? ''
+    h.style.paddingBottom = h.dataset.oldPaddingBottom ?? ''
   }
-  el.style.overflow = 'hidden'
+  h.style.overflow = 'hidden'
 }
 
-function afterEnter(el) {
-  el.style.height = ''
-  el.style.overflow = el.dataset.oldOverflow
+function afterEnter(el: Element) {
+  const h = el as HTMLElement
+  h.style.height = ''
+  h.style.overflow = h.dataset.oldOverflow ?? ''
 }
 
-function beforeLeave(el) {
-  // 离开时，使用中间变量存储元素的初始状态
-  if (!el.dataset) el.dataset = {}
-  el.dataset.oldPaddingTop = el.style.paddingTop
-  el.dataset.oldPaddingBottom = el.style.paddingBottom
-  el.dataset.oldOverflow = el.style.overflow
-
-  el.style.height = el.scrollHeight + 'px'
-  el.style.overflow = 'hidden'
+function beforeLeave(el: Element) {
+  const h = el as HTMLElement
+h.dataset.oldPaddingTop = h.style.paddingTop
+  h.dataset.oldPaddingBottom = h.style.paddingBottom
+  h.dataset.oldOverflow = h.style.overflow
+  h.style.height = h.scrollHeight + 'px'
+  h.style.overflow = 'hidden'
 }
 
-function leave(el) {
-  if (el.scrollHeight !== 0) {
-    el.style.height = 0
-    el.style.paddingTop = 0
-    el.style.paddingBottom = 0
+function leave(el: Element) {
+  const h = el as HTMLElement
+  if (h.scrollHeight !== 0) {
+    h.style.height = '0'
+    h.style.paddingTop = '0'
+    h.style.paddingBottom = '0'
   }
 }
 
-function afterLeave(el) {
-  el.style.height = ''
-  el.style.overflow = el.dataset.oldOverflow
-  el.style.paddingTop = el.dataset.oldPaddingTop
-  el.style.paddingBottom = el.dataset.oldPaddingBottom
+function afterLeave(el: Element) {
+  const h = el as HTMLElement
+  h.style.height = ''
+  h.style.overflow = h.dataset.oldOverflow ?? ''
+  h.style.paddingTop = h.dataset.oldPaddingTop ?? ''
+  h.style.paddingBottom = h.dataset.oldPaddingBottom ?? ''
 }
 </script>
 

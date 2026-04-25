@@ -69,7 +69,7 @@ const items = ref([
   }
 ])
 
-const handleClick = (item) => {
+const handleClick = (item: { action: TabActions }) => {
   emits('tabMenuClick', item.action)
 }
 </script>

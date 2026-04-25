@@ -64,7 +64,7 @@ const descriptionProps = computed(() => {
   return restProps
 })
 
-function getLinkAttributes(item) {
+function getLinkAttributes(item: Record<string, any>) {
   const linkAttrs = { ...item.link }
   linkAttrs.target = linkAttrs.target || '_target'
   return linkAttrs

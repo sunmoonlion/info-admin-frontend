@@ -1,8 +1,5 @@
 
-// [vite:dts] The "export * as ___" syntax  error
-// export * as I18n from './modules/i18n'
-import * as I18n from './modules/i18n'
-export { I18n as I18nModule }
+import type { App } from 'vue'
 import { setupDirectives } from './directives'
 export { setupDirectives }
 
@@ -56,7 +53,7 @@ import VpDirectiveThrottle from './directives/modules/throttle'
 import VpDirectiveWaterMarker from './directives/modules/waterMarker'
 
 export const globalPlugin = {
-  install(app: any) {
+  install(app: App) {
     app.component('VpAvatarList', AvatarList)
     app.component('VpAvatarMenu', AvatarMenu)
     app.component('VpCharts', Charts)

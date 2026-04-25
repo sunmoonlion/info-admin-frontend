@@ -23,7 +23,7 @@ const ArrowRight = () => <i class="i-ep:arrow-right"></i>
 
 // 获取页面路由数据
 const route = useRoute()
-const localData = ref()
+const localData = ref<any[]>([])
 // const change = ref(-1)
 
 // 控制页面路由的
@@ -61,7 +61,7 @@ const fn = useThrottleFn((entries) => {
     // 说明屏幕在变宽
     if (breadcrumbRef.value) {
       if (breadcrumbRef.value.$el.offsetHeight <= 14) {
-        let item
+        let item: any
         // 留在页面上的数组里面还有元素
         if (breadcrumbData.value.length > 0) {
           const index = localData.value.findIndex((item) => item === breadcrumbData.value[0])
