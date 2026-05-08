@@ -225,8 +225,8 @@ export default defineConfig(({ mode, command }) => {
                 name: 'element-plus',
                 aliases: ['lib', 'es'],
                 spare: [
-                  { url: 'https://unpkg.com/element-plus@2.4.2/dist/index.css' },
-                  { url: 'https://unpkg.com/element-plus@2.4.2/theme-chalk/dark/css-vars.css' }
+                  { url: 'https://cdn.jsdelivr.net/npm/element-plus@2.4.2/dist/index.css' },
+                  { url: 'https://cdn.jsdelivr.net/npm/element-plus@2.4.2/theme-chalk/dark/css-vars.css' }
                 ]
               },
               {
@@ -234,7 +234,7 @@ export default defineConfig(({ mode, command }) => {
                 aliases: ['core', 'renderers', 'components', 'features', 'charts'],
                 spare: [
                   {
-                    url: 'https://unpkg.com/echarts@5.6.0/dist/echarts.min.js',
+                    url: 'https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js',
                     defer: true
                   }
                 ]
@@ -246,7 +246,7 @@ export default defineConfig(({ mode, command }) => {
                 spare: [
                   {
                     async: true,
-                    url: 'https://unpkg.com/sortablejs@1.15.6/Sortable.min.js'
+                    url: 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js'
                   }
                 ]
               },
@@ -254,23 +254,23 @@ export default defineConfig(({ mode, command }) => {
                 name: 'vditor',
                 global: 'Vditor',
                 relativeModule: './dist/index.min.js',
-                spare: [{ url: 'https://unpkg.com/vditor@3.9.6/dist/index.css', defer: true }]
+                spare: [{ url: 'https://cdn.jsdelivr.net/npm/vditor@3.9.6/dist/index.css', defer: true }]
               },
               {
                 name: 'video.js',
                 global: 'videojs',
                 relativeModule: './dist/video.min.js',
                 spare: [
-                  { url: 'https://unpkg.com/video.js@8.6.1/dist/video-js.min.css', defer: true }
+                  { url: 'https://cdn.jsdelivr.net/npm/video.js@8.6.1/dist/video-js.min.css', defer: true }
                 ]
               }
             ],
             resolve: {
               name: 'resolve:custom',
               setup({ extra }) {
-                const baseURL = 'https://unpkg.com'
+                const baseURL = 'https://cdn.jsdelivr.net/npm/'
                 const { version, name, relativeModule } = extra
-                const url = new URL(`${name}/${version}/${relativeModule}`, baseURL)
+                const url = new URL(`${name}@${version}/${relativeModule}`, baseURL)
                 return {
                   url: url.href,
                   injectTo: 'head-prepend',
