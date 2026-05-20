@@ -1,6 +1,6 @@
 ARG NODE_VERSION=18.20.0
 # Docker 镜像仓库；CI 传 Harbor 地址，本地默认同 Harbor（内网可用）；纯外网传 --build-arg REGISTRY= 退回 DockerHub
-ARG REGISTRY=harbor.sunmoonai.com:30443/k8s-images
+ARG REGISTRY=harbor.sunmoonai.com/k8s-images
 
 # ============================================================================
 # Stage 1: Build
@@ -46,7 +46,7 @@ RUN pnpm run build
 # ============================================================================
 # Stage 2: Serve
 # ============================================================================
-ARG REGISTRY=harbor.sunmoonai.com:30443/k8s-images
+ARG REGISTRY=harbor.sunmoonai.com/k8s-images
 FROM ${REGISTRY}/nginx:stable-alpine AS run
 
 COPY --from=build /app/dist /usr/share/nginx/html
