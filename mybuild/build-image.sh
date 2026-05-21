@@ -19,11 +19,12 @@ if [ ! -f "$BUILD_CONF" ]; then
 fi
 log_info "加载构建配置: $BUILD_CONF"
 source "$BUILD_CONF"
+source "$SCRIPT_DIR/harbor-cluster.sh"
 
 ADMIN_CSR_IMAGE="${ADMIN_CSR_IMAGE:-tpl-admin-frontend}"
 ADMIN_CSR_TAG="${ADMIN_CSR_TAG:-1.0.0}"
 ADMIN_CSR_IMAGE_REGISTRY="${ADMIN_CSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}"
-ADMIN_CSR_IMAGE_PROJECT="${ADMIN_CSR_IMAGE_PROJECT:-k8s-images}"
+ADMIN_CSR_IMAGE_PROJECT="${ADMIN_CSR_IMAGE_PROJECT:-app-images}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
 PUSH_IMAGES_AFTER_BUILD="${PUSH_IMAGES_AFTER_BUILD:-false}"
 DOCKER_BUILD_NETWORK="${DOCKER_BUILD_NETWORK:-}"
@@ -59,10 +60,12 @@ ensure_base_image() {
 }
 
 push_image() {
-    FULL_IMAGE_NAME="${ADMIN_CSR_IMAGE_REGISTRY}/${ADMIN_CSR_IMAGE_PROJECT}/${ADMIN_CSR_IMAGE}:${ADMIN_CSR_TAG}"
+    local push_registry
+    push_registry="$(resolve_harbor_registry_for_push "${ADMIN_CSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}")"
+    FULL_IMAGE_NAME="${push_registry}/${ADMIN_CSR_IMAGE_PROJECT}/${ADMIN_CSR_IMAGE}:${ADMIN_CSR_TAG}"
     log_info "推送镜像: $FULL_IMAGE_NAME"
     $RUNTIME_CMD tag "${ADMIN_CSR_IMAGE}:${ADMIN_CSR_TAG}" "$FULL_IMAGE_NAME"
-    if $RUNTIME_CMD push "$FULL_IMAGE_NAME"; then
+    if push_image_with_harbor_verify "$RUNTIME_CMD" "$FULL_IMAGE_NAME"; then
         log_success "✅ 推送成功: $FULL_IMAGE_NAME"
     else
         log_error "❌ 推送失败: $FULL_IMAGE_NAME"
