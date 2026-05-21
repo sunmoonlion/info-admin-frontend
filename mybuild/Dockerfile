@@ -37,7 +37,11 @@ ENV VITE_API_URL=${VITE_API_URL} \
     VITE_MOCK_ENABLE=${VITE_MOCK_ENABLE} \
     VITE_PWA_DEBUG=${VITE_PWA_DEBUG}
 
-RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+RUN npm install -g pnpm@9.15.4 \
+    --registry="${NPM_CONFIG_REGISTRY}" \
+    --fetch-retries=5 \
+    --fetch-retry-maxtimeout=120000 \
+    --fetch-timeout=600000
 
 ENV CYPRESS_INSTALL_BINARY=0 \
     ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
