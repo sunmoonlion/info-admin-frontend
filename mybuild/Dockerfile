@@ -1,6 +1,7 @@
 ARG NODE_VERSION=18.20.0
 # Docker 镜像仓库；CI 传 Harbor 地址，本地默认同 Harbor（内网可用）；纯外网传 --build-arg REGISTRY= 退回 DockerHub
 ARG REGISTRY=harbor.sunmoonai.com/k8s-images
+ARG NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
 
 # ============================================================================
 # Stage 1: Build
@@ -8,6 +9,7 @@ ARG REGISTRY=harbor.sunmoonai.com/k8s-images
 FROM ${REGISTRY}/node:${NODE_VERSION}-alpine AS build
 
 # 代理配置（可选）
+ARG NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 ARG http_proxy
@@ -19,7 +21,13 @@ ENV HTTP_PROXY=${HTTP_PROXY} \
     http_proxy=${http_proxy} \
     https_proxy=${https_proxy} \
     NO_PROXY=${NO_PROXY} \
-    no_proxy=${no_proxy}
+    no_proxy=${no_proxy} \
+    npm_config_registry=${NPM_CONFIG_REGISTRY} \
+    COREPACK_NPM_REGISTRY=${NPM_CONFIG_REGISTRY} \
+    COREPACK_INTEGRITY_KEYS=0 \
+    npm_config_fetch_retries=5 \
+    npm_config_fetch_retry_maxtimeout=120000 \
+    npm_config_fetch_timeout=600000
 
 # VITE_* 构建时静态嵌入 bundle，CI 通过 --build-arg 注入
 ARG VITE_API_URL
@@ -31,12 +39,20 @@ ENV VITE_API_URL=${VITE_API_URL} \
 
 RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
+ENV CYPRESS_INSTALL_BINARY=0 \
+    ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    CHOKIDAR_USEPOLLING=true \
+    WATCHPACK_POLLING=true
+
 WORKDIR /app
 
 # 先复制依赖文件和本地 workspace 包，利用层缓存
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY el-admin-components/ ./el-admin-components/
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,target=/pnpm/store \
+    pnpm config set store-dir /pnpm/store && \
+    pnpm install --frozen-lockfile --network-concurrency=3
 
 # 复制全部源码（构建上下文为子模块根目录）
 COPY . .

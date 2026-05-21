@@ -26,6 +26,7 @@ ADMIN_CSR_IMAGE_REGISTRY="${ADMIN_CSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}"
 ADMIN_CSR_IMAGE_PROJECT="${ADMIN_CSR_IMAGE_PROJECT:-k8s-images}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
 PUSH_IMAGES_AFTER_BUILD="${PUSH_IMAGES_AFTER_BUILD:-false}"
+DOCKER_BUILD_NETWORK="${DOCKER_BUILD_NETWORK:-}"
 
 CONTAINER_RUNTIME="${CONTAINER_RUNTIME:-docker}"
 if [[ "$CONTAINER_RUNTIME" == "sudo nerdctl" || "$CONTAINER_RUNTIME" == "nerdctl" ]]; then
@@ -75,9 +76,16 @@ build_image() {
     log_info "构建上下文: $PROJECT_ROOT"
 
     cd "$PROJECT_ROOT"
-    $RUNTIME_CMD build -f "$SCRIPT_DIR/$DOCKERFILE" \
+    local build_network_args=()
+    if [ -n "$DOCKER_BUILD_NETWORK" ]; then
+        build_network_args=(--network "$DOCKER_BUILD_NETWORK")
+        log_info "Docker build 网络模式: $DOCKER_BUILD_NETWORK"
+    fi
+
+    $RUNTIME_CMD build "${build_network_args[@]}" -f "$SCRIPT_DIR/$DOCKERFILE" \
         -t "${ADMIN_CSR_IMAGE}:${ADMIN_CSR_TAG}" \
         --build-arg REGISTRY="${REGISTRY:-harbor.sunmoonai.com/k8s-images}" \
+        --build-arg NPM_CONFIG_REGISTRY="${NPM_CONFIG_REGISTRY:-https://registry.npmmirror.com}" \
         .
 
     log_success "镜像构建完成: ${ADMIN_CSR_IMAGE}:${ADMIN_CSR_TAG}"
