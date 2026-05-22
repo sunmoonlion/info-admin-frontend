@@ -20,6 +20,8 @@ fi
 log_info "加载构建配置: $BUILD_CONF"
 source "$BUILD_CONF"
 source "$SCRIPT_DIR/harbor-cluster.sh"
+REGISTRY="$(resolve_k8s_images_registry)" || exit 1
+export REGISTRY
 
 ADMIN_CSR_IMAGE="${ADMIN_CSR_IMAGE:-tpl-admin-frontend}"
 ADMIN_CSR_TAG="${ADMIN_CSR_TAG:-1.0.0}"
@@ -91,7 +93,7 @@ build_image() {
 
     $RUNTIME_CMD build "${build_network_args[@]}" -f "$SCRIPT_DIR/$DOCKERFILE" \
         -t "${ADMIN_CSR_IMAGE}:${ADMIN_CSR_TAG}" \
-        --build-arg REGISTRY="${REGISTRY:-harbor.sunmoonai.com/k8s-images}" \
+        --build-arg REGISTRY="${REGISTRY}" \
         --build-arg NPM_CONFIG_REGISTRY="${NPM_CONFIG_REGISTRY:-https://registry.npmmirror.com}" \
         .
 
