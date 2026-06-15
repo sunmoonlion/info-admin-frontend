@@ -1,10 +1,10 @@
-# tpl-admin-frontend 镜像构建
+# info-admin-frontend 镜像构建
 
 ## 架构
 
-- **构建上下文**：子模块根目录（`tpl-admin-frontend/`）
+- **构建上下文**：子模块根目录（`info-admin-frontend/`）
 - **构建方式**：多阶段构建（node:alpine 编译 → nginx:alpine 服务）
-- **镜像名称**：`tpl-admin-frontend:1.0.0`（本地）；CI 使用 git SHA tag
+- **镜像名称**：`info-admin-frontend:1.0.0`（本地）；CI 使用 git SHA tag
 
 ## 文件说明
 
@@ -24,7 +24,7 @@
 docker build -f mybuild/Dockerfile \
   --build-arg REGISTRY=harbor.sunmoonai.com:30443/k8s-images \
   --build-arg VITE_API_URL=http://localhost:8001 \
-  -t tpl-admin-frontend:1.0.0 .
+  -t info-admin-frontend:1.0.0 .
 ```
 
 ## 使用脚本构建
@@ -44,8 +44,8 @@ cd mybuild
 --context       <子模块根目录>
 --build-arg     REGISTRY=harbor.sunmoonai.com:30443/k8s-images
 --build-arg     VITE_API_URL=<环境 API 地址>
---destination   harbor.sunmoonai.com:30443/k8s-images/tpl-admin-frontend:<git-sha>
---destination   harbor.sunmoonai.com:30443/k8s-images/tpl-admin-frontend:latest
+--destination   harbor.sunmoonai.com:30443/k8s-images/info-admin-frontend:<git-sha>
+--destination   harbor.sunmoonai.com:30443/k8s-images/info-admin-frontend:latest
 ```
 
 ## 注意事项

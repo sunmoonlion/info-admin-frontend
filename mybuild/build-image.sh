@@ -23,7 +23,7 @@ source "$SCRIPT_DIR/harbor-cluster.sh"
 REGISTRY="$(resolve_k8s_images_registry)" || exit 1
 export REGISTRY
 
-ADMIN_CSR_IMAGE="${ADMIN_CSR_IMAGE:-tpl-admin-frontend}"
+ADMIN_CSR_IMAGE="${ADMIN_CSR_IMAGE:-info-admin-frontend}"
 ADMIN_CSR_TAG="${ADMIN_CSR_TAG:-1.0.0}"
 ADMIN_CSR_IMAGE_REGISTRY="${ADMIN_CSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}"
 ADMIN_CSR_IMAGE_PROJECT="${ADMIN_CSR_IMAGE_PROJECT:-app-images}"

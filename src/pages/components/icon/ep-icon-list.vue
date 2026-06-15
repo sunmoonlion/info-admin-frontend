@@ -1,4 +1,4 @@
-<!-- 所有的Element-plus的Icon，类似于elementplus的icon列表 -->
+<!-- 所有的Element-plus的Icon，类似于elemeninfous的icon列表 -->
 <template>
   <div class="mb-2 flex justify-end items-center w-full">
     <div class="mr-4">

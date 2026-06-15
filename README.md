@@ -1,4 +1,4 @@
-# Tpl Admin CSR
+# Info Admin CSR
 
 基于 Vue 3 + Vite + TypeScript + Element Plus 的现代化管理后台系统（客户端渲染）。
 
@@ -39,7 +39,7 @@
 ### 目录结构
 
 ```
-tpl-admin-frontend/
+info-admin-frontend/
 ├── src/
 │   ├── assets/              # 静态资源
 │   │   ├── icons/          # SVG图标
@@ -288,7 +288,7 @@ import type { VpDescriptionItem } from 'el-admin-components'
 const data = ref([
   {
     label: '姓名',
-    value: 'Tpl Admin',
+    value: 'Info Admin',
     icon: { icon: 'mdi:user', class: 'text-xl' }
   },
   {

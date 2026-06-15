@@ -1,4 +1,4 @@
-# 管理端前端（tpl-admin-frontend）— Claude Code 规则
+# 管理端前端（info-admin-frontend）— Claude Code 规则
 
 > 进入本目录时自动叠加，补充根目录 CLAUDE.md 的全局规则。
 
@@ -9,11 +9,11 @@
 - Pinia（状态管理）
 - axios（请求封装）
 - CSR 模式（纯客户端渲染）
-- 登录跳转到后端 BFF（`VITE_API_URL/auth/login`），由 `tpl-admin-backend` 负责 OIDC 对接
+- 登录跳转到后端 BFF（`VITE_API_URL/auth/login`），由 `info-admin-backend` 负责 OIDC 对接
 
 ## 关键约定
 
-**无内置 BFF**：管理端是纯 CSR，不含服务端路由；登录由对应后端（`tpl-admin-backend`）负责 Casdoor 对接，前端只做跳转。
+**无内置 BFF**：管理端是纯 CSR，不含服务端路由；登录由对应后端（`info-admin-backend`）负责 Casdoor 对接，前端只做跳转。
 
 **请求封装**：统一走 axios 实例，禁止页面内裸调；401 时跳转登录。
 
@@ -39,6 +39,6 @@ src/
 
 ## 开始一个页面前
 
-1. 读 `tpl-admin-backend` 对应路由，确认接口参数与响应结构
+1. 读 `info-admin-backend` 对应路由，确认接口参数与响应结构
 2. 更新 `docs-claude/API_CONTRACT.md`（或等价文档）
 3. 确认页面权限要求（哪些路由需要登录守卫）

@@ -19,7 +19,7 @@ if [ ! -f "$BUILD_CONF" ]; then log_error "build.conf 不存在"; exit 1; fi
 source "$BUILD_CONF"
 source "$SCRIPT_DIR/harbor-cluster.sh"
 
-IMAGE_NAME="${ADMIN_CSR_IMAGE:-tpl-admin-frontend}"
+IMAGE_NAME="${ADMIN_CSR_IMAGE:-info-admin-frontend}"
 IMAGE_TAG="${ADMIN_CSR_TAG:-1.0.0}"
 IMAGE_REGISTRY="$(resolve_harbor_registry_for_push "${ADMIN_CSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}")"
 IMAGE_PROJECT="${ADMIN_CSR_IMAGE_PROJECT:-app-images}"

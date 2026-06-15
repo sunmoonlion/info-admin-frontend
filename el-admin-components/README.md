@@ -1,6 +1,6 @@
 # el-admin-components (Local Workspace Package)
 
-This folder is used as a local source package in `tpl-admin-frontend`.
+This folder is used as a local source package in `info-admin-frontend`.
 
 ## Goal
 
@@ -17,7 +17,7 @@ Use local source code directly (editable), instead of consuming `el-admin-compon
 
 ## Run
 
-From `tpl-admin-frontend` root:
+From `info-admin-frontend` root:
 
 ```bash
 pnpm install
