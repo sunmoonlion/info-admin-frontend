@@ -49,6 +49,7 @@ declare module 'vue-router/auto-routes' {
     '/directives/long-press': RouteRecordInfo<'/directives/long-press', '/directives/long-press', Record<never, never>, Record<never, never>>,
     '/directives/scrollText': RouteRecordInfo<'/directives/scrollText', '/directives/scrollText', Record<never, never>, Record<never, never>>,
     '/directives/watermark': RouteRecordInfo<'/directives/watermark', '/directives/watermark', Record<never, never>, Record<never, never>>,
+    '/info/crawl': RouteRecordInfo<'/info/crawl', '/info/crawl', Record<never, never>, Record<never, never>>,
     '/login': RouteRecordInfo<'/login', '/login', Record<never, never>, Record<never, never>>,
     '/menus': RouteRecordInfo<'/menus', '/menus', Record<never, never>, Record<never, never>>,
     '/menus/menu1': RouteRecordInfo<'/menus/menu1', '/menus/menu1', Record<never, never>, Record<never, never>>,
