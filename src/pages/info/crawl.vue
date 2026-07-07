@@ -35,6 +35,31 @@
           <el-form-item label="Base URL">
             <el-input v-model="sourceForm.base_url" />
           </el-form-item>
+          <el-form-item label="可信度">
+            <el-select v-model="sourceForm.trust_level">
+              <el-option label="Unknown" value="unknown" />
+              <el-option label="Official" value="official" />
+              <el-option label="Partner" value="partner" />
+              <el-option label="Media" value="media" />
+              <el-option label="Community" value="community" />
+              <el-option label="Low" value="low" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="版权状态">
+            <el-select v-model="sourceForm.copyright_status">
+              <el-option label="Unknown" value="unknown" />
+              <el-option label="Licensed" value="licensed" />
+              <el-option label="Public Domain" value="public_domain" />
+              <el-option label="Attribution" value="attribution_required" />
+              <el-option label="Restricted" value="restricted" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="License URL">
+            <el-input v-model="sourceForm.license_url" />
+          </el-form-item>
+          <el-form-item label="Terms URL">
+            <el-input v-model="sourceForm.terms_url" />
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" :loading="loading" @click="createSource">
               保存来源
@@ -159,7 +184,11 @@ const sourceForm = reactive({
   code: '',
   name: '',
   source_type: 'website',
-  base_url: ''
+  base_url: '',
+  trust_level: 'unknown',
+  copyright_status: 'unknown',
+  license_url: '',
+  terms_url: ''
 })
 
 const collectorForm = reactive({
