@@ -11,9 +11,11 @@
 | 文件 | 用途 |
 |------|------|
 | `Dockerfile` | 多阶段构建文件（本地 & CI 共用） |
+| `Dockerfile.runtime-local` | 仅打包本机已生成 `dist` 的 nginx 运行镜像 |
 | `nginx.conf` | 容器内 nginx SPA 配置 |
 | `build.conf` | 本地构建配置（镜像名、仓库、REGISTRY 等） |
 | `build-image.sh` | 本地构建（可选推送）脚本 |
+| `build-runtime-image.sh` | 使用已有 `dist` 构建运行镜像 |
 | `push-image.sh` | 单独推送脚本 |
 | `rebuild-and-run.sh` | 快速重建并本地运行 |
 
@@ -36,6 +38,21 @@ cd mybuild
 ./push-image.sh              # 推送到 Harbor
 ./rebuild-and-run.sh         # 重建并本地运行（http://localhost:8080）
 ```
+
+## Runtime-only 构建
+
+当本机已经完成前端验证，但 Docker build 内部访问 npm registry 不稳定时，可以先在项目根目录生成 `dist`，再只打包 nginx 运行镜像：
+
+```bash
+pnpm type-check
+pnpm build-only
+
+cd mybuild
+./build-runtime-image.sh --tag 1.0.1
+./push-image.sh --tag 1.0.1
+```
+
+该路径不会在 Docker 内重新执行 `pnpm install` 或 `pnpm build`，因此必须先确保本机 `dist/index.html` 来自已通过验证的构建。
 
 ## CI（Kaniko）参数
 
