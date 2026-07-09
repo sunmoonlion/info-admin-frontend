@@ -135,10 +135,24 @@
       <section>
         <div class="toolbar">
           <el-input v-model="keyword" clearable placeholder="关键词" />
+          <el-select v-model="documentStatus" clearable placeholder="全部状态">
+            <el-option label="Draft" value="draft" />
+            <el-option label="Reviewed" value="reviewed" />
+            <el-option label="Rejected" value="rejected" />
+            <el-option label="Archived" value="archived" />
+          </el-select>
           <el-button :loading="loading" @click="loadDocuments">刷新</el-button>
         </div>
 
-        <el-table :data="documents" height="420" highlight-current-row @row-click="selectDocument">
+        <el-table
+          ref="documentTableRef"
+          :data="documents"
+          height="420"
+          highlight-current-row
+          @row-click="selectDocument"
+          @selection-change="handleDocumentSelection"
+        >
+          <el-table-column type="selection" width="44" />
           <el-table-column prop="title" label="标题" min-width="260" show-overflow-tooltip />
           <el-table-column prop="source_name" label="来源" width="140" show-overflow-tooltip />
           <el-table-column prop="status" label="状态" width="110" />
@@ -180,6 +194,13 @@
                   <el-button type="primary" :loading="loading" @click="reviewDocument">
                     保存审核
                   </el-button>
+                  <el-button
+                    :disabled="selectedRows.length === 0"
+                    :loading="loading"
+                    @click="batchReviewDocuments"
+                  >
+                    批量审核 {{ selectedRows.length || '' }}
+                  </el-button>
                 </el-form-item>
               </el-form>
 
@@ -189,7 +210,7 @@
                 <el-table-column prop="created_at" label="创建时间" min-width="170" />
                 <el-table-column label="操作" width="120">
                   <template #default="{ row }">
-                    <el-button link type="primary" @click="selectedVersionId = row.id">
+                    <el-button link type="primary" @click="selectVersion(row.id)">
                       选中
                     </el-button>
                   </template>
@@ -232,7 +253,11 @@
             <el-tab-pane label="分发" name="distribution">
               <el-form label-width="88px" class="compact-form">
                 <el-form-item label="版本">
-                  <el-select v-model="selectedVersionId" placeholder="选择版本">
+                  <el-select
+                    v-model="selectedVersionId"
+                    placeholder="选择版本"
+                    @change="loadDistributions"
+                  >
                     <el-option
                       v-for="version in versions"
                       :key="version.id"
@@ -243,6 +268,14 @@
                 </el-form-item>
                 <el-form-item label="数据集">
                   <el-input v-model="distributionDataset" placeholder="默认可留空" />
+                </el-form-item>
+                <el-form-item label="状态筛选">
+                  <el-select v-model="distributionStatus" clearable placeholder="全部状态">
+                    <el-option label="Pending" value="pending" />
+                    <el-option label="Running" value="running" />
+                    <el-option label="Failed" value="failed" />
+                    <el-option label="Succeeded" value="succeeded" />
+                  </el-select>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" :loading="loading" @click="createDistribution">
@@ -255,9 +288,13 @@
               <el-table :data="distributions" height="220">
                 <el-table-column prop="status" label="状态" width="100" />
                 <el-table-column prop="target_dataset" label="数据集" width="120" show-overflow-tooltip />
+                <el-table-column prop="updated_at" label="更新时间" width="170" show-overflow-tooltip />
                 <el-table-column prop="last_error" label="错误" min-width="160" show-overflow-tooltip />
-                <el-table-column label="操作" width="140">
+                <el-table-column label="操作" width="180">
                   <template #default="{ row }">
+                    <el-button link type="primary" @click="openDistributionDetail(row)">
+                      详情
+                    </el-button>
                     <el-button link type="primary" @click="dispatchDistribution(row.id)">
                       投递
                     </el-button>
@@ -273,17 +310,56 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
+
+            <el-tab-pane label="审计" name="audit">
+              <el-timeline v-if="auditLogs.length > 0" class="audit-timeline">
+                <el-timeline-item
+                  v-for="(item, index) in auditLogs"
+                  :key="`${item.action}-${item.at}-${index}`"
+                  :timestamp="item.at"
+                >
+                  <div class="audit-card">
+                    <div class="audit-title">
+                      <span>{{ item.action }}</span>
+                      <el-tag v-if="item.actor" size="small">{{ item.actor }}</el-tag>
+                    </div>
+                    <div v-if="item.reason" class="muted">原因：{{ item.reason }}</div>
+                    <pre v-if="item.payload" class="json-preview">{{ formatJson(item.payload) }}</pre>
+                  </div>
+                </el-timeline-item>
+              </el-timeline>
+              <el-empty v-else description="暂无审计记录" />
+            </el-tab-pane>
           </el-tabs>
         </template>
       </aside>
     </div>
+
+    <el-dialog v-model="distributionDetailVisible" title="分发详情" width="680px">
+      <template v-if="distributionDetail">
+        <el-descriptions :column="1" border>
+          <el-descriptions-item label="ID">{{ distributionDetail.id }}</el-descriptions-item>
+          <el-descriptions-item label="状态">{{ distributionDetail.status }}</el-descriptions-item>
+          <el-descriptions-item label="数据集">
+            {{ distributionDetail.target_dataset || '默认' }}
+          </el-descriptions-item>
+          <el-descriptions-item label="更新时间">
+            {{ distributionDetail.updated_at || '-' }}
+          </el-descriptions-item>
+          <el-descriptions-item label="错误">
+            {{ distributionDetail.last_error || '-' }}
+          </el-descriptions-item>
+        </el-descriptions>
+        <pre class="json-preview mt-3">{{ formatJson(distributionDetail.payload || {}) }}</pre>
+      </template>
+    </el-dialog>
 
     <el-alert v-if="message" class="mt-3" type="success" :closable="false" :title="message" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { UploadFile, UploadInstance } from 'element-plus'
+import type { TableInstance, UploadFile, UploadInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
 definePage({
@@ -315,6 +391,16 @@ interface DistributionItem {
   target_dataset?: string
   status: string
   last_error?: string
+  payload?: Record<string, unknown>
+  updated_at?: string
+}
+
+interface AuditLogItem {
+  action?: string
+  actor?: string
+  at?: string
+  reason?: string
+  payload?: unknown
 }
 
 const apiBase = import.meta.env.VITE_API_URL || ''
@@ -322,15 +408,26 @@ const activeTab = ref('url')
 const loading = ref(false)
 const message = ref('')
 const keyword = ref('')
+const documentStatus = ref('')
 const documents = ref<DocumentItem[]>([])
 const selectedDocument = ref<DocumentItem>()
+const selectedRows = ref<DocumentItem[]>([])
 const versions = ref<DocumentVersionItem[]>([])
 const distributions = ref<DistributionItem[]>([])
+const documentTableRef = ref<TableInstance>()
 const uploadRef = ref<UploadInstance>()
 const selectedFile = ref<UploadFile>()
 const selectedVersionId = ref('')
 const governanceTab = ref('review')
 const distributionDataset = ref('')
+const distributionStatus = ref('')
+const distributionDetail = ref<DistributionItem>()
+const distributionDetailVisible = ref(false)
+
+const auditLogs = computed<AuditLogItem[]>(() => {
+  const raw = selectedDocument.value?.metadata_json?.audit_log
+  return Array.isArray(raw) ? raw.filter(isAuditLogItem) : []
+})
 
 const urlForm = reactive({
   target_url: '',
@@ -464,8 +561,14 @@ async function uploadFile() {
 }
 
 async function loadDocuments() {
-  const query = keyword.value ? `?keyword=${encodeURIComponent(keyword.value)}` : ''
+  const params = new URLSearchParams()
+  if (keyword.value) params.set('keyword', keyword.value)
+  if (documentStatus.value) params.set('status', documentStatus.value)
+  const query = params.toString() ? `?${params.toString()}` : ''
   documents.value = await request<DocumentItem[]>(`/documents${query}`)
+  selectedRows.value = selectedRows.value.filter(row =>
+    documents.value.some(document => document.id === row.id)
+  )
 }
 
 async function selectDocument(document: DocumentItem) {
@@ -473,7 +576,8 @@ async function selectDocument(document: DocumentItem) {
   reviewForm.status = document.status || 'reviewed'
   selectedVersionId.value = document.current_version_id || ''
   hydrateProfileForm(document.metadata_json || {})
-  await Promise.all([loadVersions(document.id), loadDistributions()])
+  await loadVersions(document.id)
+  await loadDistributions()
 }
 
 async function loadVersions(documentId: string) {
@@ -483,12 +587,19 @@ async function loadVersions(documentId: string) {
   }
 }
 
+async function selectVersion(versionId: string) {
+  selectedVersionId.value = versionId
+  await loadDistributions()
+}
+
 async function loadDistributions() {
   if (!selectedVersionId.value) {
     distributions.value = []
     return
   }
-  const query = `?document_version_id=${encodeURIComponent(selectedVersionId.value)}`
+  const params = new URLSearchParams({ document_version_id: selectedVersionId.value })
+  if (distributionStatus.value) params.set('status', distributionStatus.value)
+  const query = `?${params.toString()}`
   distributions.value = await request<DistributionItem[]>(`/admin/distributions${query}`)
 }
 
@@ -505,6 +616,27 @@ async function reviewDocument() {
   })
 }
 
+async function batchReviewDocuments() {
+  if (selectedRows.value.length === 0) return
+  const rows = [...selectedRows.value]
+  await run(async () => {
+    for (const row of rows) {
+      await request<DocumentItem>(`/documents/${row.id}/review`, {
+        method: 'POST',
+        body: JSON.stringify(reviewForm)
+      })
+    }
+    documentTableRef.value?.clearSelection()
+    selectedRows.value = []
+    message.value = `已批量审核 ${rows.length} 篇文档`
+    await loadDocuments()
+    if (selectedDocument.value) {
+      const refreshed = documents.value.find(document => document.id === selectedDocument.value?.id)
+      if (refreshed) selectedDocument.value = refreshed
+    }
+  })
+}
+
 async function saveEntityLinks() {
   if (!selectedDocument.value) return
   await run(async () => {
@@ -516,7 +648,9 @@ async function saveEntityLinks() {
           companies: splitList(entityText.companies),
           securities: splitList(entityText.securities),
           industries: splitList(entityText.industries),
-          topics: splitList(entityText.topics)
+          topics: splitList(entityText.topics),
+          reviewer: reviewForm.reviewer || null,
+          reason: reviewForm.reason || null
         })
       }
     )
@@ -537,7 +671,9 @@ async function saveSummaryProfile() {
           summary: summaryForm.summary || null,
           tags: splitList(summaryForm.tags),
           importance_score: summaryForm.importance_score,
-          importance_reason: summaryForm.importance_reason || null
+          importance_reason: summaryForm.importance_reason || null,
+          reviewer: reviewForm.reviewer || null,
+          reason: reviewForm.reason || null
         })
       }
     )
@@ -582,6 +718,15 @@ async function retryDistribution(distributionId: string) {
   })
 }
 
+function handleDocumentSelection(rows: DocumentItem[]) {
+  selectedRows.value = rows
+}
+
+function openDistributionDetail(item: DistributionItem) {
+  distributionDetail.value = item
+  distributionDetailVisible.value = true
+}
+
 function splitList(value: string): string[] {
   return value
     .split(/[,\n，]/)
@@ -590,20 +735,42 @@ function splitList(value: string): string[] {
 }
 
 function hydrateProfileForm(metadata: Record<string, unknown>) {
-  entityText.companies = asListText(metadata.companies)
-  entityText.securities = asListText(metadata.securities)
-  entityText.industries = asListText(metadata.industries)
-  entityText.topics = asListText(metadata.topics)
-  summaryForm.summary = typeof metadata.summary === 'string' ? metadata.summary : ''
-  summaryForm.tags = asListText(metadata.tags)
+  const entityLinks = asRecord(metadata.entity_links)
+  const summaryProfile = asRecord(metadata.summary_profile)
+  entityText.companies = asListText(entityLinks.companies)
+  entityText.securities = asListText(entityLinks.securities)
+  entityText.industries = asListText(entityLinks.industries)
+  entityText.topics = asListText(entityLinks.topics)
+  summaryForm.summary =
+    typeof summaryProfile.summary === 'string' ? summaryProfile.summary : ''
+  summaryForm.tags = asListText(summaryProfile.tags)
   summaryForm.importance_score =
-    typeof metadata.importance_score === 'number' ? metadata.importance_score : 0.5
+    typeof summaryProfile.importance_score === 'number'
+      ? summaryProfile.importance_score
+      : 0.5
   summaryForm.importance_reason =
-    typeof metadata.importance_reason === 'string' ? metadata.importance_reason : ''
+    typeof summaryProfile.importance_reason === 'string'
+      ? summaryProfile.importance_reason
+      : ''
 }
 
 function asListText(value: unknown): string {
   return Array.isArray(value) ? value.filter(item => typeof item === 'string').join(', ') : ''
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {}
+}
+
+function isAuditLogItem(value: unknown): value is AuditLogItem {
+  const item = asRecord(value)
+  return typeof item.action === 'string'
+}
+
+function formatJson(value: unknown): string {
+  return JSON.stringify(value, null, 2)
 }
 
 async function run(action: () => Promise<void>) {
@@ -619,6 +786,12 @@ async function run(action: () => Promise<void>) {
 }
 
 onMounted(loadDocuments)
+
+watch(distributionStatus, async () => {
+  if (selectedVersionId.value) {
+    await loadDistributions()
+  }
+})
 </script>
 
 <style scoped>
@@ -632,7 +805,7 @@ onMounted(loadDocuments)
 
 .toolbar {
   display: grid;
-  grid-template-columns: minmax(220px, 360px) auto;
+  grid-template-columns: minmax(220px, 1fr) 160px auto;
   gap: 8px;
   align-items: center;
   margin-bottom: 12px;
@@ -670,6 +843,40 @@ onMounted(loadDocuments)
   max-width: 100%;
 }
 
+.audit-timeline {
+  padding-top: 4px;
+}
+
+.audit-card {
+  border: 1px solid var(--el-border-color);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.audit-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--el-text-color-secondary);
+  margin-top: 6px;
+}
+
+.json-preview {
+  max-height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--el-fill-color-light);
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 6px;
+  padding: 10px;
+  margin: 8px 0 0;
+}
+
 .mt-3 {
   margin-top: 12px;
 }
@@ -684,6 +891,10 @@ onMounted(loadDocuments)
     border-top: 1px solid var(--el-border-color);
     padding-left: 0;
     padding-top: 16px;
+  }
+
+  .toolbar {
+    grid-template-columns: 1fr;
   }
 }
 </style>
