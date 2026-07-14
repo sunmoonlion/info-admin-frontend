@@ -31,11 +31,11 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN --mount=type=cache,target=/pnpm/store pnpm config set store-dir /pnpm/store && pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm typecheck && pnpm lint && pnpm test && pnpm build
+RUN pnpm typecheck && pnpm lint && pnpm test && pnpm build && node scripts/generate_csp_headers.mjs
 
 FROM ${NGINX_IMAGE} AS run
 COPY --from=build /app/build/client /usr/share/nginx/html
 COPY mybuild/nginx.conf /etc/nginx/conf.d/default.conf
-COPY mybuild/security-headers.inc /etc/nginx/conf.d/security-headers.inc
+COPY --from=build /app/build/security-headers.inc /etc/nginx/conf.d/security-headers.inc
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

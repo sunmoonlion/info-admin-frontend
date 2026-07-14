@@ -16,6 +16,8 @@ describe("A2.5 production configuration", () => {
     expect(nginx).toContain("try_files $uri $uri/ /index.html");
     expect(nginx).toContain("try_files $uri =404");
     expect(dockerfile).toContain("pnpm lint");
+    expect(dockerfile).toContain("generate_csp_headers.mjs");
+    expect(dockerfile).toContain("build/security-headers.inc");
   });
 
   it("keeps production auth and SPA rendering guards in source", () => {
