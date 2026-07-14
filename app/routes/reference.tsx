@@ -150,7 +150,7 @@ export default function ReferencePage() {
       </Card>
 
       <Card title="上传适配器">
-        <Space direction="vertical" align="start">
+          <Space orientation="vertical" align="start">
           <Typography.Text type="secondary">
             业务 App 通过 adapter 注入真实上传接口；模板不持有领域 URL 或凭据。
           </Typography.Text>

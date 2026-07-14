@@ -53,6 +53,7 @@ export function AuditedActionModal({
     <Modal
       title={title}
       open={open}
+      forceRender
       okText={actionLabel}
       cancelText={cancelLabel}
       confirmLoading={confirming}

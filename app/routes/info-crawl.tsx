@@ -438,7 +438,7 @@ export default function InfoCrawlPage() {
             label: "URL 采集",
             children: (
               <Card>
-                <Space direction="vertical" style={{ width: "100%" }} size="middle">
+                <Space orientation="vertical" style={{ width: "100%" }} size="middle">
                   <Input
                     value={crawlUrl}
                     onChange={(event) => setCrawlUrl(event.target.value)}
@@ -640,7 +640,7 @@ export default function InfoCrawlPage() {
             label: "上传",
             children: (
               <Card>
-                <Space direction="vertical" align="start">
+                <Space orientation="vertical" align="start">
                   <Input
                     addonBefore="标题"
                     value={uploadTitle}
@@ -725,7 +725,7 @@ export default function InfoCrawlPage() {
                 key: "review",
                 label: "审核",
                 children: (
-                  <Space direction="vertical" style={{ width: "100%" }}>
+                  <Space orientation="vertical" style={{ width: "100%" }}>
                     <Space wrap>
                       <Select value={reviewStatus} options={statusOptions} onChange={setReviewStatus} style={{ width: 150 }} />
                       <Button type="primary" onClick={() => setAuditAction("review")}>保存审核</Button>
@@ -775,7 +775,7 @@ export default function InfoCrawlPage() {
                 key: "distribution",
                 label: "Knowledge 分发",
                 children: (
-                  <Space direction="vertical" style={{ width: "100%" }}>
+                  <Space orientation="vertical" style={{ width: "100%" }}>
                     <Space wrap>
                       <Select value={activeVersionId || undefined} placeholder="选择版本" options={versions.map((version) => ({ label: `v${version.version_no} · ${version.extraction_status}`, value: version.id }))} onChange={setSelectedVersionId} style={{ width: 220 }} />
                       <Input value={distributionDataset} onChange={(event) => setDistributionDataset(event.target.value)} placeholder="目标数据集（可选）" />

@@ -15,7 +15,7 @@ export default function LoginPage() {
   return (
     <main className="login-page">
       <Card className="login-card">
-        <Space direction="vertical" size="middle" className="full-width">
+        <Space orientation="vertical" size="middle" className="full-width">
           <div className="brand-mark large">S</div>
           <div>
             <Typography.Text type="secondary">{appConfig.name}</Typography.Text>

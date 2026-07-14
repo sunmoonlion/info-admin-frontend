@@ -5,13 +5,13 @@ export function useCrudNotifications() {
 
   return {
     success(message: string, description?: string) {
-      notification.success({ message, description });
+      notification.success({ title: message, description });
     },
     error(message = "操作失败", description?: string) {
-      notification.error({ message, description });
+      notification.error({ title: message, description });
     },
     info(message: string, description?: string) {
-      notification.info({ message, description });
+      notification.info({ title: message, description });
     },
   };
 }
