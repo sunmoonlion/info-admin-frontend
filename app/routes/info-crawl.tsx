@@ -85,6 +85,12 @@ function formatDate(value?: string | null): string {
 }
 
 type AuditAction =
+  | "crawl"
+  | "source"
+  | "collector"
+  | "discover"
+  | "upload"
+  | "distribution-create"
   | "review"
   | "batch-review"
   | "entity-links"
@@ -136,7 +142,6 @@ export default function InfoCrawlPage() {
     useState<InfoDistribution | null>(null);
   const [auditAction, setAuditAction] = useState<AuditAction | null>(null);
   const [pendingDistributionId, setPendingDistributionId] = useState("");
-  const [busy, setBusy] = useState(false);
   const [crawlUrl, setCrawlUrl] = useState("");
   const [enqueue, setEnqueue] = useState(true);
   const [sourceForm, setSourceForm] = useState<SourceForm>(initialSource);
@@ -149,6 +154,7 @@ export default function InfoCrawlPage() {
   });
   const [lastCollector, setLastCollector] = useState<InfoCollector | null>(null);
   const [uploadTitle, setUploadTitle] = useState("");
+  const [pendingUploadFile, setPendingUploadFile] = useState<File | null>(null);
   const [reviewStatus, setReviewStatus] = useState("reviewed");
   const [entityText, setEntityText] = useState({
     companies: "",
@@ -211,18 +217,58 @@ export default function InfoCrawlPage() {
     setReviewStatus(document.status || "reviewed");
   }
 
-  async function runAction(action: () => Promise<void>, success: string) {
-    setBusy(true);
+  const crawlMutation = useCrudMutation(async (context) => {
+    if (!crawlUrl.trim()) throw new Error("请输入采集 URL");
+    return infoApi.createCrawlJob(
+      { target_url: crawlUrl.trim(), enqueue },
+      crudMutationHeaders(context),
+    );
+  });
+  const sourceMutation = useCrudMutation(async (context) =>
+    infoApi.createSource({ ...sourceForm }, crudMutationHeaders(context)),
+  );
+  const collectorMutation = useCrudMutation(async (context) => {
+    let config: Record<string, unknown>;
     try {
-      await action();
-      notifications.success(success);
-    } catch (error) {
-      notifications.error("操作失败", errorText(error));
-    } finally {
-      setBusy(false);
+      config = JSON.parse(collectorForm.config || "{}");
+    } catch {
+      throw new Error("Collector 配置不是有效 JSON");
     }
-  }
-
+    if (collectorForm.url && !config.url && !config.feed_url) config.url = collectorForm.url;
+    return infoApi.createCollector(
+      {
+        code: collectorForm.code,
+        name: collectorForm.name,
+        collector_type: collectorForm.collector_type,
+        config,
+      },
+      crudMutationHeaders(context),
+    );
+  });
+  const discoverMutation = useCrudMutation(async (context) => {
+    if (!lastCollector) throw new Error("请先保存 Collector");
+    return infoApi.discoverCollector(
+      lastCollector.id,
+      collectorForm.url || undefined,
+      crudMutationHeaders(context),
+    );
+  });
+  const uploadMutation = useCrudMutation(async (context) => {
+    if (!pendingUploadFile) throw new Error("请先选择文件");
+    return infoApi.uploadDocument(
+      pendingUploadFile,
+      uploadTitle || undefined,
+      crudMutationHeaders(context),
+    );
+  });
+  const createDistributionMutation = useCrudMutation(async (context) => {
+    if (!activeVersionId) throw new Error("请先选择版本");
+    return infoApi.createDistribution(
+      activeVersionId,
+      distributionDataset || undefined,
+      crudMutationHeaders(context),
+    );
+  });
   const reviewMutation = useCrudMutation(async (context) => {
     if (!selectedDocument) throw new Error("请先选择文档");
     return infoApi.reviewDocument(
@@ -292,7 +338,31 @@ export default function InfoCrawlPage() {
 
   async function confirmAudit(reason: string) {
     try {
-      if (auditAction === "review") {
+      if (auditAction === "crawl") {
+        await crawlMutation.execute({ reason });
+        setCrawlUrl("");
+        notifications.success("采集任务已创建");
+      } else if (auditAction === "source") {
+        await sourceMutation.execute({ reason });
+        setSourceForm(initialSource);
+        notifications.success("来源已保存");
+      } else if (auditAction === "collector") {
+        const collector = await collectorMutation.execute({ reason });
+        setLastCollector(collector);
+        notifications.success("Collector 已保存");
+      } else if (auditAction === "discover") {
+        await discoverMutation.execute({ reason });
+        notifications.success("发现任务已创建");
+      } else if (auditAction === "upload") {
+        const receipt = await uploadMutation.execute({ reason });
+        await refreshDocuments();
+        setPendingUploadFile(null);
+        notifications.success(`文件已上传：${receipt.document_id}`);
+      } else if (auditAction === "distribution-create") {
+        await createDistributionMutation.execute({ reason });
+        await queryClient.invalidateQueries({ queryKey: ["info", "distributions"] });
+        notifications.success("分发记录已创建");
+      } else if (auditAction === "review") {
         await reviewMutation.execute({ reason });
         await refreshDocuments();
         notifications.success("审核已保存");
@@ -454,16 +524,9 @@ export default function InfoCrawlPage() {
                     </Button>
                     <Button
                       type="primary"
-                      loading={busy}
+                      loading={crawlMutation.status === "running"}
                       disabled={!crawlUrl.trim()}
-                      onClick={() =>
-                        void runAction(
-                          async () => {
-                            await infoApi.createCrawlJob({ target_url: crawlUrl.trim(), enqueue });
-                          },
-                          "采集任务已创建",
-                        )
-                      }
+                      onClick={() => setAuditAction("crawl")}
                     >
                       创建任务
                     </Button>
@@ -531,17 +594,10 @@ export default function InfoCrawlPage() {
                 </Row>
                 <Button
                   type="primary"
-                  loading={busy}
+                  loading={sourceMutation.status === "running"}
                   disabled={!sourceForm.code.trim() || !sourceForm.name.trim()}
                   style={{ marginTop: 16 }}
-                    onClick={() =>
-                      void runAction(
-                      async () => {
-                        await infoApi.createSource({ ...sourceForm });
-                      },
-                      "来源已保存",
-                    )
-                  }
+                  onClick={() => setAuditAction("source")}
                 >
                   保存来源
                 </Button>
@@ -595,39 +651,16 @@ export default function InfoCrawlPage() {
                 <Space style={{ marginTop: 16 }}>
                   <Button
                     type="primary"
-                    loading={busy}
+                    loading={collectorMutation.status === "running"}
                     disabled={!collectorForm.code.trim() || !collectorForm.name.trim()}
-                    onClick={() =>
-                      void runAction(async () => {
-                        let config: Record<string, unknown>;
-                        try {
-                          config = JSON.parse(collectorForm.config || "{}");
-                        } catch {
-                          throw new Error("Collector 配置不是有效 JSON");
-                        }
-                        if (collectorForm.url && !config.url && !config.feed_url) config.url = collectorForm.url;
-                        const collector = await infoApi.createCollector({
-                          code: collectorForm.code,
-                          name: collectorForm.name,
-                          collector_type: collectorForm.collector_type,
-                          config,
-                        });
-                        setLastCollector(collector);
-                      }, "Collector 已保存")
-                    }
+                    onClick={() => setAuditAction("collector")}
                   >
                     保存 Collector
                   </Button>
                   <Button
                     disabled={!lastCollector}
-                    loading={busy}
-                    onClick={() =>
-                      lastCollector &&
-                      void runAction(
-                        () => infoApi.discoverCollector(lastCollector.id, collectorForm.url || undefined).then(() => undefined),
-                        "发现任务已创建",
-                      )
-                    }
+                    loading={discoverMutation.status === "running"}
+                    onClick={() => lastCollector && setAuditAction("discover")}
                   >
                     发现任务
                   </Button>
@@ -651,16 +684,16 @@ export default function InfoCrawlPage() {
                     accept=".txt,.md,.html,.pdf,.doc,.docx"
                     uploadFile={async (file) => {
                       const receipt = await infoApi.uploadDocument(file, uploadTitle || undefined);
-                      await refreshDocuments();
-                      return {
-                        assetId: receipt.document_id,
-                        filename: file.name,
-                        size: file.size,
-                      };
+                      return { assetId: receipt.document_id, filename: file.name, size: file.size };
+                    }}
+                    onBeforeUpload={(file) => {
+                      setPendingUploadFile(file);
+                      setAuditAction("upload");
+                      return false;
                     }}
                   />
                   <Typography.Text type="secondary">
-                    文件选择后立即上传，服务端负责抽取和 artifact 校验。
+                    选择文件后先填写审计原因，确认后上传；服务端负责抽取和 artifact 校验。
                   </Typography.Text>
                 </Space>
               </Card>
@@ -780,7 +813,7 @@ export default function InfoCrawlPage() {
                       <Select value={activeVersionId || undefined} placeholder="选择版本" options={versions.map((version) => ({ label: `v${version.version_no} · ${version.extraction_status}`, value: version.id }))} onChange={setSelectedVersionId} style={{ width: 220 }} />
                       <Input value={distributionDataset} onChange={(event) => setDistributionDataset(event.target.value)} placeholder="目标数据集（可选）" />
                       <Select allowClear value={distributionStatus} onChange={setDistributionStatus} options={["pending", "running", "failed", "succeeded"].map((value) => ({ label: value, value }))} placeholder="全部状态" style={{ width: 140 }} />
-                      <Button type="primary" disabled={!activeVersionId} loading={busy} onClick={() => void runAction(async () => { await infoApi.createDistribution(activeVersionId, distributionDataset || undefined); await queryClient.invalidateQueries({ queryKey: ["info", "distributions"] }); }, "分发记录已创建")}>创建分发</Button>
+                      <Button type="primary" disabled={!activeVersionId} loading={createDistributionMutation.status === "running"} onClick={() => setAuditAction("distribution-create")}>创建分发</Button>
                     </Space>
                     <DataTable<InfoDistribution>
                       rowKey="id"
@@ -822,6 +855,12 @@ export default function InfoCrawlPage() {
         title={auditAction === "batch-review" ? "确认批量审核" : "确认受审计操作"}
         actionLabel="确认执行"
         confirming={[
+          crawlMutation,
+          sourceMutation,
+          collectorMutation,
+          discoverMutation,
+          uploadMutation,
+          createDistributionMutation,
           reviewMutation,
           batchReviewMutation,
           entityMutation,
@@ -829,7 +868,10 @@ export default function InfoCrawlPage() {
           distributionMutation,
           retryMutation,
         ].some((mutation) => mutation.status === "running")}
-        onCancel={() => setAuditAction(null)}
+        onCancel={() => {
+          setAuditAction(null);
+          if (auditAction === "upload") setPendingUploadFile(null);
+        }}
         onConfirm={confirmAudit}
       />
     </section>

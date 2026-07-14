@@ -118,9 +118,10 @@ export const infoApi = {
     target_url: string;
     source_id?: string;
     enqueue: boolean;
-  }) {
+  }, headers?: HeadersInit) {
     return apiRequest<unknown>("/api/admin/crawl-jobs", {
       method: "POST",
+      headers,
       body: JSON.stringify(input),
     });
   },
@@ -134,9 +135,10 @@ export const infoApi = {
     copyright_status: string;
     license_url?: string;
     terms_url?: string;
-  }) {
+  }, headers?: HeadersInit) {
     return apiRequest<InfoSource>("/api/admin/sources", {
       method: "POST",
+      headers,
       body: JSON.stringify(input),
     });
   },
@@ -147,29 +149,32 @@ export const infoApi = {
     collector_type: string;
     source_id?: string;
     config: Record<string, unknown>;
-  }) {
+  }, headers?: HeadersInit) {
     return apiRequest<InfoCollector>("/api/admin/collectors", {
       method: "POST",
+      headers,
       body: JSON.stringify(input),
     });
   },
 
-  discoverCollector(collectorId: string, url?: string) {
+  discoverCollector(collectorId: string, url?: string, headers?: HeadersInit) {
     return apiRequest<unknown>(
       `/api/admin/collectors/${collectorId}/discover`,
       {
         method: "POST",
+        headers,
         body: JSON.stringify(url ? { url } : {}),
       },
     );
   },
 
-  uploadDocument(file: File, title?: string) {
+  uploadDocument(file: File, title?: string, headers?: HeadersInit) {
     const body = new FormData();
     body.append("file", file);
     if (title) body.append("title", title);
     return apiRequest<InfoUploadReceipt>("/api/admin/uploads", {
       method: "POST",
+      headers,
       body,
     });
   },
@@ -234,9 +239,11 @@ export const infoApi = {
   createDistribution(
     documentVersionId: string,
     targetDataset?: string,
+    headers?: HeadersInit,
   ) {
     return apiRequest<InfoDistribution>("/api/admin/distributions/knowledge", {
       method: "POST",
+      headers,
       body: JSON.stringify({
         document_version_id: documentVersionId,
         target_dataset: targetDataset || null,

@@ -11,6 +11,7 @@ export interface UploadReceipt {
 
 export interface ContractUploadProps {
   uploadFile: (file: File) => Promise<UploadReceipt>;
+  onBeforeUpload?: (file: File) => boolean | Promise<boolean>;
   onUploaded?: (receipt: UploadReceipt) => void;
   accept?: string;
   maxSizeBytes?: number;
@@ -20,6 +21,7 @@ export interface ContractUploadProps {
 /** Upload adapter boundary; transport/auth stays in the consuming App. */
 export function ContractUpload({
   uploadFile,
+  onBeforeUpload,
   onUploaded,
   accept,
   maxSizeBytes = 10 * 1024 * 1024,
@@ -28,10 +30,14 @@ export function ContractUpload({
   const { message } = AntApp.useApp();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const beforeUpload: UploadProps["beforeUpload"] = (file) => {
+  const beforeUpload: UploadProps["beforeUpload"] = async (file) => {
     if (file.size > maxSizeBytes) {
       message.error(`文件不能超过 ${Math.round(maxSizeBytes / 1024 / 1024)} MB`);
       return Upload.LIST_IGNORE;
+    }
+    if (onBeforeUpload) {
+      const allowed = await onBeforeUpload(file as File);
+      return allowed ? true : Upload.LIST_IGNORE;
     }
     return true;
   };
