@@ -134,6 +134,26 @@ describe("CRUD toolkit", () => {
     });
   });
 
+  it("can defer upload until an audited confirmation", async () => {
+    const uploadFile = vi.fn(async (file: File) => ({
+      assetId: "fixture-deferred",
+      filename: file.name,
+      size: file.size,
+    }));
+    const onBeforeUpload = vi.fn(() => false);
+    const { container } = render(
+      <AntApp>
+        <ContractUpload uploadFile={uploadFile} onBeforeUpload={onBeforeUpload} />
+      </AntApp>,
+    );
+    const input = container.querySelector('input[type="file"]');
+    fireEvent.change(input!, {
+      target: { files: [new File(["fixture"], "deferred.txt", { type: "text/plain" })] },
+    });
+    await waitFor(() => expect(onBeforeUpload).toHaveBeenCalledOnce());
+    expect(uploadFile).not.toHaveBeenCalled();
+  });
+
   it("submits a declarative schema form through its adapter", async () => {
     const onSubmit = vi.fn();
     render(
