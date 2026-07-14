@@ -83,10 +83,10 @@ export interface InfoDocumentFilters {
   status?: string;
 }
 
-function queryString(values: Record<string, string | undefined>): string {
+function queryString<T extends object>(values: T): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(values)) {
-    if (value) params.set(key, value);
+    if (typeof value === "string" && value) params.set(key, value);
   }
   const encoded = params.toString();
   return encoded ? `?${encoded}` : "";

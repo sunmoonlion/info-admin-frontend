@@ -86,9 +86,9 @@ describe("apiRequest", () => {
   });
 
   it("marks JSON mutation bodies without changing multipart uploads", async () => {
-    const fetchMock = vi
-      .spyOn(globalThis, "fetch")
-      .mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(
+      async () => new Response(JSON.stringify({ ok: true }), { status: 200 }),
+    );
 
     await apiRequest("/api/write", {
       method: "POST",

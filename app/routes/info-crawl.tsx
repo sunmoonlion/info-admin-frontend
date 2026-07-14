@@ -17,7 +17,7 @@ import {
 } from "antd";
 import type { TableColumnsType } from "antd";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   AuditedActionModal,
@@ -175,30 +175,19 @@ export default function InfoCrawlPage() {
     enabled: Boolean(selectedDocument),
   });
   const versions = versionsQuery.data ?? [];
+  const activeVersionId = selectedVersionId || versions[0]?.id || "";
 
   const distributionsQuery = useQuery({
-    queryKey: ["info", "distributions", selectedVersionId, distributionStatus],
-    queryFn: () => infoApi.listDistributions(selectedVersionId, distributionStatus),
-    enabled: Boolean(selectedVersionId),
+    queryKey: ["info", "distributions", activeVersionId, distributionStatus],
+    queryFn: () => infoApi.listDistributions(activeVersionId, distributionStatus),
+    enabled: Boolean(activeVersionId),
   });
   const distributions = distributionsQuery.data ?? [];
 
-  useEffect(() => {
-    if (!selectedDocument) {
-      setSelectedVersionId("");
-      return;
-    }
-    const current = selectedDocument.current_version_id;
-    if (current && versions.some((version) => version.id === current)) {
-      setSelectedVersionId(current);
-    } else if (versions[0]) {
-      setSelectedVersionId(versions[0].id);
-    }
-  }, [selectedDocument, versions]);
-
-  useEffect(() => {
-    if (!selectedDocument) return;
-    const metadata = asRecord(selectedDocument.metadata_json);
+  function selectDocument(document: InfoDocument) {
+    setSelectedDocument(document);
+    setSelectedVersionId(document.current_version_id ?? "");
+    const metadata = asRecord(document.metadata_json);
     const links = asRecord(metadata.entity_links);
     const profile = asRecord(metadata.summary_profile);
     setEntityText({
@@ -219,8 +208,8 @@ export default function InfoCrawlPage() {
           ? profile.importance_reason
           : "",
     });
-    setReviewStatus(selectedDocument.status || "reviewed");
-  }, [selectedDocument]);
+    setReviewStatus(document.status || "reviewed");
+  }
 
   async function runAction(action: () => Promise<void>, success: string) {
     setBusy(true);
@@ -314,12 +303,12 @@ export default function InfoCrawlPage() {
         notifications.success(`已批量审核 ${selectedRows.length} 篇文档`);
       } else if (auditAction === "entity-links") {
         const updated = await entityMutation.execute({ reason });
-        setSelectedDocument(updated);
+        selectDocument(updated);
         await refreshDocuments();
         notifications.success("实体链接已保存");
       } else if (auditAction === "summary-profile") {
         const updated = await summaryMutation.execute({ reason });
-        setSelectedDocument(updated);
+        selectDocument(updated);
         await refreshDocuments();
         notifications.success("摘要画像已保存");
       } else if (auditAction === "dispatch") {
@@ -342,7 +331,7 @@ export default function InfoCrawlPage() {
       title: "标题",
       dataIndex: "title",
       render: (value: string, row) => (
-        <Button type="link" onClick={() => setSelectedDocument(row)}>
+        <Button type="link" onClick={() => selectDocument(row)}>
           {value || "未命名文档"}
         </Button>
       ),
@@ -716,7 +705,7 @@ export default function InfoCrawlPage() {
             onChange: (_keys, rows) => setSelectedRows(rows),
           }}
           pagination={{ pageSize: 10, showTotal: (total) => `共 ${total} 条` }}
-          locale={{ emptyText: <Empty description="暂无文档" /> }}
+          emptyText="暂无文档"
         />
       </Card>
 
@@ -788,10 +777,10 @@ export default function InfoCrawlPage() {
                 children: (
                   <Space direction="vertical" style={{ width: "100%" }}>
                     <Space wrap>
-                      <Select value={selectedVersionId || undefined} placeholder="选择版本" options={versions.map((version) => ({ label: `v${version.version_no} · ${version.extraction_status}`, value: version.id }))} onChange={setSelectedVersionId} style={{ width: 220 }} />
+                      <Select value={activeVersionId || undefined} placeholder="选择版本" options={versions.map((version) => ({ label: `v${version.version_no} · ${version.extraction_status}`, value: version.id }))} onChange={setSelectedVersionId} style={{ width: 220 }} />
                       <Input value={distributionDataset} onChange={(event) => setDistributionDataset(event.target.value)} placeholder="目标数据集（可选）" />
                       <Select allowClear value={distributionStatus} onChange={setDistributionStatus} options={["pending", "running", "failed", "succeeded"].map((value) => ({ label: value, value }))} placeholder="全部状态" style={{ width: 140 }} />
-                      <Button type="primary" disabled={!selectedVersionId} loading={busy} onClick={() => void runAction(async () => { await infoApi.createDistribution(selectedVersionId, distributionDataset || undefined); await queryClient.invalidateQueries({ queryKey: ["info", "distributions"] }); }, "分发记录已创建")}>创建分发</Button>
+                      <Button type="primary" disabled={!activeVersionId} loading={busy} onClick={() => void runAction(async () => { await infoApi.createDistribution(activeVersionId, distributionDataset || undefined); await queryClient.invalidateQueries({ queryKey: ["info", "distributions"] }); }, "分发记录已创建")}>创建分发</Button>
                     </Space>
                     <DataTable<InfoDistribution>
                       rowKey="id"
@@ -801,7 +790,7 @@ export default function InfoCrawlPage() {
                       error={distributionsQuery.error}
                       onRetry={() => void distributionsQuery.refetch()}
                       pagination={false}
-                      emptyText={selectedVersionId ? "暂无分发记录" : "请先选择版本"}
+                      emptyText={activeVersionId ? "暂无分发记录" : "请先选择版本"}
                       scroll={{ x: 850 }}
                     />
                   </Space>
