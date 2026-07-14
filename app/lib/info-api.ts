@@ -181,7 +181,7 @@ export const infoApi = {
 
   reviewDocument(
     documentId: string,
-    input: { status: string; reason: string },
+    input: { status: string; reason: string; expected_updated_at?: string },
     headers?: HeadersInit,
   ) {
     return apiRequest<InfoDocument>(
@@ -202,6 +202,7 @@ export const infoApi = {
       industries: string[];
       topics: string[];
       reason?: string;
+      expected_updated_at?: string;
     },
     headers?: HeadersInit,
   ) {
@@ -223,6 +224,7 @@ export const infoApi = {
       importance_score?: number;
       importance_reason?: string;
       reason?: string;
+      expected_updated_at?: string;
     },
     headers?: HeadersInit,
   ) {

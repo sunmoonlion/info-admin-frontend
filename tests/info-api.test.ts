@@ -55,7 +55,11 @@ describe("Info domain API adapter", () => {
 
     await infoApi.reviewDocument(
       "document-1",
-      { status: "reviewed", reason: "operator approved" },
+      {
+        status: "reviewed",
+        reason: "operator approved",
+        expected_updated_at: "2026-07-14T10:00:00Z",
+      },
       {
         "X-Correlation-ID": "corr-1",
         "X-Operation-ID": "op-1",
@@ -69,5 +73,10 @@ describe("Info domain API adapter", () => {
     expect(headers.get("X-Operation-ID")).toBe("op-1");
     expect(headers.get("X-Audit-Reason")).toBe("operator approved");
     expect(headers.get("Content-Type")).toBe("application/json");
+    expect(JSON.parse(String(request.body))).toEqual({
+      status: "reviewed",
+      reason: "operator approved",
+      expected_updated_at: "2026-07-14T10:00:00Z",
+    });
   });
 });

@@ -273,7 +273,11 @@ export default function InfoCrawlPage() {
     if (!selectedDocument) throw new Error("请先选择文档");
     return infoApi.reviewDocument(
       selectedDocument.id,
-      { status: reviewStatus, reason: context.reason ?? "" },
+      {
+        status: reviewStatus,
+        reason: context.reason ?? "",
+        expected_updated_at: selectedDocument.updated_at,
+      },
       crudMutationHeaders(context),
     );
   });
@@ -283,7 +287,11 @@ export default function InfoCrawlPage() {
       selectedRows.map((document) =>
         infoApi.reviewDocument(
           document.id,
-          { status: reviewStatus, reason: context.reason ?? "" },
+          {
+            status: reviewStatus,
+            reason: context.reason ?? "",
+            expected_updated_at: document.updated_at,
+          },
           crudMutationHeaders(context),
         ),
       ),
@@ -299,6 +307,7 @@ export default function InfoCrawlPage() {
         industries: splitList(entityText.industries),
         topics: splitList(entityText.topics),
         reason: context.reason,
+        expected_updated_at: selectedDocument.updated_at,
       },
       crudMutationHeaders(context),
     );
@@ -313,6 +322,7 @@ export default function InfoCrawlPage() {
         importance_score: summaryForm.importance_score,
         importance_reason: summaryForm.importance_reason || undefined,
         reason: context.reason,
+        expected_updated_at: selectedDocument.updated_at,
       },
       crudMutationHeaders(context),
     );
