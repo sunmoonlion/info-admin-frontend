@@ -1,34 +1,18 @@
-# 数据流与状态所有权
+# Next Admin 数据流与状态所有权
 
 ```text
-URL/Route -> identity/entry condition -> Page
-Page -> typed API client -> Product API -> domain truth
-Page <-> TanStack Query cache
+Request cookie -> Server-only DAL -> FastAPI Admin Backend -> BrowserSession DTO
+Server Layout -> role-filtered navigation metadata -> Client AppShell
+Page -> typed same-origin client -> FastAPI Admin API -> domain truth
+Page <-> TanStack Query server-state cache
 Page <-> form/local interaction state
-Navigation metadata -> permission-filtered Menu/Breadcrumb/Tabs
-AppShell <-> Zustand UI preferences
+AppShell <-> Zustand UI-only preferences
 ```
 
-## React Router
-
-负责 URL、route module、lazy split、protected layout、导航 pending、route error 和进入条件。loader 不建设第二份业务缓存。
-
-## TanStack Query
-
-负责 API server state、cache、pagination、polling、mutation、invalidations 和后台刷新。Query key 必须包含资源 scope；登出/换身份时清理受权缓存。
-
-## Zustand
-
-只保存侧栏折叠、打开标签、主题、密度和语言等不影响业务正确性的 UI 偏好。持久化标签在每次身份装载后与权限过滤后的导航元数据对账，未知或无权路径会被清除。Run、Artifact、审批、用户身份和权限不得以 Zustand 为事实源。
-
-## 导航与权限
-
-`app/lib/navigation.ts` 是菜单、面包屑和标签标题的唯一 UI 元数据来源。`requiredRoles` 只负责隐藏无权入口并把直接访问引导到 403；产品 API 的服务端授权不能被前端过滤替代。
-
-## 表单与 URL
-
-Ant Design Form 拥有未提交值；提交成功后 invalidate Query。可分享/可恢复的筛选分页进入 URL。禁止以按钮 disabled 代替后端幂等和并发条件更新。
-
-## 错误
-
-API 使用 `code/message_key/retryable/correlation_id/field_errors`。页面不解析自然语言决定业务逻辑，也不渲染不可信 HTML 错误正文。
+- FastAPI Admin Backend 持有 provider exchange、opaque session、授权和领域事实。
+- Next Server Component/DAL 只转发请求 cookie/correlation ID，并严格解析安全 DTO。
+- 浏览器只访问同源 `/api`，不保存 provider/service token。
+- TanStack Query 管理服务端资源缓存；身份切换和 logout 清空授权缓存。
+- Zustand 只保存主题、密度、侧栏和已打开标签；标签每次按当前角色菜单对账。
+- URL `searchParams` 持有可分享的分页、排序和筛选；表单草稿留在表单组件。
+- 菜单角色过滤是体验层，直接 URL 必须再次经过 Server 授权，后端仍是最终授权点。
