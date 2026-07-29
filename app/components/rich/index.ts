@@ -1,14 +1,8 @@
-export { AppIcon, isIconName } from "./icon-registry";
-export type { AppIconProps, IconName } from "./icon-registry";
-export { AvatarList, AvatarMenu } from "./avatar-tools";
-export type { AvatarItem, AvatarListProps, AvatarMenuProps } from "./avatar-tools";
-export { MetricChart } from "./metric-chart";
-export type { ChartPoint, MetricChartProps } from "./metric-chart";
-export { MarkdownEditor } from "./markdown-editor";
-export type { MarkdownEditorProps } from "./markdown-editor";
-export { MediaPlayer } from "./media-player";
-export type { MediaPlayerProps } from "./media-player";
-export { CollapseSection, ProgressIndicator, Watermark } from "./progress-tools";
-export type { CollapseSectionProps, ProgressIndicatorProps, WatermarkProps } from "./progress-tools";
-export { AutoScrollText, TypingText } from "./text-effects";
-export type { AutoScrollTextProps, TypingTextProps } from "./text-effects";
+export * from './avatar-tools'
+export * from './behavior-tools'
+export * from './icon-registry'
+export * from './markdown-editor'
+export * from './media-player'
+export * from './metric-chart'
+export * from './progress-tools'
+export * from './text-effects'

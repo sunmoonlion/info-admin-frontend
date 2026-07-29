@@ -1,52 +1,60 @@
-import { Button, Result, Table, Typography } from "antd";
-import type { TableProps } from "antd";
+'use client'
 
-export interface DataTableProps<RecordType extends object>
-  extends Omit<TableProps<RecordType>, "dataSource" | "loading" | "locale"> {
-  data?: readonly RecordType[];
-  loading?: boolean;
-  error?: unknown;
-  emptyText?: string;
-  errorTitle?: string;
-  onRetry?: () => void;
+export type DataColumn<Row> = {
+  key: string
+  header: string
+  render(row: Row): React.ReactNode
 }
 
-/**
- * Neutral table boundary for list pages. Domain code owns columns and query
- * state; this component owns loading, empty, error and retry presentation.
- */
-export function DataTable<RecordType extends object>({
-  data = [],
-  loading = false,
-  error,
-  emptyText = "暂无数据",
-  errorTitle = "数据加载失败",
-  onRetry,
-  ...tableProps
-}: DataTableProps<RecordType>) {
-  if (error) {
-    return (
-      <Result
-        status="error"
-        title={errorTitle}
-        subTitle="请稍后重试；如果问题持续，请提供操作时间和 correlation id。"
-        extra={
-          onRetry ? (
-            <Button type="primary" onClick={onRetry}>
-              重试
-            </Button>
-          ) : undefined
-        }
-      />
-    );
-  }
+type DataTableProps<Row> = {
+  caption: string
+  rows: readonly Row[]
+  columns: readonly DataColumn<Row>[]
+  rowKey(row: Row): string
+  loading?: boolean
+  error?: string
+  emptyLabel: string
+  page: number
+  pageCount: number
+  onPageChange(page: number): void
+}
 
+export function DataTable<Row>({
+  caption,
+  rows,
+  columns,
+  rowKey,
+  loading,
+  error,
+  emptyLabel,
+  page,
+  pageCount,
+  onPageChange,
+}: DataTableProps<Row>) {
+  if (loading) return <div className="crud-state" aria-busy="true">Loading…</div>
+  if (error) return <div className="crud-state crud-error" role="alert">{error}</div>
   return (
-    <Table<RecordType>
-      {...tableProps}
-      dataSource={Array.from(data)}
-      loading={loading}
-      locale={{ emptyText: <Typography.Text>{emptyText}</Typography.Text> }}
-    />
-  );
+    <div className="crud-table-wrap">
+      <table className="crud-table">
+        <caption className="sr-only">{caption}</caption>
+        <thead>
+          <tr>{columns.map((column) => <th key={column.key} scope="col">{column.header}</th>)}</tr>
+        </thead>
+        <tbody>
+          {rows.length ? rows.map((row) => (
+            <tr key={rowKey(row)}>
+              {columns.map((column) => <td key={column.key}>{column.render(row)}</td>)}
+            </tr>
+          )) : (
+            <tr><td colSpan={columns.length} className="crud-empty">{emptyLabel}</td></tr>
+          )}
+        </tbody>
+      </table>
+      <nav className="crud-pagination" aria-label={`${caption} pagination`}>
+        <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>Previous</button>
+        <span>{page} / {Math.max(pageCount, 1)}</span>
+        <button type="button" disabled={page >= pageCount} onClick={() => onPageChange(page + 1)}>Next</button>
+      </nav>
+    </div>
+  )
 }

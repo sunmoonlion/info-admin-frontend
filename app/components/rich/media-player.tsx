@@ -1,39 +1,28 @@
-import { Alert } from "antd";
-import { useMemo, useState } from "react";
+'use client'
 
-function resolveMediaUrl(src: string): string {
-  if (src.startsWith("/") && !src.startsWith("//")) return src;
-  if (typeof window === "undefined") throw new Error("media URL requires a relative path");
-  const resolved = new URL(src, window.location.origin);
-  if (resolved.origin !== window.location.origin || !["http:", "https:"].includes(resolved.protocol)) {
-    throw new Error("media URL must be same-origin");
-  }
-  return resolved.toString();
-}
-
-export interface MediaPlayerProps {
-  src: string;
-  kind?: "audio" | "video";
-  title: string;
-  controls?: boolean;
-  poster?: string;
-}
+import { useState } from 'react'
+import { safeMediaPath } from '@/lib/rich-utils'
 
 export function MediaPlayer({
+  type,
   src,
-  kind = "audio",
-  title,
-  controls = true,
-  poster,
-}: MediaPlayerProps) {
-  const [failed, setFailed] = useState(false);
-  const safeSrc = useMemo(() => {
-    try { return resolveMediaUrl(src); } catch { return undefined; }
-  }, [src]);
-  if (!safeSrc) return <Alert type="error" title="媒体地址不安全或无效" />;
-  if (failed) return <Alert type="error" title="媒体加载失败" />;
-  if (kind === "video") {
-    return <video className="rich-media" src={safeSrc} poster={poster} controls={controls} aria-label={title} onError={() => setFailed(true)} />;
+  label,
+}: {
+  type: 'audio' | 'video'
+  src: string
+  label: string
+}) {
+  const [failed, setFailed] = useState(false)
+  let safeSrc: string
+  try {
+    safeSrc = safeMediaPath(src)
+  } catch {
+    return <p role="alert">Unsafe media source rejected</p>
   }
-  return <audio className="rich-media" src={safeSrc} controls={controls} aria-label={title} onError={() => setFailed(true)} />;
+  if (failed) return <p role="alert">Media could not be loaded</p>
+  return type === 'audio' ? (
+    <audio controls preload="metadata" src={safeSrc} aria-label={label} onError={() => setFailed(true)} />
+  ) : (
+    <video controls preload="metadata" src={safeSrc} aria-label={label} onError={() => setFailed(true)} />
+  )
 }

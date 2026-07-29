@@ -1,50 +1,76 @@
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "~/lib/rich-utils";
+'use client'
 
-export interface AutoScrollTextProps {
-  children: React.ReactNode;
-  durationMs?: number;
-  delayMs?: number;
+import { useRef, useState } from 'react'
+
+export function FlashMessage({ children }: { children: React.ReactNode }) {
+  const [active, setActive] = useState(false)
+  return (
+    <button
+      type="button"
+      className={`flash-message ${active ? 'flash-message-active' : ''}`}
+      onClick={() => {
+        setActive(false)
+        requestAnimationFrame(() => setActive(true))
+        setTimeout(() => setActive(false), 700)
+      }}
+    >
+      {children}
+    </button>
+  )
 }
 
-export function AutoScrollText({
-  children,
-  durationMs = 10000,
-  delayMs = 2000,
-}: AutoScrollTextProps) {
-  const reducedMotion = useReducedMotion();
+export function ScrollText({ children }: { children: string }) {
   return (
-    <div
-      className="rich-scroll-text"
-      style={{
-        "--rich-scroll-duration": `${Math.max(100, durationMs)}ms`,
-        "--rich-scroll-delay": `${Math.max(0, delayMs)}ms`,
-        animationPlayState: reducedMotion ? "paused" : "running",
-      } as React.CSSProperties}
-      title={typeof children === "string" ? children : undefined}
-    >
+    <div className="scroll-text" tabIndex={0} title={children}>
       <span>{children}</span>
     </div>
-  );
+  )
 }
 
-export interface TypingTextProps {
-  text: string;
-  intervalMs?: number;
-}
-
-export function TypingText({ text, intervalMs = 70 }: TypingTextProps) {
-  const reducedMotion = useReducedMotion();
-  const [visible, setVisible] = useState("");
-  useEffect(() => {
-    if (reducedMotion) return;
-    let index = 0;
-    const timer = window.setInterval(() => {
-      index += 1;
-      setVisible(text.slice(0, index));
-      if (index >= text.length) window.clearInterval(timer);
-    }, Math.max(1, intervalMs));
-    return () => window.clearInterval(timer);
-  }, [intervalMs, reducedMotion, text]);
-  return <span aria-live="polite">{reducedMotion ? text : visible}</span>;
+export function DraggableList<T>({
+  items,
+  itemKey,
+  renderItem,
+  onReorder,
+}: {
+  items: readonly T[]
+  itemKey(item: T): string
+  renderItem(item: T): React.ReactNode
+  onReorder(items: T[]): void
+}) {
+  const dragging = useRef<number | null>(null)
+  return (
+    <ul className="draggable-list">
+      {items.map((item, index) => (
+        <li
+          key={itemKey(item)}
+          draggable
+          tabIndex={0}
+          onDragStart={() => {
+            dragging.current = index
+          }}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={() => {
+            if (dragging.current === null || dragging.current === index) return
+            const next = [...items]
+            const [moved] = next.splice(dragging.current, 1)
+            next.splice(index, 0, moved)
+            onReorder(next)
+            dragging.current = null
+          }}
+          onKeyDown={(event) => {
+            if (!event.altKey || !['ArrowUp', 'ArrowDown'].includes(event.key)) return
+            event.preventDefault()
+            const target = event.key === 'ArrowUp' ? index - 1 : index + 1
+            if (target < 0 || target >= items.length) return
+            const next = [...items]
+            ;[next[index], next[target]] = [next[target], next[index]]
+            onReorder(next)
+          }}
+        >
+          {renderItem(item)}
+        </li>
+      ))}
+    </ul>
+  )
 }

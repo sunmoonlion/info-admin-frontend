@@ -1,57 +1,26 @@
-import type { LucideIcon, LucideProps } from "lucide-react";
 import {
-  AlertCircle,
-  Check,
   CircleHelp,
-  Download,
-  Home,
-  MoreHorizontal,
-  Pause,
-  Play,
-  RefreshCw,
+  Database,
+  FileText,
   Search,
-  Settings,
-  Upload,
-  User,
-  X,
-} from "lucide-react";
+  ShieldCheck,
+  type LucideIcon,
+} from 'lucide-react'
 
-const icons = {
-  alert: AlertCircle,
-  check: Check,
-  download: Download,
-  home: Home,
-  more: MoreHorizontal,
-  pause: Pause,
-  play: Play,
-  refresh: RefreshCw,
+const iconRegistry = {
+  database: Database,
+  document: FileText,
   search: Search,
-  settings: Settings,
-  upload: Upload,
-  user: User,
-  close: X,
-} as const satisfies Record<string, LucideIcon>;
+  security: ShieldCheck,
+} satisfies Record<string, LucideIcon>
 
-export type IconName = keyof typeof icons;
+export type IconName = keyof typeof iconRegistry
 
-export interface AppIconProps extends Omit<LucideProps, "ref"> {
-  name: string;
-  label?: string;
+export function RegistryIcon({ name, label }: { name: string; label: string }) {
+  const Icon = iconRegistry[name as IconName] ?? CircleHelp
+  return <Icon role="img" aria-label={label} />
 }
 
-/** Local icon registry; arbitrary remote SVG/HTML is deliberately unsupported. */
-export function AppIcon({ name, label, ...props }: AppIconProps) {
-  const Icon = icons[name as IconName] ?? CircleHelp;
-  return (
-    <Icon
-      {...props}
-      aria-hidden={label ? undefined : true}
-      aria-label={label}
-      role={label ? "img" : undefined}
-    />
-  );
-}
-
-export function isIconName(value: string): value is IconName {
-  return value in icons;
+export function availableIcons() {
+  return Object.keys(iconRegistry) as IconName[]
 }

@@ -1,118 +1,73 @@
 import {
-  Boxes,
-  Home,
-  Palette,
+  ChartNoAxesCombined,
+  Gauge,
   Rss,
-  Table2,
+  Settings,
+  TableProperties,
   type LucideIcon,
-} from "lucide-react";
+} from 'lucide-react'
 
-import type { MessageKey } from "~/lib/i18n";
-
-export interface NavigationItem {
-  key: string;
-  labelKey: MessageKey;
-  icon?: LucideIcon;
-  path?: string;
-  pinned?: boolean;
-  requiredRoles?: readonly string[];
-  children?: readonly NavigationItem[];
+export type AdminNavigationItem = {
+  key: string
+  path: string
+  labelKey: 'dashboard' | 'reference' | 'richReference' | 'settings' | 'infoCrawl'
+  icon: LucideIcon
+  requiredRoles?: readonly string[]
+  pinned?: boolean
 }
 
-export interface NavigationLeaf extends NavigationItem {
-  path: string;
-  children?: never;
-}
-
-export const navigationItems: readonly NavigationItem[] = [
+export const adminNavigation: readonly AdminNavigationItem[] = [
   {
-    key: "workspace",
-    labelKey: "workspace",
-    icon: Boxes,
-    children: [
-      {
-        key: "home",
-        path: "/",
-        labelKey: "home",
-        icon: Home,
-        pinned: true,
-      },
-      {
-        key: "reference",
-        path: "/reference",
-        labelKey: "reference",
-        icon: Table2,
-        requiredRoles: ["admin", "operator"],
-      },
-      {
-        key: "rich-reference",
-        path: "/rich-reference",
-        labelKey: "richReference",
-        icon: Palette,
-        requiredRoles: ["admin", "operator"],
-      },
-      {
-        key: "info-crawl",
-        path: "/info/crawl",
-        labelKey: "infoCrawl",
-        icon: Rss,
-        requiredRoles: ["admin", "operator"],
-      },
-    ],
+    key: 'dashboard',
+    path: '/dashboard',
+    labelKey: 'dashboard',
+    icon: Gauge,
+    pinned: true,
   },
-];
+  {
+    key: 'info-crawl',
+    path: '/info/crawl',
+    labelKey: 'infoCrawl',
+    icon: Rss,
+    requiredRoles: ['admin', 'operator'],
+  },
+  {
+    key: 'reference',
+    path: '/reference',
+    labelKey: 'reference',
+    icon: TableProperties,
+    requiredRoles: ['admin', 'operator'],
+  },
+  {
+    key: 'rich-reference',
+    path: '/rich-reference',
+    labelKey: 'richReference',
+    icon: ChartNoAxesCombined,
+    requiredRoles: ['admin'],
+  },
+  {
+    key: 'settings',
+    path: '/settings',
+    labelKey: 'settings',
+    icon: Settings,
+  },
+]
 
-export function hasRequiredRole(
-  item: NavigationItem,
+export function filterNavigationByRoles(
   roles: readonly string[],
-): boolean {
-  if (!item.requiredRoles?.length) return true;
-  if (roles.includes("*")) return true;
-  return item.requiredRoles.some((role) => roles.includes(role));
+  items: readonly AdminNavigationItem[] = adminNavigation,
+) {
+  const roleSet = new Set(roles)
+  return items.filter(
+    (item) => !item.requiredRoles || item.requiredRoles.some((role) => roleSet.has(role)),
+  )
 }
 
-export function filterNavigation(
-  items: readonly NavigationItem[],
-  roles: readonly string[],
-): NavigationItem[] {
-  return items.flatMap((item) => {
-    if (!hasRequiredRole(item, roles)) return [];
-    if (!item.children) return [{ ...item }];
-
-    const children = filterNavigation(item.children, roles);
-    return children.length ? [{ ...item, children }] : [];
-  });
-}
-
-export function flattenNavigation(
-  items: readonly NavigationItem[],
-): NavigationLeaf[] {
-  return items.flatMap((item) =>
-    item.children
-      ? flattenNavigation(item.children)
-      : item.path
-        ? [item as NavigationLeaf]
-        : [],
-  );
-}
-
-export function findNavigationTrail(
-  items: readonly NavigationItem[],
-  path: string,
-): NavigationItem[] {
-  for (const item of items) {
-    if (item.path === path) return [item];
-    if (item.children) {
-      const childTrail = findNavigationTrail(item.children, path);
-      if (childTrail.length) return [item, ...childTrail];
-    }
-  }
-  return [];
-}
-
-export function findNavigationItem(
-  items: readonly NavigationItem[],
-  path: string,
-): NavigationLeaf | undefined {
-  return flattenNavigation(items).find((item) => item.path === path);
+export function findNavigationItem(pathname: string) {
+  const pathWithoutLocale = pathname.replace(/^\/(?:en|zh-CN)(?=\/|$)/, '') || '/'
+  return adminNavigation.find(
+    (item) =>
+      pathWithoutLocale === item.path ||
+      (item.path !== '/dashboard' && pathWithoutLocale.startsWith(`${item.path}/`)),
+  )
 }
