@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "title": "SunmoonAI Admin",
+    "description": "与专属 FastAPI Admin Backend 配对的生产级 Next.js 管理端底座。",
+    "loginTitle": "管理员登录",
+    "workspaceTitle": "治理控制台"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了",
+    "retry": "重试",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回"
+  },
+  "public": {
+    "title": "安全、可审计的治理控制台底座",
+    "description": "身份、权限、会话、数据访问和发布边界均由明确契约约束。",
+    "login": "管理员登录",
+    "workspace": "进入治理控制台"
+  },
+  "errors": {
+    "notFoundTitle": "页面不存在",
+    "notFoundDescription": "请求的页面不存在或已不可用。",
+    "returnHome": "返回首页",
+    "forbiddenTitle": "拒绝访问",
+    "forbiddenDescription": "当前登录角色无权使用此管理能力。",
+    "returnDashboard": "返回治理控制台"
+  },
+  "auth": {
+    "login": "使用 Casdoor 登录",
+    "signup": "注册账号",
+    "logout": "退出登录",
+    "logoutFailed": "退出失败，请重试。",
+    "loginTitle": "进入管理后台",
+    "loginSubtitle": "身份验证和会话由配对的 FastAPI Admin Backend 管理。",
+    "loginCasdoorHint": "浏览器不保存身份提供方令牌；授权结果只进入后端会话。",
+    "continueToDashboard": "已有本站登录态？进入治理控制台",
+    "errorAuthFailed": "登录未完成。请核对 Casdoor Admin 应用、回调地址及后端日志。",
+    "errorNoCode": "未收到授权码，请从本页重新登录。",
+    "errorOAuthGeneric": "授权被拒绝或已取消，请重试。",
+    "dashboardWelcome": "欢迎使用 SunmoonAI 管理后台",
+    "signedInAs": "当前管理员：{name}",
+    "signupSuccessHint": "注册成功。请点击登录进入本站。"
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "治理控制台",
+    "settings": "设置",
+    "infoCrawl": "资讯采集",
+    "reference": "CRUD 参考",
+    "richReference": "富能力参考",
+    "mainNavigation": "管理端导航",
+    "breadcrumb": "面包屑",
+    "openTabs": "已打开页面",
+    "openMenu": "打开导航",
+    "collapseMenu": "收起导航",
+    "expandMenu": "展开导航",
+    "closeTab": "关闭{name}",
+    "governance": "管理能力迁移中枢",
+    "governanceDescription": "P0-007E 将在此基础上逐项迁入菜单、权限、CRUD、审计和通用工具能力。"
+  },
+  "settings": {
+    "title": "界面设置",
+    "close": "关闭设置",
+    "theme": "主题",
+    "theme_light": "浅色",
+    "theme_dark": "深色",
+    "theme_system": "跟随系统",
+    "density": "密度",
+    "density_comfortable": "舒适",
+    "density_compact": "紧凑",
+    "language": "语言",
+    "fullscreen": "切换全屏"
+  },
+  "Navigation": {
+    "infoCrawl": "资讯采集"
+  },
+  "InfoCrawl": {
+    "title": "资讯采集",
+    "description": "Info Admin 领域采集与分发控制台"
+  }
+}

@@ -1,89 +1,65 @@
-import { Avatar, Dropdown, Space } from "antd";
-import type { MenuProps } from "antd";
-import { useMemo } from "react";
+'use client'
 
-export interface AvatarItem {
-  id: string;
-  src?: string;
-  label?: string;
+import Image from 'next/image'
+import { useState } from 'react'
+
+export type AvatarUser = {
+  id: string
+  label: string
+  imageUrl?: string
 }
 
-export interface AvatarListProps {
-  items: readonly AvatarItem[];
-  max?: number;
-  size?: number;
-  onSelect?: (item: AvatarItem, index: number) => void;
-}
-
-export function AvatarList({
-  items,
-  max = 5,
-  size = 32,
-  onSelect,
-}: AvatarListProps) {
-  const visible = items.slice(0, Math.max(0, max));
-  const remaining = Math.max(0, items.length - visible.length);
+export function AvatarList({ users, max = 4 }: { users: readonly AvatarUser[]; max?: number }) {
+  const visible = users.slice(0, max)
+  const remaining = Math.max(0, users.length - visible.length)
   return (
-    <ul aria-label="头像列表" className="rich-avatar-list">
-      {visible.map((item, index) => (
-        <li key={item.id}>
-          <button
-            type="button"
-            className="rich-avatar-button"
-            aria-label={item.label ?? item.id}
-            onClick={() => onSelect?.(item, index)}
-          >
-            <Avatar src={item.src} size={size} alt={item.label ?? item.id}>
-              {(item.label ?? item.id).slice(0, 1).toUpperCase()}
-            </Avatar>
-          </button>
-        </li>
+    <div className="avatar-list" aria-label="Participants">
+      {visible.map((user) => (
+        <span className="avatar" key={user.id} title={user.label}>
+          {user.imageUrl ? (
+            <Image src={user.imageUrl} alt="" width={40} height={40} />
+          ) : (
+            user.label.slice(0, 1).toUpperCase()
+          )}
+          <span className="sr-only">{user.label}</span>
+        </span>
       ))}
-      {remaining > 0 && <li aria-label={`还有 ${remaining} 个头像`}>+{remaining}</li>}
-    </ul>
-  );
-}
-
-export interface AvatarMenuProps {
-  username?: string;
-  src?: string;
-  items: readonly (string | { key: string; label: string } | "divider")[];
-  onCommand?: (key: string) => void;
+      {remaining ? <span className="avatar avatar-overflow">+{remaining}</span> : null}
+    </div>
+  )
 }
 
 export function AvatarMenu({
-  username,
-  src,
-  items,
-  onCommand,
-}: AvatarMenuProps) {
-  const menuItems = useMemo<MenuProps["items"]>(
-    () =>
-      items.map((item) =>
-        item === "divider"
-          ? { type: "divider" as const }
-          : typeof item === "string"
-            ? { key: item, label: item }
-            : { key: item.key, label: item.label },
-      ),
-    [items],
-  );
+  label,
+  actions,
+}: {
+  label: string
+  actions: readonly { key: string; label: string; onSelect(): void }[]
+}) {
+  const [open, setOpen] = useState(false)
   return (
-    <Dropdown
-      trigger={["click"]}
-      menu={{
-        items: menuItems,
-        onClick: ({ key }) => onCommand?.(key),
-      }}
-    >
-      <button type="button" className="rich-avatar-menu" aria-label="用户菜单">
-        <Space>
-          <Avatar src={src} alt={username ?? "用户"}>
-            {(username ?? "U").slice(0, 1).toUpperCase()}
-          </Avatar>
-          {username && <span>{username}</span>}
-        </Space>
+    <div className="avatar-menu">
+      <button type="button" className="avatar" aria-expanded={open} onClick={() => setOpen(!open)}>
+        {label.slice(0, 1).toUpperCase()}
+        <span className="sr-only">{label}</span>
       </button>
-    </Dropdown>
-  );
+      {open ? (
+        <div role="menu" className="avatar-menu-popup">
+          {actions.map((action) => (
+            <button
+              key={action.key}
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                action.onSelect()
+                setOpen(false)
+              }}
+            >
+              {action.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  )
 }

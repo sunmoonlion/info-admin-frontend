@@ -1,71 +1,50 @@
-import { Empty, Result, Skeleton } from "antd";
-import { useId } from "react";
+export type MetricPoint = { label: string; value: number }
 
-export interface ChartPoint {
-  label: string;
-  value: number;
-}
-
-export interface MetricChartProps {
-  data: readonly ChartPoint[];
-  title: string;
-  loading?: boolean;
-  error?: boolean;
-  height?: number;
-  color?: string;
-}
-
-/** Small SVG chart adapter; consuming Apps may replace it with ECharts later. */
 export function MetricChart({
-  data,
   title,
-  loading = false,
-  error = false,
-  height = 180,
-  color = "#1677ff",
-}: MetricChartProps) {
-  const titleId = useId();
-  if (loading) return <Skeleton active aria-label={`${title}加载中`} />;
-  if (error)
-    return <Result status="error" title={`${title}加载失败`} subTitle="请稍后重试" />;
-  if (!data.length) return <Empty description={`${title}暂无数据`} />;
-
-  const max = Math.max(1, ...data.map((point) => Math.max(0, point.value)));
-  const barWidth = 100 / data.length;
+  points,
+  loading,
+  error,
+}: {
+  title: string
+  points: readonly MetricPoint[]
+  loading?: boolean
+  error?: string
+}) {
+  if (loading) return <div className="rich-state" aria-busy="true">Loading chart…</div>
+  if (error) return <div className="rich-state crud-error" role="alert">{error}</div>
+  if (!points.length) return <div className="rich-state">No chart data</div>
+  const max = Math.max(...points.map((point) => point.value), 1)
+  const width = 480
+  const height = 180
+  const barWidth = width / points.length
   return (
-    <figure className="rich-chart" aria-labelledby={titleId}>
-      <figcaption id={titleId}>{title}</figcaption>
-      <svg
-        role="img"
-        aria-label={title}
-        viewBox={`0 0 100 60`}
-        height={height}
-        preserveAspectRatio="none"
-      >
-        {data.map((point, index) => {
-          const barHeight = (Math.max(0, point.value) / max) * 48;
+    <figure className="metric-chart">
+      <figcaption>{title}</figcaption>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={title}>
+        {points.map((point, index) => {
+          const barHeight = Math.max(2, (point.value / max) * (height - 30))
           return (
-            <rect
-              key={`${point.label}-${index}`}
-              x={index * barWidth + barWidth * 0.15}
-              y={55 - barHeight}
-              width={barWidth * 0.7}
-              height={barHeight}
-              fill={color}
-              rx="1"
-            >
-              <title>{`${point.label}: ${point.value}`}</title>
-            </rect>
-          );
+            <g key={point.label}>
+              <rect
+                x={index * barWidth + 8}
+                y={height - barHeight - 20}
+                width={Math.max(8, barWidth - 16)}
+                height={barHeight}
+                rx={4}
+              />
+              <text x={index * barWidth + barWidth / 2} y={height - 5} textAnchor="middle">
+                {point.label}
+              </text>
+            </g>
+          )
         })}
       </svg>
-      <table className="visually-hidden">
-        <caption>{title}数据</caption>
-        <thead><tr><th scope="col">名称</th><th scope="col">数值</th></tr></thead>
-        <tbody>
-          {data.map((point) => <tr key={point.label}><th scope="row">{point.label}</th><td>{point.value}</td></tr>)}
-        </tbody>
+      <table>
+        <caption className="sr-only">{title} data</caption>
+        <thead><tr><th>Label</th><th>Value</th></tr></thead>
+        <tbody>{points.map((point) => <tr key={point.label}><td>{point.label}</td><td>{point.value}</td></tr>)}</tbody>
       </table>
     </figure>
-  );
+  )
 }

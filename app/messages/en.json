@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "title": "SunmoonAI Admin",
+    "description": "A production Next.js administration foundation paired with a dedicated FastAPI Admin Backend.",
+    "loginTitle": "Administrator sign in",
+    "workspaceTitle": "Governance console"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back"
+  },
+  "public": {
+    "title": "A secure and auditable governance console foundation",
+    "description": "Identity, authorization, session, data access and release boundaries are governed by explicit contracts.",
+    "login": "Administrator sign in",
+    "workspace": "Open governance console"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The requested page does not exist or is no longer available.",
+    "returnHome": "Return home",
+    "forbiddenTitle": "Access denied",
+    "forbiddenDescription": "Your authenticated role does not allow this administration capability.",
+    "returnDashboard": "Return to dashboard"
+  },
+  "auth": {
+    "login": "Sign in with Casdoor",
+    "signup": "Sign up",
+    "logout": "Logout",
+    "logoutFailed": "Sign out failed. Please try again.",
+    "loginTitle": "Enter the administration console",
+    "loginSubtitle": "Authentication and session state belong to the paired FastAPI Admin Backend.",
+    "loginCasdoorHint": "The browser never stores provider tokens; authorization is converted into a backend-owned session.",
+    "continueToDashboard": "Already signed in? Open the governance console",
+    "errorAuthFailed": "Sign-in failed. Verify the Casdoor Admin application, callback URL and backend logs.",
+    "errorNoCode": "No authorization code was returned. Start sign-in again.",
+    "errorOAuthGeneric": "Authorization was denied or cancelled. Please try again.",
+    "dashboardWelcome": "Welcome to SunmoonAI Admin",
+    "signedInAs": "Administrator: {name}",
+    "signupSuccessHint": "Sign-up succeeded. Sign in to enter this site."
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Governance console",
+    "settings": "Settings",
+    "infoCrawl": "Info crawl",
+    "reference": "CRUD reference",
+    "richReference": "Rich capability reference",
+    "mainNavigation": "Administration navigation",
+    "breadcrumb": "Breadcrumb",
+    "openTabs": "Open pages",
+    "openMenu": "Open navigation",
+    "collapseMenu": "Collapse navigation",
+    "expandMenu": "Expand navigation",
+    "closeTab": "Close {name}",
+    "governance": "Administration capability migration",
+    "governanceDescription": "P0-007E will add navigation, authorization, CRUD, audit and shared tooling on this foundation."
+  },
+  "settings": {
+    "title": "Interface settings",
+    "close": "Close settings",
+    "theme": "Theme",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_system": "System",
+    "density": "Density",
+    "density_comfortable": "Comfortable",
+    "density_compact": "Compact",
+    "language": "Language",
+    "fullscreen": "Toggle fullscreen"
+  },
+  "Navigation": {
+    "infoCrawl": "Info crawl"
+  },
+  "InfoCrawl": {
+    "title": "Info crawl",
+    "description": "Info Admin crawl and distribution console"
+  }
+}
