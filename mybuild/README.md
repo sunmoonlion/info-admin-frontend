@@ -1,54 +1,50 @@
-# info-admin-frontend 镜像构建
+# tpl-admin-frontend 镜像构建
 
-## 架构
+该目录构建 Next.js Admin standalone 镜像。源码位于仓库根目录 `app/`，运行镜像只
+包含精确 Node LTS 基础镜像与 standalone 产物，不使用 Nginx 承载。
 
-- **构建上下文**：子模块根目录（`info-admin-frontend/`）
-- **构建方式**：多阶段构建（node:alpine 编译 → nginx:alpine 服务）
-- **镜像名称**：`info-admin-frontend:1.0.0`（本地）；CI 使用 git SHA tag
-
-## 文件说明
-
-| 文件 | 用途 |
-|------|------|
-| `Dockerfile` | 多阶段构建文件（本地 & CI 共用） |
-| `nginx.conf` | 容器内 nginx SPA 配置 |
-| `build.conf` | 本地构建配置（镜像名、仓库、REGISTRY 等） |
-| `build-image.sh` | 本地构建（可选推送）脚本 |
-| `push-image.sh` | 单独推送脚本 |
-| `rebuild-and-run.sh` | 快速重建并本地运行 |
-
-## 本地构建（黄金命令）
+## 构建
 
 ```bash
-# 在子模块根目录执行
-docker build -f mybuild/Dockerfile \
-  --build-arg REGISTRY=harbor.sunmoonai.com:30443/k8s-images \
-  --build-arg VITE_API_URL=http://localhost:8001 \
-  -t info-admin-frontend:1.0.0 .
+cd /home/zymun/tpl-app/tpl-admin-frontend
+docker build \
+  --progress=plain \
+  -f mybuild/Dockerfile \
+  -t tpl-admin-frontend:1.0.0 \
+  .
 ```
 
-## 使用脚本构建
+也可以使用配置化脚本：
 
 ```bash
-cd mybuild
-./build-image.sh             # 构建
-./build-image.sh --tag 1.0.1 # 自定义 tag
-./push-image.sh              # 推送到 Harbor
-./rebuild-and-run.sh         # 重建并本地运行（http://localhost:8080）
+cd /home/zymun/tpl-app/tpl-admin-frontend/mybuild
+./build-image.sh --tag 1.0.0
 ```
 
-## CI（Kaniko）参数
+`build.conf` 的主要配置：
 
-```
---dockerfile    mybuild/Dockerfile
---context       <子模块根目录>
---build-arg     REGISTRY=harbor.sunmoonai.com:30443/k8s-images
---build-arg     VITE_API_URL=<环境 API 地址>
---destination   harbor.sunmoonai.com:30443/k8s-images/info-admin-frontend:<git-sha>
---destination   harbor.sunmoonai.com:30443/k8s-images/info-admin-frontend:latest
-```
+- `TPL_SSR_IMAGE`：默认 `tpl-admin-frontend`
+- `TPL_SSR_TAG`：镜像标签
+- `TPL_SSR_IMAGE_REGISTRY` / `TPL_SSR_IMAGE_PROJECT`：Harbor 目标
+- `PUSH_IMAGES_AFTER_BUILD`：是否在构建后推送
+- `CONTAINER_RUNTIME`：`docker` 或 `nerdctl`
 
-## 注意事项
+## 运行时契约
 
-- `VITE_API_URL` 构建时静态嵌入，不同环境须构建不同镜像
-- 本地构建无需 Harbor 时传 `--build-arg REGISTRY=` 退回 DockerHub
+浏览器只访问同源 `/api`。容器必须在运行时提供：
+
+- `DEPLOYMENT_ENV`
+- `AUTH_APP`
+- `APP_ORIGIN`
+- `ADMIN_BACKEND_INTERNAL_URL`
+- `DEPLOYMENT_ID`
+
+禁止把 Casdoor secret、Redis 凭据或服务 token 作为 `NEXT_PUBLIC_*` 或 Docker
+构建参数写入 bundle。构建时使用的本地默认值只用于可复现构建，生产 Pod 启动时
+会由环境校验拒绝缺失或不安全的配置。
+
+## 发布门禁
+
+镜像只有在 typecheck、lint、i18n、unit/component、Next production build、
+受控配对 E2E、Docker smoke、KIND 严格 TLS 和前后端兼容/回滚矩阵全部通过后，
+才允许固化正式标签。

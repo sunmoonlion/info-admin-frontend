@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Admin CSR 镜像推送脚本
+# Admin Frontend (Next standalone) 镜像推送脚本
 # 用法: ./push-image.sh [--tag TAG]
 # 凭证: 优先读取 HARBOR_USER/HARBOR_PASSWORD 或 k8s Harbor 配置，缺失时提示输入
 
@@ -19,10 +19,10 @@ if [ ! -f "$BUILD_CONF" ]; then log_error "build.conf 不存在"; exit 1; fi
 source "$BUILD_CONF"
 source "$SCRIPT_DIR/harbor-cluster.sh"
 
-IMAGE_NAME="${ADMIN_CSR_IMAGE:-info-admin-frontend}"
-IMAGE_TAG="${ADMIN_CSR_TAG:-1.0.0}"
-IMAGE_REGISTRY="$(resolve_harbor_registry_for_push "${ADMIN_CSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}")"
-IMAGE_PROJECT="${ADMIN_CSR_IMAGE_PROJECT:-app-images}"
+IMAGE_NAME="${TPL_SSR_IMAGE:-tpl-admin-frontend}"
+IMAGE_TAG="${TPL_SSR_TAG:-1.0.0}"
+IMAGE_REGISTRY="$(resolve_harbor_registry_for_push "${TPL_SSR_IMAGE_REGISTRY:-harbor.sunmoonai.com}")"
+IMAGE_PROJECT="${TPL_SSR_IMAGE_PROJECT:-app-images}"
 
 CONTAINER_RUNTIME="${CONTAINER_RUNTIME:-docker}"
 if [[ "$CONTAINER_RUNTIME" == "sudo nerdctl" || "$CONTAINER_RUNTIME" == "nerdctl" ]]; then
@@ -38,7 +38,6 @@ load_harbor_credentials_for_push
 _harbor_user="${HARBOR_USER}"
 _harbor_pass="${HARBOR_PASSWORD}"
 
-# ── 确保 Harbor 项目存在，不存在则创建 ────────────────────────────────────────
 ensure_harbor_project() {
     local registry="$1"
     local project="$2"
@@ -51,7 +50,6 @@ ensure_harbor_project() {
 
     if [ "$http_code" = "200" ]; then
         log_info "Harbor 项目已存在: ${project}"
-        return 0
     elif [ "$http_code" = "404" ]; then
         log_info "Harbor 项目不存在，正在创建: ${project}"
         local create_code
@@ -71,7 +69,6 @@ ensure_harbor_project() {
     fi
 }
 
-# ── 主流程 ────────────────────────────────────────────────────────────────────
 FULL_IMAGE_NAME="${IMAGE_REGISTRY}/${IMAGE_PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
 LOCAL_IMAGE_NAME="${IMAGE_NAME}:${IMAGE_TAG}"
 

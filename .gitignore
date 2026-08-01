@@ -7,19 +7,34 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-.DS_Store
+.pnp
+.pnp.js
 
-# Backup files
-*.bak
-
-dist
-dist-ssr
+# Testing
 coverage
-*.local
+*.lcov
+.nyc_output
+test-results/
+playwright-report/
 
-/cypress/videos/
-/cypress/screenshots/
+# Production
+dist
+.output
+.nuxt
+.nitro
+.cache
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
 # Editor directories and files
 .vscode/*
@@ -30,12 +45,17 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-html/
 
-mock/downloads
-mock/assets
-stats.html
+# OS
+Thumbs.db
+.DS_Store
 
-release/
-dist-electron/
-dev-dist/
+# Build outputs
+build/
+dist/
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

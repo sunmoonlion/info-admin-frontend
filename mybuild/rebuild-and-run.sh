@@ -3,23 +3,23 @@
 
 set -e
 
-IMAGE_NAME="info-admin-frontend:1.0.0"
-CONTAINER_NAME="info-admin-frontend"
+IMAGE_NAME="tpl-admin-frontend:1.0.0"
+CONTAINER_NAME="tpl-admin-frontend"
 
-echo "停止并删除旧容器..."
+echo "🛑 停止并删除旧容器..."
 docker stop $CONTAINER_NAME 2>/dev/null || true
 docker rm $CONTAINER_NAME 2>/dev/null || true
 
-echo "删除旧镜像..."
+echo "🗑️  删除旧镜像..."
 docker rmi $IMAGE_NAME 2>/dev/null || true
 
-echo "构建新镜像..."
+echo "🔨 构建新镜像..."
 cd "$(dirname "$0")/.."
 docker build -t $IMAGE_NAME -f mybuild/Dockerfile .
 
-echo "运行新容器..."
-docker run --rm -d -p 8080:80 --name $CONTAINER_NAME $IMAGE_NAME
+echo "🚀 运行新容器..."
+docker run --rm -d -p 3000:3000 --name $CONTAINER_NAME $IMAGE_NAME
 
-echo "完成！容器正在运行，访问 http://localhost:8080"
-echo "查看日志: docker logs -f $CONTAINER_NAME"
-echo "停止容器: docker stop $CONTAINER_NAME"
+echo "✅ 完成！容器正在运行，访问 http://localhost:3000"
+echo "📋 查看日志: docker logs -f $CONTAINER_NAME"
+echo "🛑 停止容器: docker stop $CONTAINER_NAME"
