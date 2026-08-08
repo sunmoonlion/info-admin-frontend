@@ -2,11 +2,8 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 import { buttonVariants } from '@/components/ui/button'
-import { clientEnv } from '@/env/client'
 import { getBrowserSession } from '@/lib/server/auth-session'
 import { cn } from '@/lib/utils'
-
-const continueUrl = `${clientEnv.NEXT_PUBLIC_API_URL}/auth/continue`
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('meta')
@@ -25,8 +22,6 @@ type Props = {
   searchParams: Promise<{
     error?: string
     reason?: string
-    /** 由 BFF /api/auth/after-signup 或 Casdoor 跳转带回 */
-    registered?: string
   }>
 }
 
@@ -37,15 +32,12 @@ export default async function LoginPage({ params, searchParams }: Props) {
   const session = await getBrowserSession()
   if (session) redirect(`/${locale}/dashboard`)
   const returnTo = `/${locale}/dashboard`
-  const loginUrl = `${clientEnv.NEXT_PUBLIC_API_URL}/auth/login?return_to=${encodeURIComponent(returnTo)}`
-  const signupUrl = `${clientEnv.NEXT_PUBLIC_API_URL}/auth/signup?return_to=${encodeURIComponent(returnTo)}`
+  const loginUrl = `/api/auth/admin/login?return_to=${encodeURIComponent(returnTo)}`
 
   let errorText: string | null = null
   if (paramsQ.error === 'auth_failed') {
     errorText = t('errorAuthFailed')
   }
-
-  const signupOk = paramsQ.registered === '1' || paramsQ.registered === 'true'
 
   return (
     <main
@@ -58,14 +50,6 @@ export default async function LoginPage({ params, searchParams }: Props) {
           <p className="text-muted-foreground text-sm">{t('loginSubtitle')}</p>
           <p className="text-muted-foreground text-xs">{t('loginCasdoorHint')}</p>
         </div>
-        {signupOk ? (
-          <p
-            role="status"
-            className="rounded-lg border border-emerald-500/40 bg-emerald-500/5 px-3 py-2 text-center text-sm text-emerald-800 dark:text-emerald-200"
-          >
-            {t('signupSuccessHint')}
-          </p>
-        ) : null}
         {errorText ? (
           <p
             role="alert"
@@ -77,19 +61,6 @@ export default async function LoginPage({ params, searchParams }: Props) {
         <a href={loginUrl} className={cn(buttonVariants({ className: 'w-full' }))}>
           {t('login')}
         </a>
-        <p className="text-muted-foreground text-center text-sm">
-          <a
-            href={signupUrl}
-            className="text-primary font-medium underline-offset-4 hover:underline"
-          >
-            {t('signup')}
-          </a>
-        </p>
-        <p className="text-muted-foreground text-center text-xs">
-          <a href={continueUrl} className="underline-offset-4 hover:underline">
-            {t('continueToDashboard')}
-          </a>
-        </p>
       </div>
     </main>
   )

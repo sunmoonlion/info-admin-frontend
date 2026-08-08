@@ -1,4 +1,4 @@
-# tpl-admin-frontend 镜像构建
+# info-admin-frontend 镜像构建
 
 该目录构建 Next.js Admin standalone 镜像。源码位于仓库根目录 `app/`，运行镜像只
 包含精确 Node LTS 基础镜像与 standalone 产物，不使用 Nginx 承载。
@@ -6,24 +6,24 @@
 ## 构建
 
 ```bash
-cd /home/zymun/tpl-app/tpl-admin-frontend
+cd /home/zymun/tpl-app/info-admin-frontend
 docker build \
   --progress=plain \
   -f mybuild/Dockerfile \
-  -t tpl-admin-frontend:1.0.0 \
+  -t info-admin-frontend:1.0.0 \
   .
 ```
 
 也可以使用配置化脚本：
 
 ```bash
-cd /home/zymun/tpl-app/tpl-admin-frontend/mybuild
+cd /home/zymun/tpl-app/info-admin-frontend/mybuild
 ./build-image.sh --tag 1.0.0
 ```
 
 `build.conf` 的主要配置：
 
-- `TPL_SSR_IMAGE`：默认 `tpl-admin-frontend`
+- `TPL_SSR_IMAGE`：默认 `info-admin-frontend`
 - `TPL_SSR_TAG`：镜像标签
 - `TPL_SSR_IMAGE_REGISTRY` / `TPL_SSR_IMAGE_PROJECT`：Harbor 目标
 - `PUSH_IMAGES_AFTER_BUILD`：是否在构建后推送
@@ -36,7 +36,7 @@ cd /home/zymun/tpl-app/tpl-admin-frontend/mybuild
 - `DEPLOYMENT_ENV`
 - `AUTH_APP`
 - `APP_ORIGIN`
-- `ADMIN_BACKEND_INTERNAL_URL`
+- `BACKEND_INTERNAL_URL`
 - `DEPLOYMENT_ID`
 
 禁止把 Casdoor secret、Redis 凭据或服务 token 作为 `NEXT_PUBLIC_*` 或 Docker

@@ -5,11 +5,11 @@ test('runtime health endpoint is dynamic and non-cacheable', async ({ request })
 
   expect(response.status()).toBe(200)
   expect(response.headers()['cache-control']).toContain('no-store')
-  expect(response.headers()['x-deployment-id']).toBe('p0-007e-e1-e2e')
+  expect(response.headers()['x-deployment-id']).toBe('arch-v2-r2-admin-e2e')
   expect(await response.json()).toEqual({
     status: 'ok',
     surface: 'admin',
-    deployment_id: 'p0-007e-e1-e2e',
+    deployment_id: 'arch-v2-r2-admin-e2e',
   })
 })
 
@@ -43,7 +43,7 @@ test('workspace route renders only after the paired backend validates its opaque
 }) => {
   await context.addCookies([
     {
-      name: 'sunmoonai_tpl_admin_sid',
+      name: 'sunmoonai_info_admin_sid',
       value: 'e2e-session',
       domain: '127.0.0.1',
       path: '/',
@@ -66,7 +66,7 @@ test('admin shell exposes role-filtered navigation, tabs and interface preferenc
 }) => {
   await context.addCookies([
     {
-      name: 'sunmoonai_tpl_admin_sid',
+      name: 'sunmoonai_info_admin_sid',
       value: 'e2e-session',
       domain: '127.0.0.1',
       path: '/',
@@ -96,7 +96,7 @@ test('rich capability route keeps unsafe markup as text and honors reduced motio
 }) => {
   await context.addCookies([
     {
-      name: 'sunmoonai_tpl_admin_sid',
+      name: 'sunmoonai_info_admin_sid',
       value: 'e2e-session',
       domain: '127.0.0.1',
       path: '/',
@@ -125,7 +125,7 @@ test('server authorization denies a directly entered route that the role cannot 
 }) => {
   await context.addCookies([
     {
-      name: 'sunmoonai_tpl_admin_sid',
+      name: 'sunmoonai_info_admin_sid',
       value: 'operator-session',
       domain: '127.0.0.1',
       path: '/',
@@ -143,7 +143,7 @@ test('responsive shell uses one mobile navigation drawer', async ({ context, pag
   await page.setViewportSize({ width: 390, height: 844 })
   await context.addCookies([
     {
-      name: 'sunmoonai_tpl_admin_sid',
+      name: 'sunmoonai_info_admin_sid',
       value: 'e2e-session',
       domain: '127.0.0.1',
       path: '/',

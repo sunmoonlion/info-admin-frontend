@@ -41,7 +41,7 @@ FROM ${NODE_IMAGE} AS build
 # 如果需要代理，可以通过 --build-arg 传递：
 #   docker build --build-arg HTTP_PROXY=http://proxy.example.com:8080 \
 #                --build-arg HTTPS_PROXY=http://proxy.example.com:8080 \
-#                -f mybuild/Dockerfile -t tpl-admin-frontend:1.0.0 .
+#                -f mybuild/Dockerfile -t info-admin-frontend:1.0.0 .
 # ============================================================================
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
@@ -64,12 +64,12 @@ ENV HTTP_PROXY=${HTTP_PROXY} \
 ARG NEXT_PUBLIC_API_URL=/api
 ARG NEXT_PUBLIC_APP_NAME=tpl
 ARG APP_ORIGIN=http://localhost:3000
-ARG ADMIN_BACKEND_INTERNAL_URL=http://127.0.0.1:8000
+ARG BACKEND_INTERNAL_URL=http://127.0.0.1:8000
 ARG DEPLOYMENT_ID=local-build
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} \
     NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME} \
     APP_ORIGIN=${APP_ORIGIN} \
-    ADMIN_BACKEND_INTERNAL_URL=${ADMIN_BACKEND_INTERNAL_URL} \
+    BACKEND_INTERNAL_URL=${BACKEND_INTERNAL_URL} \
     DEPLOYMENT_ID=${DEPLOYMENT_ID}
 
 # 使用 Alpine 构建，pnpm 会按 musl 平台安装 Next/SWC/sharp 的可选依赖。
@@ -127,6 +127,7 @@ FROM ${NODE_IMAGE} AS run-minimal
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 --ingroup nodejs nextjs
 
+# 构建代理只允许存在于 build 阶段，禁止固化到最终运行镜像。
 WORKDIR /app
 ENV NODE_ENV=production \
     APP_ENV=production \

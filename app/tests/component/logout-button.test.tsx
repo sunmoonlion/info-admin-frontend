@@ -35,7 +35,7 @@ describe('LogoutButton', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Logout' }))
     await waitFor(() => expect(replace).toHaveBeenCalledWith('/en/login'))
-    expect(fetchMock).toHaveBeenCalledWith('/api/auth/logout', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/auth/admin/logout', {
       method: 'POST',
       credentials: 'same-origin',
       cache: 'no-store',
