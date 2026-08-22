@@ -6,7 +6,7 @@
 ## 构建
 
 ```bash
-cd /home/zymun/tpl-app/info-admin-frontend
+cd /home/zymun/master/tpl-app/info-admin-frontend
 docker build \
   --progress=plain \
   -f mybuild/Dockerfile \
@@ -17,7 +17,7 @@ docker build \
 也可以使用配置化脚本：
 
 ```bash
-cd /home/zymun/tpl-app/info-admin-frontend/mybuild
+cd /home/zymun/master/tpl-app/info-admin-frontend/mybuild
 ./build-image.sh --tag 1.0.0
 ```
 
