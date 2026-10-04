@@ -1,0 +1,18 @@
+[
+ {
+  "id": "32acccbe-ed1a-57c5-9d32-d928a7337e57",
+  "security_code": "002594",
+  "market": "SZ",
+  "status": "succeeded",
+  "sources": [
+   "cninfo",
+   "eastmoney-f10"
+  ],
+  "requested_at": "2026-10-04T08:15:26.408909Z",
+  "started_at": null,
+  "finished_at": "2026-10-04T08:15:26.431952Z",
+  "summary": {},
+  "error_code": null,
+  "error_detail": null
+ }
+]

@@ -1,0 +1,297 @@
+[
+ {
+  "id": "0f79a87c-7bf3-5956-be15-01e3988797ee",
+  "security_code": "002594",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "available",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.340643Z",
+  "closed_at": "2026-10-04T08:15:26.443997Z",
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.414957Z",
+  "decision_note": null,
+  "ingestion_id": "32acccbe-ed1a-57c5-9d32-d928a7337e57",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": "想看比亚迪近三年的毛利率",
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.339852Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": {
+   "dataset_id": "sz002594-financials",
+   "data_version": "sz002594-financials-sample002594",
+   "start_date": "2016-12-31",
+   "end_date": "2025-12-31"
+  }
+ },
+ {
+  "id": "b76b252a-dd57-5c80-90af-4a9823df06b0",
+  "security_code": "600436",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "quality_failed",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.449081Z",
+  "closed_at": "2026-10-04T08:15:26.486963Z",
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.468329Z",
+  "decision_note": null,
+  "ingestion_id": "d35d6a3c-0149-5775-a1c7-860389fb558a",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.448781Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "7679e7df-8718-5408-8ba3-5f59a9525cf4",
+  "security_code": "601318",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "failed",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.491036Z",
+  "closed_at": "2026-10-04T08:15:26.526511Z",
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.510220Z",
+  "decision_note": null,
+  "ingestion_id": "f0410883-287b-578b-81dc-15f24e5b2d8f",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.490771Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "06944124-075a-504f-b4f3-275ef032eb9c",
+  "security_code": "000333",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "registration_failed",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.530636Z",
+  "closed_at": "2026-10-04T08:15:26.570047Z",
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.551651Z",
+  "decision_note": null,
+  "ingestion_id": "5acd21f7-5aec-5da2-a689-3ed150887faa",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.530337Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "69268fa0-44c9-5bb1-8187-e0ddab71455f",
+  "security_code": "688981",
+  "kind": "initial",
+  "status": "rejected",
+  "progress": "rejected",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.574130Z",
+  "closed_at": "2026-10-04T08:15:26.591357Z",
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.591357Z",
+  "decision_note": "科创板的公司暂时不采：年报的格式还没有适配",
+  "ingestion_id": null,
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": "看看",
+    "origin": {
+     "app": "investment",
+     "ref": "task:42",
+     "return_url": "http://localhost:3100/zh-CN/workbench?ref=task%3A42"
+    },
+    "requested_at": "2026-10-04T08:15:26.573824Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "9ad11c49-7c3f-50c2-a2b9-23ab785e8cca",
+  "security_code": "600030",
+  "kind": "initial",
+  "status": "withdrawn",
+  "progress": "withdrawn",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.607185Z",
+  "closed_at": "2026-10-04T08:15:26.622706Z",
+  "decided_by": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+  "decided_at": "2026-10-04T08:15:26.622706Z",
+  "decision_note": null,
+  "ingestion_id": null,
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": "填错了代码",
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.606858Z",
+    "withdrawn_at": "2026-10-04T08:15:26.622706Z"
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "e8d7f8a6-42c8-52b1-948d-742b459fa460",
+  "security_code": "601012",
+  "kind": "initial",
+  "status": "pending",
+  "progress": "pending",
+  "open": true,
+  "created_at": "2026-10-04T08:15:26.638672Z",
+  "closed_at": null,
+  "decided_by": null,
+  "decided_at": null,
+  "decision_note": null,
+  "ingestion_id": null,
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": "要做光伏行业的对比",
+    "origin": {
+     "app": "investment",
+     "ref": "task:7f3a",
+     "return_url": "http://localhost:3100/zh-CN/workbench?ref=task%3A7f3a"
+    },
+    "requested_at": "2026-10-04T08:15:26.638120Z",
+    "withdrawn_at": null
+   },
+   {
+    "actor_id": "74272681-9132-5e5b-b7ca-e245b2c9da6b",
+    "reason": "同上",
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.650601Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "dad4ff9f-c1e2-5e51-a63c-fff965195623",
+  "security_code": "600036",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "queued",
+  "open": true,
+  "created_at": "2026-10-04T08:15:26.659549Z",
+  "closed_at": null,
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.678632Z",
+  "decision_note": null,
+  "ingestion_id": "db9ab979-c91b-5a0c-8e2b-019d695ce103",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.659250Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "e360da80-c794-5489-9aef-1545babb5931",
+  "security_code": "000651",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "collecting",
+  "open": true,
+  "created_at": "2026-10-04T08:15:26.694823Z",
+  "closed_at": null,
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.717332Z",
+  "decision_note": null,
+  "ingestion_id": "70e43539-fc2b-5bde-a0c6-9e9ceea16ac1",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.694535Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "9f4186ca-406e-57ec-bafb-f6fab531ad14",
+  "security_code": "600887",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "building",
+  "open": true,
+  "created_at": "2026-10-04T08:15:26.735446Z",
+  "closed_at": null,
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.762328Z",
+  "decision_note": null,
+  "ingestion_id": "990f81f4-f185-51e0-b9b0-527b7d3b9294",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.735166Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ },
+ {
+  "id": "2a01542e-376c-535f-ba1a-aa5d28c46cca",
+  "security_code": "601166",
+  "kind": "initial",
+  "status": "approved",
+  "progress": "registering",
+  "open": true,
+  "created_at": "2026-10-04T08:15:26.782519Z",
+  "closed_at": null,
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.810500Z",
+  "decision_note": null,
+  "ingestion_id": "f12f11d1-c5ab-500d-a8ae-386aa5364f48",
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": null,
+    "origin": null,
+    "requested_at": "2026-10-04T08:15:26.782230Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ }
+]

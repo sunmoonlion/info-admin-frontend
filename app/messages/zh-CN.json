@@ -61,7 +61,10 @@
     "expandMenu": "展开导航",
     "closeTab": "关闭{name}",
     "governance": "管理能力迁移中枢",
-    "governanceDescription": "P0-007E 将在此基础上逐项迁入菜单、权限、CRUD、审计和通用工具能力。"
+    "governanceDescription": "P0-007E 将在此基础上逐项迁入菜单、权限、CRUD、审计和通用工具能力。",
+    "infoRequests": "申请审批",
+    "infoSecurities": "证券采集",
+    "infoWatchlist": "关注清单"
   },
   "settings": {
     "title": "界面设置",
@@ -82,5 +85,163 @@
   "InfoCrawl": {
     "title": "资讯采集",
     "description": "Info Admin 领域采集与分发控制台"
+  },
+  "intake": {
+    "nav": {
+      "requests": "申请审批",
+      "securities": "证券采集",
+      "watchlist": "关注清单"
+    },
+    "common": {
+      "loading": "加载中…",
+      "failed": "没有取到，请稍后再试。",
+      "code": "证券代码",
+      "time": "时间",
+      "note": "备注",
+      "cancel": "取消",
+      "none": "没有"
+    },
+    "progress": {
+      "pending": "等批准",
+      "queued": "已批准，排队中",
+      "collecting": "采集中",
+      "building": "建库中",
+      "registering": "登记中",
+      "available": "可用",
+      "rejected": "已拒绝",
+      "withdrawn": "已撤回",
+      "quality_failed": "没通过质量检查",
+      "failed": "采集或建库出错",
+      "registration_failed": "登记失败"
+    },
+    "requests": {
+      "title": "申请审批",
+      "lead": "用户申请入库的公司。关注清单里的公司不用批，直接排队；清单外的在这里批。拒绝要写一句原因：用户看得到原因，看不到是谁拒绝的。",
+      "pending": "待批准",
+      "nonePending": "现在没有等批准的申请。",
+      "wants": "{n} 个人要",
+      "earliest": "最早的申请",
+      "reasons": "理由",
+      "noReason": "没有写理由",
+      "from": "从 {app} 来",
+      "reference": "参考",
+      "inWatchlist": "在关注清单里",
+      "notInWatchlist": "不在关注清单里",
+      "hasData": "已有数据，版本 …{version}，数据到 {end}",
+      "noData": "还没有数据",
+      "toSecurities": "看这家的采集记录",
+      "approve": "批准",
+      "approveAndWatch": "批准并加入关注清单",
+      "reject": "拒绝",
+      "rejectTitle": "拒绝 {code} 的申请",
+      "rejectLabel": "原因（用户看得到）",
+      "rejectConfirm": "拒绝",
+      "noteRequired": "拒绝必须写一句原因。",
+      "noteTooLong": "原因太长了。",
+      "handled": "已处理",
+      "filter": "按状态筛",
+      "all": "全部",
+      "status": {
+        "approved": "已批准",
+        "rejected": "已拒绝",
+        "withdrawn": "已撤回"
+      },
+      "by": "谁处理的",
+      "bySystem": "系统（关注清单）",
+      "at": "什么时候",
+      "noneHandled": "还没有处理过的申请。",
+      "done": {
+        "approved": "已批准 {code}，开始排队采集。",
+        "watched": "已批准 {code}，并加入了关注清单。",
+        "rejected": "已拒绝 {code}。"
+      },
+      "problem": {
+        "request_not_pending": "这个申请已经处理过了。",
+        "rejection_note_required": "拒绝必须写一句原因。",
+        "other": "没有做成，请再试一次。"
+      }
+    },
+    "securities": {
+      "title": "证券采集",
+      "lead": "直接发起一家公司的采集，看它的批次和数据集。在这里发起的采集不产生申请，不占任何人的名额。",
+      "start": "发起采集",
+      "starting": "正在发起…",
+      "started": "已发起 {code} 的采集。",
+      "look": "查看",
+      "codeInvalid": "证券代码是六位数字。",
+      "batches": "批次",
+      "noBatches": "这家公司还没有采集过。",
+      "requested": "发起时间",
+      "status": "状态",
+      "sources": "来源",
+      "error": "出错原因",
+      "detail": "明细",
+      "hideDetail": "收起",
+      "items": "采了 {n} 项",
+      "noItems": "这个批次没有采到东西。",
+      "item": {
+        "source": "来源",
+        "kind": "种类",
+        "size": "大小",
+        "reused": "和已有原件相同",
+        "http": "状态码",
+        "yes": "是",
+        "no": "否"
+      },
+      "batchStatus": {
+        "pending": "排队中",
+        "running": "采集中",
+        "succeeded": "采完了",
+        "failed": "失败"
+      },
+      "datasets": "数据集",
+      "noDatasets": "这家公司还没有建过数据集。",
+      "version": "版本",
+      "range": "数据范围",
+      "built": "建库时间",
+      "failedChecks": "没过的检查",
+      "registration": "登记到 knowledge",
+      "reg": {
+        "registered": "已登记",
+        "failed": "登记失败：{error}",
+        "waiting": "还没有登记",
+        "not_published": "没有发布，不登记"
+      },
+      "datasetStatus": {
+        "published": "已发布",
+        "quality_failed": "没通过质量检查"
+      },
+      "register": "重新登记",
+      "registering": "正在登记…",
+      "registered": "已重新登记。",
+      "problem": {
+        "dataset_not_found": "没有这个数据集。",
+        "other": "没有做成，请再试一次。"
+      }
+    },
+    "watchlist": {
+      "title": "关注清单",
+      "lead": "清单里的公司：用户申请时不用等批准；以后的定时采集也只采清单里的。增减都留痕，移出不删行。",
+      "add": "加入",
+      "adding": "正在加入…",
+      "addNote": "备注（为什么加）",
+      "added": "已加入 {code}。",
+      "codeInvalid": "证券代码是六位数字。",
+      "addedAt": "加入时间",
+      "addedBy": "谁加的",
+      "seed": "第一批（2026-09-28 定）",
+      "remove": "移出",
+      "removeTitle": "把 {code} 移出关注清单",
+      "removeLabel": "原因",
+      "removeConfirm": "移出",
+      "removed": "已移出 {code}。",
+      "showRemoved": "显示移出过的",
+      "removedAt": "移出于 {at}",
+      "none": "关注清单是空的。",
+      "problem": {
+        "security_code_invalid": "这个代码不是沪深京 A 股，或者写得不对。",
+        "other": "没有做成，请再试一次。"
+      }
+    }
   }
 }

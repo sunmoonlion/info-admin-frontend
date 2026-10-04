@@ -1,0 +1,92 @@
+[
+ {
+  "security_code": "000858",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "002415",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "300750",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "600009",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "600276",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "600519",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "600900",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "601888",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "601899",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ },
+ {
+  "security_code": "920185",
+  "added_at": "2026-10-04T08:15:25.808006Z",
+  "added_by": "system:seed-2026-09-28",
+  "note": null,
+  "removed_at": null,
+  "removed_by": null,
+  "removal_note": null
+ }
+]

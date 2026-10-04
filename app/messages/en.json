@@ -61,7 +61,10 @@
     "expandMenu": "Expand navigation",
     "closeTab": "Close {name}",
     "governance": "Administration capability migration",
-    "governanceDescription": "P0-007E will add navigation, authorization, CRUD, audit and shared tooling on this foundation."
+    "governanceDescription": "P0-007E will add navigation, authorization, CRUD, audit and shared tooling on this foundation.",
+    "infoRequests": "Request approvals",
+    "infoSecurities": "Security intake",
+    "infoWatchlist": "Watch list"
   },
   "settings": {
     "title": "Interface settings",
@@ -82,5 +85,163 @@
   "InfoCrawl": {
     "title": "Info crawl",
     "description": "Info Admin crawl and distribution console"
+  },
+  "intake": {
+    "nav": {
+      "requests": "Request approvals",
+      "securities": "Security intake",
+      "watchlist": "Watch list"
+    },
+    "common": {
+      "loading": "Loading…",
+      "failed": "Could not load. Please try again later.",
+      "code": "Security code",
+      "time": "Time",
+      "note": "Note",
+      "cancel": "Cancel",
+      "none": "none"
+    },
+    "progress": {
+      "pending": "waiting for approval",
+      "queued": "approved, queued",
+      "collecting": "collecting",
+      "building": "building",
+      "registering": "registering",
+      "available": "available",
+      "rejected": "rejected",
+      "withdrawn": "withdrawn",
+      "quality_failed": "failed the quality checks",
+      "failed": "collecting or building failed",
+      "registration_failed": "registration failed"
+    },
+    "requests": {
+      "title": "Request approvals",
+      "lead": "Companies users asked to ingest. Companies on the watch list need no approval and go straight to the queue; the others are approved here. A rejection needs a reason: the user sees the reason, not who rejected.",
+      "pending": "Waiting for approval",
+      "nonePending": "Nothing is waiting for approval.",
+      "wants": "{n} want it",
+      "earliest": "Earliest request",
+      "reasons": "Reasons",
+      "noReason": "no reason given",
+      "from": "from {app}",
+      "reference": "Reference",
+      "inWatchlist": "on the watch list",
+      "notInWatchlist": "not on the watch list",
+      "hasData": "has data, version …{version}, up to {end}",
+      "noData": "no data yet",
+      "toSecurities": "See this company's intake history",
+      "approve": "Approve",
+      "approveAndWatch": "Approve and add to the watch list",
+      "reject": "Reject",
+      "rejectTitle": "Reject the request for {code}",
+      "rejectLabel": "Reason (the user sees it)",
+      "rejectConfirm": "Reject",
+      "noteRequired": "A rejection needs a reason.",
+      "noteTooLong": "The reason is too long.",
+      "handled": "Handled",
+      "filter": "Filter by status",
+      "all": "All",
+      "status": {
+        "approved": "approved",
+        "rejected": "rejected",
+        "withdrawn": "withdrawn"
+      },
+      "by": "Handled by",
+      "bySystem": "system (watch list)",
+      "at": "When",
+      "noneHandled": "No handled requests yet.",
+      "done": {
+        "approved": "Approved {code}; intake is queued.",
+        "watched": "Approved {code} and added it to the watch list.",
+        "rejected": "Rejected {code}."
+      },
+      "problem": {
+        "request_not_pending": "This request has already been handled.",
+        "rejection_note_required": "A rejection needs a reason.",
+        "other": "It did not work. Please try again."
+      }
+    },
+    "securities": {
+      "title": "Security intake",
+      "lead": "Start the intake of a company directly and look at its batches and datasets. Intake started here creates no request and uses nobody's quota.",
+      "start": "Start intake",
+      "starting": "Starting…",
+      "started": "Intake of {code} started.",
+      "look": "Look",
+      "codeInvalid": "A security code has six digits.",
+      "batches": "Batches",
+      "noBatches": "This company has never been collected.",
+      "requested": "Started",
+      "status": "Status",
+      "sources": "Sources",
+      "error": "Error",
+      "detail": "Detail",
+      "hideDetail": "Hide",
+      "items": "{n} items collected",
+      "noItems": "This batch collected nothing.",
+      "item": {
+        "source": "Source",
+        "kind": "Kind",
+        "size": "Size",
+        "reused": "Same as an existing original",
+        "http": "Status code",
+        "yes": "yes",
+        "no": "no"
+      },
+      "batchStatus": {
+        "pending": "queued",
+        "running": "collecting",
+        "succeeded": "done",
+        "failed": "failed"
+      },
+      "datasets": "Datasets",
+      "noDatasets": "No dataset has been built for this company.",
+      "version": "Version",
+      "range": "Data range",
+      "built": "Built",
+      "failedChecks": "Failed checks",
+      "registration": "Registered with knowledge",
+      "reg": {
+        "registered": "registered",
+        "failed": "registration failed: {error}",
+        "waiting": "not registered yet",
+        "not_published": "not published, not registered"
+      },
+      "datasetStatus": {
+        "published": "published",
+        "quality_failed": "failed the quality checks"
+      },
+      "register": "Register again",
+      "registering": "Registering…",
+      "registered": "Registered again.",
+      "problem": {
+        "dataset_not_found": "No such dataset.",
+        "other": "It did not work. Please try again."
+      }
+    },
+    "watchlist": {
+      "title": "Watch list",
+      "lead": "Companies on the list: user requests need no approval; scheduled intake will also cover only the list. Every change leaves a trace; removing does not delete the row.",
+      "add": "Add",
+      "adding": "Adding…",
+      "addNote": "Note (why)",
+      "added": "Added {code}.",
+      "codeInvalid": "A security code has six digits.",
+      "addedAt": "Added",
+      "addedBy": "Added by",
+      "seed": "first batch (decided 2026-09-28)",
+      "remove": "Remove",
+      "removeTitle": "Remove {code} from the watch list",
+      "removeLabel": "Reason",
+      "removeConfirm": "Remove",
+      "removed": "Removed {code}.",
+      "showRemoved": "Show removed ones",
+      "removedAt": "removed {at}",
+      "none": "The watch list is empty.",
+      "problem": {
+        "security_code_invalid": "This code is not a Shanghai / Shenzhen / Beijing A share, or it is mistyped.",
+        "other": "It did not work. Please try again."
+      }
+    }
   }
 }

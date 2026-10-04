@@ -1,0 +1,19 @@
+[
+ {
+  "id": "a8d00557-4ee4-5cdf-918b-e69884980326",
+  "security_code": "600436",
+  "dataset_id": "sh600436-financials",
+  "data_version": "sh600436-financials-sample600436",
+  "status": "quality_failed",
+  "ingestion_id": "d35d6a3c-0149-5775-a1c7-860389fb558a",
+  "sha256": "6004366004366004366004366004366004366004366004366004366004366004",
+  "size_bytes": 4096,
+  "row_counts": {},
+  "start_date": "2016-12-31",
+  "end_date": "2025-12-31",
+  "built_at": "2026-10-04T08:15:26.479522Z",
+  "failed_checks": [],
+  "knowledge_registered_at": null,
+  "knowledge_registration_error": null
+ }
+]

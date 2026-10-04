@@ -1,0 +1,17 @@
+{
+ "id": "f0410883-287b-578b-81dc-15f24e5b2d8f",
+ "security_code": "601318",
+ "market": "SH",
+ "status": "failed",
+ "sources": [
+  "cninfo",
+  "eastmoney-f10"
+ ],
+ "requested_at": "2026-10-04T08:15:26.508501Z",
+ "started_at": null,
+ "finished_at": "2026-10-04T08:15:26.519321Z",
+ "summary": {},
+ "error_code": "source_unreachable",
+ "error_detail": null,
+ "items": []
+}

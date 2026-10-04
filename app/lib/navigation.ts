@@ -1,6 +1,9 @@
 import {
   ChartNoAxesCombined,
+  Database,
   Gauge,
+  Inbox,
+  ListChecks,
   Rss,
   Settings,
   TableProperties,
@@ -10,7 +13,15 @@ import {
 export type AdminNavigationItem = {
   key: string
   path: string
-  labelKey: 'dashboard' | 'reference' | 'richReference' | 'settings' | 'infoCrawl'
+  labelKey:
+    | 'dashboard'
+    | 'reference'
+    | 'richReference'
+    | 'settings'
+    | 'infoCrawl'
+    | 'infoRequests'
+    | 'infoSecurities'
+    | 'infoWatchlist'
   icon: LucideIcon
   requiredRoles?: readonly string[]
   pinned?: boolean
@@ -23,6 +34,28 @@ export const adminNavigation: readonly AdminNavigationItem[] = [
     labelKey: 'dashboard',
     icon: Gauge,
     pinned: true,
+  },
+  // 数据入库：申请审批、证券采集、关注清单（PRD/apps/info.md 5.3 至 5.5）。只给 info 管理员
+  {
+    key: 'info-requests',
+    path: '/info/requests',
+    labelKey: 'infoRequests',
+    icon: Inbox,
+    requiredRoles: ['admin'],
+  },
+  {
+    key: 'info-securities',
+    path: '/info/securities',
+    labelKey: 'infoSecurities',
+    icon: Database,
+    requiredRoles: ['admin'],
+  },
+  {
+    key: 'info-watchlist',
+    path: '/info/watchlist',
+    labelKey: 'infoWatchlist',
+    icon: ListChecks,
+    requiredRoles: ['admin'],
   },
   {
     key: 'info-crawl',

@@ -1,0 +1,31 @@
+[
+ {
+  "id": "69268fa0-44c9-5bb1-8187-e0ddab71455f",
+  "security_code": "688981",
+  "kind": "initial",
+  "status": "rejected",
+  "progress": "rejected",
+  "open": false,
+  "created_at": "2026-10-04T08:15:26.574130Z",
+  "closed_at": "2026-10-04T08:15:26.591357Z",
+  "decided_by": "d1d13ed0-4e39-5486-b0c6-c7b80742eb0e",
+  "decided_at": "2026-10-04T08:15:26.591357Z",
+  "decision_note": "科创板的公司暂时不采：年报的格式还没有适配",
+  "ingestion_id": null,
+  "in_watchlist": false,
+  "requesters": [
+   {
+    "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
+    "reason": "看看",
+    "origin": {
+     "app": "investment",
+     "ref": "task:42",
+     "return_url": "http://localhost:3100/zh-CN/workbench?ref=task%3A42"
+    },
+    "requested_at": "2026-10-04T08:15:26.573824Z",
+    "withdrawn_at": null
+   }
+  ],
+  "dataset": null
+ }
+]
