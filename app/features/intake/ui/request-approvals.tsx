@@ -115,7 +115,7 @@ export function RequestApprovals({ csrfToken }: { csrfToken: string }) {
                   : t('noData')}
                 {' · '}
                 <Link
-                  href={`/${locale}/info/securities?code=${request.security_code}`}
+                  href={`/${locale}/knowfeed/securities?code=${request.security_code}`}
                   className="underline underline-offset-2"
                 >
                   {t('toSecurities')}

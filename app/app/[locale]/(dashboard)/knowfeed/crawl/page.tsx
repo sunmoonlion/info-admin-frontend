@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
-import { InfoCrawlPanel } from '@/components/info/info-crawl-panel'
+import { InfoCrawlPanel } from '@/components/info/knowfeed-crawl-panel'
 import { requireAnyRole } from '@/lib/server/auth-session'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Info crawl',
+  title: 'Knowfeed crawl',
   robots: { index: false, follow: false },
 }
 
@@ -21,9 +21,9 @@ export default async function InfoCrawlPage({
   return (
     <div>
       <div className="admin-page-heading">
-        <h1 className="text-2xl font-semibold">Info crawl</h1>
+        <h1 className="text-2xl font-semibold">Knowfeed crawl</h1>
         <p className="text-muted-foreground">
-          Domain control surface for Info sources, documents and crawl jobs. Common Admin shell comes
+          Domain control surface for Knowfeed sources, documents and crawl jobs. Common Admin shell comes
           from the frozen Next Admin template.
         </p>
       </div>

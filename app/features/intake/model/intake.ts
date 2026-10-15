@@ -49,7 +49,7 @@ export function decidedBySystem(request: AdminRequest): boolean {
   return (request.decided_by ?? '').startsWith('system')
 }
 
-// 数据集交给 knowledge 了没有
+// 数据集交给 knowbase 了没有
 export type Registration = 'registered' | 'failed' | 'waiting' | 'not_published'
 
 export function registrationOf(dataset: Dataset): Registration {

@@ -1,11 +1,11 @@
-# info-admin-frontend
+# knowfeed-admin-frontend
 
-SunmoonAI 的 Next.js Admin 通用模板。它与 FastAPI `info-backend` 组成不可拆分的
+SunmoonAI 的 Next.js Admin 通用模板。它与 FastAPI `knowfeed-backend` 组成不可拆分的
 发布和验收单元，提供 App Router、public/authenticated 渲染边界、next-intl、
 Tailwind/shadcn UI、同源 `/api` 接入和 Node standalone 构建。
 
 本模板只承载跨业务通用能力，不包含 Info、Knowledge 或 Research 的领域页面和 DTO。
-旧 React Router SPA 保留在独立的 `info-admin-frontend-react` 仓库，仅作迁移参考。
+旧 React Router SPA 保留在独立的 `knowfeed-admin-frontend-react` 仓库，仅作迁移参考。
 
 ## 本地开发
 

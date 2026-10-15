@@ -50,7 +50,7 @@
     "home": "Home",
     "dashboard": "Governance console",
     "settings": "Settings",
-    "infoCrawl": "Info crawl",
+    "infoCrawl": "Knowfeed crawl",
     "reference": "CRUD reference",
     "richReference": "Rich capability reference",
     "mainNavigation": "Administration navigation",
@@ -80,11 +80,11 @@
     "fullscreen": "Toggle fullscreen"
   },
   "Navigation": {
-    "infoCrawl": "Info crawl"
+    "infoCrawl": "Knowfeed crawl"
   },
   "InfoCrawl": {
-    "title": "Info crawl",
-    "description": "Info Admin crawl and distribution console"
+    "title": "Knowfeed crawl",
+    "description": "Knowfeed Admin crawl and distribution console"
   },
   "intake": {
     "nav": {
@@ -200,7 +200,7 @@
       "range": "Data range",
       "built": "Built",
       "failedChecks": "Failed checks",
-      "registration": "Registered with knowledge",
+      "registration": "Registered with knowbase",
       "reg": {
         "registered": "registered",
         "failed": "registration failed: {error}",

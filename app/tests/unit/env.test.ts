@@ -7,11 +7,11 @@ describe('client environment', () => {
   it('accepts the same-origin API contract', () => {
     expect(
       parseClientEnv({
-        NEXT_PUBLIC_APP_NAME: 'info',
+        NEXT_PUBLIC_APP_NAME: 'knowfeed',
         NEXT_PUBLIC_API_URL: '/api',
       }),
     ).toEqual({
-      NEXT_PUBLIC_APP_NAME: 'info',
+      NEXT_PUBLIC_APP_NAME: 'knowfeed',
       NEXT_PUBLIC_API_URL: '/api',
     })
   })
@@ -21,7 +21,7 @@ describe('client environment', () => {
     (value) => {
       expect(() =>
         parseClientEnv({
-          NEXT_PUBLIC_APP_NAME: 'info',
+          NEXT_PUBLIC_APP_NAME: 'knowfeed',
           NEXT_PUBLIC_API_URL: value,
         }),
       ).toThrow()
@@ -34,7 +34,7 @@ describe('server environment', () => {
     expect(() =>
       parseServerEnv({
         NODE_ENV: 'production',
-        AUTH_APP: 'info',
+        AUTH_APP: 'knowfeed',
       }),
     ).toThrow(/required at production runtime/)
   })
@@ -62,7 +62,7 @@ describe('server environment', () => {
       parseServerEnv({
         NODE_ENV: 'production',
         DEPLOYMENT_ENV: 'test',
-        AUTH_APP: 'info',
+        AUTH_APP: 'knowfeed',
         APP_ORIGIN: 'http://127.0.0.1:3008',
         BACKEND_INTERNAL_URL: 'http://127.0.0.1:18080',
         DEPLOYMENT_ID: 'arch-v2-r2-admin-e2e',
@@ -78,7 +78,7 @@ describe('server environment', () => {
       parseServerEnv({
         NODE_ENV: 'production',
         DEPLOYMENT_ENV: 'test',
-        AUTH_APP: 'info',
+        AUTH_APP: 'knowfeed',
         APP_ORIGIN: 'http://web.example.test',
         BACKEND_INTERNAL_URL: 'http://127.0.0.1:18080',
         DEPLOYMENT_ID: 'arch-v2-r2-admin-e2e',
@@ -91,34 +91,34 @@ describe('server environment', () => {
       parseServerEnv({
         NODE_ENV: 'production',
         DEPLOYMENT_ENV: 'production',
-        AUTH_APP: 'info',
-        APP_ORIGIN: 'https://info-admin.sunmoonai.com',
-        BACKEND_INTERNAL_URL: 'http://info-backend:8000',
+        AUTH_APP: 'knowfeed',
+        APP_ORIGIN: 'https://knowfeed-admin.sunmoonai.com',
+        BACKEND_INTERNAL_URL: 'http://knowfeed-backend:8000',
         DEPLOYMENT_ID: 'release-42',
       }),
     ).toMatchObject({
-      APP_ORIGIN: 'https://info-admin.sunmoonai.com',
+      APP_ORIGIN: 'https://knowfeed-admin.sunmoonai.com',
       DEPLOYMENT_ENV: 'production',
-      BACKEND_INTERNAL_URL: 'http://info-backend:8000',
+      BACKEND_INTERNAL_URL: 'http://knowfeed-backend:8000',
       DEPLOYMENT_ID: 'release-42',
     })
   })
 
   it.each([
-    ['http application origin', { APP_ORIGIN: 'http://info-admin.sunmoonai.com' }],
+    ['http application origin', { APP_ORIGIN: 'http://knowfeed-admin.sunmoonai.com' }],
     [
       'backend URL with credentials',
-      { BACKEND_INTERNAL_URL: 'http://user:password@info-backend:8000' },
+      { BACKEND_INTERNAL_URL: 'http://user:password@knowfeed-backend:8000' },
     ],
-    ['backend URL with a path', { BACKEND_INTERNAL_URL: 'http://info-backend:8000/api' }],
+    ['backend URL with a path', { BACKEND_INTERNAL_URL: 'http://knowfeed-backend:8000/api' }],
   ])('rejects unsafe production server routing: %s', (_label, override) => {
     expect(() =>
       parseServerEnv({
         NODE_ENV: 'production',
         DEPLOYMENT_ENV: 'production',
-        AUTH_APP: 'info',
-        APP_ORIGIN: 'https://info-admin.sunmoonai.com',
-        BACKEND_INTERNAL_URL: 'http://info-backend:8000',
+        AUTH_APP: 'knowfeed',
+        APP_ORIGIN: 'https://knowfeed-admin.sunmoonai.com',
+        BACKEND_INTERNAL_URL: 'http://knowfeed-backend:8000',
         DEPLOYMENT_ID: 'release-42',
         ...override,
       }),

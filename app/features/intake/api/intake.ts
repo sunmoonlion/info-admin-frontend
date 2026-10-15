@@ -147,7 +147,7 @@ export function useSecurityActions(csrfToken: string) {
         postJson(ingestionSchema, `${base}/securities/${seg(code)}/ingestions`, csrfToken),
       onSuccess: changed,
     }),
-    // 向 knowledge 重新登记某个版本
+    // 向 knowbase 重新登记某个版本
     register: useMutation({
       mutationFn: (record: string) =>
         postJson(datasetSchema, `${base}/security-datasets/${seg(record)}/registration`, csrfToken),

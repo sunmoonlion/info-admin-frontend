@@ -1,4 +1,4 @@
-// 管理端的契约对着样例检查。样例是 info 后端的测试在测试库里造出各种状态之后，把管理接口的真实返回录下来的。
+// 管理端的契约对着样例检查。样例是 knowfeed 后端的测试在测试库里造出各种状态之后，把管理接口的真实返回录下来的。
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -96,7 +96,7 @@ describe('证券采集', () => {
     expect(isCode('60058')).toBe(false)
     expect(isCode('abc123')).toBe(false)
   })
-  it('数据集交给 knowledge 了没有', () => {
+  it('数据集交给 knowbase 了没有', () => {
     const published = datasetsSchema.parse(read('/api/admin/securities/002594/datasets'))[0]
     const failedQuality = datasetsSchema.parse(read('/api/admin/securities/600436/datasets'))[0]
     expect(registrationOf(published)).toBe('registered')

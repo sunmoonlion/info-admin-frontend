@@ -12,7 +12,7 @@ FROM ${NODE_IMAGE} AS build
 # 如果需要代理，可以通过 --build-arg 传递：
 #   docker build --build-arg HTTP_PROXY=http://proxy.example.com:8080 \
 #                --build-arg HTTPS_PROXY=http://proxy.example.com:8080 \
-#                -f mybuild/Dockerfile -t info-admin-frontend:1.0.0 .
+#                -f mybuild/Dockerfile -t knowfeed-admin-frontend:1.0.0 .
 # ============================================================================
 ARG HTTP_PROXY
 ARG HTTPS_PROXY

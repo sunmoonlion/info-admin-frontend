@@ -84,7 +84,7 @@
   },
   "InfoCrawl": {
     "title": "资讯采集",
-    "description": "Info Admin 领域采集与分发控制台"
+    "description": "Knowfeed Admin 领域采集与分发控制台"
   },
   "intake": {
     "nav": {
@@ -200,7 +200,7 @@
       "range": "数据范围",
       "built": "建库时间",
       "failedChecks": "没过的检查",
-      "registration": "登记到 knowledge",
+      "registration": "登记到 knowbase",
       "reg": {
         "registered": "已登记",
         "failed": "登记失败：{error}",

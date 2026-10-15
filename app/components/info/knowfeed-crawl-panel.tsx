@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 
-import { infoApi, type InfoDocument } from '@/lib/info-api'
+import { infoApi, type InfoDocument } from '@/lib/knowfeed-api'
 
 function errorText(error: unknown): string {
   if (error instanceof Error) return error.message
@@ -51,9 +51,9 @@ export function InfoCrawlPanel() {
       <section className="reference-card">
         <h2>Create crawl job</h2>
         <div className="schema-field">
-          <label htmlFor="info-crawl-url">Target URL</label>
+          <label htmlFor="knowfeed-crawl-url">Target URL</label>
           <input
-            id="info-crawl-url"
+            id="knowfeed-crawl-url"
             placeholder="https://example.com/article"
             value={targetUrl}
             onChange={(event) => setTargetUrl(event.target.value)}
@@ -76,18 +76,18 @@ export function InfoCrawlPanel() {
         <h2>Documents</h2>
         <div className="reference-actions">
           <div className="schema-field flex-1">
-            <label htmlFor="info-crawl-keyword">Keyword</label>
+            <label htmlFor="knowfeed-crawl-keyword">Keyword</label>
             <input
-              id="info-crawl-keyword"
+              id="knowfeed-crawl-keyword"
               placeholder="Keyword"
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
             />
           </div>
           <div className="schema-field md:w-48">
-            <label htmlFor="info-crawl-status">Status</label>
+            <label htmlFor="knowfeed-crawl-status">Status</label>
             <input
-              id="info-crawl-status"
+              id="knowfeed-crawl-status"
               placeholder="Status"
               value={status}
               onChange={(event) => setStatus(event.target.value)}

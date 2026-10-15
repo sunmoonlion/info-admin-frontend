@@ -1,4 +1,4 @@
-// 采集申请、关注清单、证券采集的契约（管理面）。字段以 info-backend 的接口为真源。
+// 采集申请、关注清单、证券采集的契约（管理面）。字段以 knowfeed-backend 的接口为真源。
 // 由 `tests/unit/intake-contract-samples.test.ts` 对着真后端录下来的返回逐份检查。
 import { z } from 'zod'
 

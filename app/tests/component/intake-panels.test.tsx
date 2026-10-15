@@ -12,11 +12,11 @@ import messages from '@/messages/zh-CN.json'
 let search = new URLSearchParams()
 vi.mock('next/navigation', () => ({
   useSearchParams: () => search,
-  usePathname: () => '/zh-CN/info/requests',
+  usePathname: () => '/zh-CN/knowfeed/requests',
   useRouter: () => ({ push: vi.fn() }),
 }))
 
-// 样例：info 后端的测试把管理接口的真实返回录下来的
+// 样例：knowfeed 后端的测试把管理接口的真实返回录下来的
 const dir = join(process.cwd(), 'preview/fixtures/full')
 const manifest = JSON.parse(readFileSync(join(dir, 'manifest.json'), 'utf8')) as {
   responses: { method: string; path: string; query: string; file: string }[]
@@ -86,7 +86,7 @@ describe('申请审批', () => {
     expect(pending.getByText(/不在关注清单里；还没有数据/)).toBeInTheDocument()
     expect(pending.getByRole('link', { name: '看这家的采集记录' })).toHaveAttribute(
       'href',
-      '/zh-CN/info/securities?code=601012',
+      '/zh-CN/knowfeed/securities?code=601012',
     )
   })
 
