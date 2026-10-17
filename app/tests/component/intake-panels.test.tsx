@@ -82,7 +82,7 @@ describe('申请审批', () => {
     expect(await pending.findByText('601012')).toBeInTheDocument()
     expect(pending.getByText('2 个人要')).toBeInTheDocument()
     expect(pending.getByText(/要做光伏行业的对比/)).toBeInTheDocument()
-    expect(pending.getAllByText(/从 investment 来/).length).toBeGreaterThan(0)
+    expect(pending.getAllByText(/从 knowbench 来/).length).toBeGreaterThan(0)
     expect(pending.getByText(/不在关注清单里；还没有数据/)).toBeInTheDocument()
     expect(pending.getByRole('link', { name: '看这家的采集记录' })).toHaveAttribute(
       'href',

@@ -18,7 +18,7 @@
     "actor_id": "868e3e7e-acfc-5d8c-9340-fba470994d10",
     "reason": "要做光伏行业的对比",
     "origin": {
-     "app": "investment",
+     "app": "knowbench",
      "ref": "task:7f3a",
      "return_url": "http://localhost:3100/zh-CN/workbench?ref=task%3A7f3a"
     },
