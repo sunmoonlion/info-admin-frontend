@@ -1,6 +1,6 @@
 // 前端的结构规矩（所有者 2026-10-04 定）：按功能分，功能里取数、状态、渲染分开。
 // 和后端的分层检查一样，规矩写成测试，坏了就红。
-import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
@@ -23,22 +23,29 @@ function importsOf(file: string): string[] {
   return [...source.matchAll(/(?:from|import)\s+['"]([^'"]+)['"]/g)].map((found) => found[1])
 }
 
-const features = readdirSync(join(root, 'features')).filter((name) =>
-  statSync(join(root, 'features', name)).isDirectory(),
-)
-const featureFiles = filesUnder('features')
+// 旧证券专线的入库界面（features/intake）退掉之后（SDD 0045 第六节第 2 条）暂时一个功能都
+// 没有；规矩照样留着，再加功能时自动生效
+const hasFeatures = existsSync(join(root, 'features'))
+const features = hasFeatures
+  ? readdirSync(join(root, 'features')).filter((name) =>
+      statSync(join(root, 'features', name)).isDirectory(),
+    )
+  : []
+const featureFiles = hasFeatures ? filesUnder('features') : []
 const partOf = (file: string) => file.split(sep)[2] // features/<功能>/<api|model|ui>/…
 
 describe('功能之间不互相引用', () => {
-  it.each(features)('%s 不引用别的功能', (feature) => {
-    const bad = featureFiles
-      .filter((file) => file.startsWith(join('features', feature) + sep))
-      .flatMap((file) =>
-        importsOf(file)
-          .filter((target) => target.startsWith('@/features/'))
-          .filter((target) => target.split('/')[2] !== feature)
-          .map((target) => `${file} → ${target}`),
-      )
+  it('每个功能不引用别的功能', () => {
+    const bad = features.flatMap((feature) =>
+      featureFiles
+        .filter((file) => file.startsWith(join('features', feature) + sep))
+        .flatMap((file) =>
+          importsOf(file)
+            .filter((target) => target.startsWith('@/features/'))
+            .filter((target) => target.split('/')[2] !== feature)
+            .map((target) => `${file} → ${target}`),
+        ),
+    )
     expect(bad).toEqual([])
   })
 
@@ -119,7 +126,7 @@ describe('一个功能里：取数、状态、渲染分开', () => {
     expect(bad).toEqual([])
   })
 
-  it('这份检查真的看到了文件', () => {
+  it.runIf(hasFeatures)('有功能时，这份检查真的看到了文件', () => {
     expect(features.length).toBeGreaterThanOrEqual(1)
     expect(featureFiles.map((file) => relative('features', file)).length).toBeGreaterThan(5)
   })
