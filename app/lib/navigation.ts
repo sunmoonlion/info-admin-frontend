@@ -1,6 +1,10 @@
 import {
   ChartNoAxesCombined,
+  CircleAlert,
   Gauge,
+  Globe,
+  ListChecks,
+  ListOrdered,
   Rss,
   Settings,
   TableProperties,
@@ -10,7 +14,16 @@ import {
 export type AdminNavigationItem = {
   key: string
   path: string
-  labelKey: 'dashboard' | 'reference' | 'richReference' | 'settings' | 'infoCrawl'
+  labelKey:
+    | 'dashboard'
+    | 'reference'
+    | 'richReference'
+    | 'settings'
+    | 'infoCrawl'
+    | 'supplyChannels'
+    | 'supplySites'
+    | 'supplyGaps'
+    | 'supplyQueue'
   icon: LucideIcon
   requiredRoles?: readonly string[]
   pinned?: boolean
@@ -24,6 +37,36 @@ export const adminNavigation: readonly AdminNavigationItem[] = [
     icon: Gauge,
     pinned: true,
   },
+  // 来源目录、待审网站、缺口清单、队列监控（SDD 0045 第一节）
+  {
+    key: 'supply-channels',
+    path: '/knowfeed/channels',
+    labelKey: 'supplyChannels',
+    icon: ListChecks,
+    requiredRoles: ['admin', 'operator'],
+  },
+  {
+    key: 'supply-sites',
+    path: '/knowfeed/sites',
+    labelKey: 'supplySites',
+    icon: Globe,
+    requiredRoles: ['admin', 'operator'],
+  },
+  {
+    key: 'supply-gaps',
+    path: '/knowfeed/gaps',
+    labelKey: 'supplyGaps',
+    icon: CircleAlert,
+    requiredRoles: ['admin', 'operator'],
+  },
+  {
+    key: 'supply-queue',
+    path: '/knowfeed/queue',
+    labelKey: 'supplyQueue',
+    icon: ListOrdered,
+    requiredRoles: ['admin', 'operator'],
+  },
+  // 旧通用采集，退旧线时删（SDD 0045 第六节）
   {
     key: 'knowfeed-crawl',
     path: '/knowfeed/crawl',

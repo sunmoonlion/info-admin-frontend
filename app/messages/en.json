@@ -61,7 +61,11 @@
     "expandMenu": "Expand navigation",
     "closeTab": "Close {name}",
     "governance": "Administration capability migration",
-    "governanceDescription": "P0-007E will add navigation, authorization, CRUD, audit and shared tooling on this foundation."
+    "governanceDescription": "P0-007E will add navigation, authorization, CRUD, audit and shared tooling on this foundation.",
+    "supplyChannels": "Source catalog",
+    "supplySites": "Sites to review",
+    "supplyGaps": "Gap list",
+    "supplyQueue": "Queue monitor"
   },
   "settings": {
     "title": "Interface settings",
@@ -82,5 +86,236 @@
   "InfoCrawl": {
     "title": "Knowfeed crawl",
     "description": "Knowfeed Admin crawl and distribution console"
+  },
+  "supply": {
+    "loading": "Loading…",
+    "failed": "Could not load. Please try again later.",
+    "limits": "{rate} a minute, {cap} a day",
+    "hours": "{n} h",
+    "channels": {
+      "title": "Source catalog",
+      "lead": "A channel is a place data can be fetched from, with how to fetch it and its rules. Adding one is registering a record, not changing code; only approved channels are used, tried in this order.",
+      "howItWorks": "Run a trial before approving; approve only when it shows results, and say why. A channel that fails {n} times in a row is paused automatically; its jobs wait and continue after it resumes. Disabling it turns waiting demands into “unsatisfiable”.",
+      "up": "Move {name} up",
+      "down": "Move {name} down",
+      "openRegister": "Register a channel",
+      "closeRegister": "Close the form",
+      "registered": "Registered and pending review. Run a trial, then review."
+    },
+    "sites": {
+      "title": "Sites to review",
+      "lead": "Web pages are reviewed per site: a URL on an unregistered site creates a pending channel automatically, and the demand waits for review.",
+      "howItWorks": "Each site is reviewed once; afterwards the same site follows that channel. Unreviewed for {days} days, the waiting demands become “unsatisfiable” and users are told.",
+      "none": "No sites are waiting for review.",
+      "alert": {
+        "too_many_pending": "{count} or more sites are waiting for review.",
+        "waiting_too_long": "A site has been waiting for more than {hours} hours."
+      }
+    },
+    "gaps": {
+      "title": "Gap list",
+      "lead": "Unsatisfiable demands grouped by type, to decide which channels to add. Counts only; it does not show who asked.",
+      "howItWorks": "“Not covered yet” means no channel in the catalog can supply it (or the one that could is disabled) and is the main reason to add channels; “the channel has no such document” and “site rejected or never reviewed” are listed too.",
+      "kind": "Kind",
+      "none": "No gaps of this kind."
+    },
+    "queue": {
+      "title": "Queue monitor",
+      "lead": "Per channel: jobs queued, running and waiting to retry, done and failed in a day, and recent failure reasons.",
+      "failuresInRow": "{n} failures in a row",
+      "tiers": "Open jobs by tier: ",
+      "tier": "tier {tier}: {n}",
+      "noOpen": "none",
+      "failuresTitle": "Failure reasons in a day",
+      "jobsTitle": "Jobs",
+      "noJobs": "No jobs in this status.",
+      "attemptsTitle": "Attempts",
+      "requeue": "Queue now",
+      "requeued": "Queued again."
+    },
+    "col": {
+      "order": "Order",
+      "name": "Name",
+      "kind": "Kind",
+      "review": "Review",
+      "status": "Status",
+      "license": "License",
+      "limits": "Rate and daily cap",
+      "failures": "Failures in a row",
+      "docTypes": "Types supplied",
+      "at": "When",
+      "action": "What",
+      "actor": "Who",
+      "reason": "Why",
+      "site": "Site",
+      "since": "Pending since",
+      "waited": "Waited",
+      "waitingItems": "Waiting items",
+      "users": "Users",
+      "gapKind": "Kind",
+      "docType": "Type",
+      "items": "Items",
+      "subjects": "Subjects",
+      "lastAt": "Latest",
+      "queued": "Queued",
+      "running": "Running",
+      "waiting": "Waiting to retry",
+      "failedRecent": "Failed in a day",
+      "doneRecent": "Done in a day",
+      "oldest": "Oldest queued for",
+      "channel": "Channel",
+      "key": "Description",
+      "tier": "Tier",
+      "attempts": "Attempts",
+      "lastError": "Last error",
+      "createdAt": "Created"
+    },
+    "kind": {
+      "catalog": "Disclosure catalog",
+      "feed": "Feed",
+      "web": "Web page",
+      "search": "Search service"
+    },
+    "review": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "status": {
+      "active": "Active",
+      "paused": "Paused",
+      "disabled": "Disabled"
+    },
+    "license": {
+      "self": "Owner only",
+      "via_expert": "Usable through experts",
+      "sale": "Saleable"
+    },
+    "reading": {
+      "original": "Original",
+      "text": "Text",
+      "pages": "Text by page",
+      "table": "Tables"
+    },
+    "action": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "disable": "Disable",
+      "enable": "Enable",
+      "approve": "Approve",
+      "reject": "Reject"
+    },
+    "event": {
+      "register": "Registered",
+      "update": "Registration changed",
+      "approve": "Approved",
+      "reject": "Rejected",
+      "pause": "Paused",
+      "resume": "Resumed",
+      "disable": "Disabled",
+      "enable": "Enabled",
+      "reorder": "Order changed",
+      "auto_pause": "Paused after repeated failures",
+      "site_found": "A user's URL was on this site; created as pending"
+    },
+    "form": {
+      "registerTitle": "Register a channel",
+      "editTitle": "Change registration",
+      "channelId": "Channel id (lower-case letters, digits, dashes)",
+      "name": "Name",
+      "kind": "Kind",
+      "plugin": "Plugin",
+      "docTypes": "Types supplied (vocabulary types, comma separated)",
+      "readings": "Readings given",
+      "license": "License tier of fetched data",
+      "rate": "Fetches per minute at most",
+      "dailyCap": "Documents per day at most",
+      "domain": "Site (domain)",
+      "terms": "Terms link",
+      "render": "May render with a headless browser",
+      "robots": "Obey robots",
+      "reason": "Why change it",
+      "save": "Save",
+      "register": "Register"
+    },
+    "detail": {
+      "statusTitle": "Active, paused, disabled",
+      "statusReason": "Reason (required to pause or disable)",
+      "done": {
+        "pause": "Paused.",
+        "resume": "Resumed; waiting jobs were queued again.",
+        "disable": "Disabled; waiting demands are now unsatisfiable.",
+        "enable": "Enabled.",
+        "trial": "Trial queued; the result will show below.",
+        "approve": "Approved.",
+        "reject": "Rejected.",
+        "update": "Registration changed. Run a new trial before approving."
+      },
+      "trialTitle": "Trial",
+      "trialLead": "Run one list and one fetch for a sample description; approve only when it shows results. Trials run in the background and are neither kept nor delivered.",
+      "reviewTitle": "Review",
+      "reviewLead": "Each channel is reviewed once. Approving sets the license tier; rejecting turns waiting demands into unsatisfiable. Always say why.",
+      "reviewReason": "Why",
+      "needTrial": "The latest trial did not succeed, so it cannot be approved yet.",
+      "editTitle": "Change registration",
+      "edit": "Change registration",
+      "eventsTitle": "Review record",
+      "noEvents": "No records yet."
+    },
+    "trial": {
+      "subject": "Subject (security code with market)",
+      "docType": "Type",
+      "periodStart": "Period from",
+      "periodEnd": "Period to",
+      "run": "Run trial",
+      "none": "No trials yet.",
+      "status": {
+        "queued": "Queued",
+        "running": "Running",
+        "ok": "Succeeded",
+        "failed": "Failed"
+      },
+      "fetched": "Fetched {type}, {size} bytes"
+    },
+    "gapKind": {
+      "all": "All",
+      "uncovered": "Not covered yet",
+      "absent": "The channel has no such document",
+      "site": "Site rejected or never reviewed"
+    },
+    "jobStatus": {
+      "all": "All",
+      "queued": "Queued",
+      "running": "Running",
+      "waiting": "Waiting to retry",
+      "failed": "Failed",
+      "done": "Done"
+    },
+    "errors": {
+      "generic": "That did not work. Please try again later.",
+      "trial_required": "Run a successful trial before approving.",
+      "trial_outdated": "The registration changed after the trial; run a new one.",
+      "reason_required": "Please say why.",
+      "channel_exists": "This channel id or site is already registered.",
+      "status_move_invalid": "The channel cannot change that way from its current status.",
+      "not_approved": "The channel is not approved, so it cannot be enabled or resumed.",
+      "plugin_unknown": "No such plugin.",
+      "plugin_kind_mismatch": "The plugin does not match the kind.",
+      "doc_type_unknown": "A type is not in the vocabulary.",
+      "domain_required": "Web pages are reviewed per site: give the site.",
+      "domain_invalid": "Give the site as a domain, such as www.example.gov.cn.",
+      "url_invalid": "The terms link must be an http or https URL.",
+      "channel_id_invalid": "Use lower-case letters, digits and dashes for the channel id.",
+      "order_invalid": "List each channel once.",
+      "channel_disabled": "A disabled channel cannot run trials.",
+      "channel_not_active": "The channel is not active; resume it first.",
+      "job_not_open": "Only queued or waiting jobs can be queued again.",
+      "kind_fixed": "Kind and plugin cannot change; register another channel.",
+      "rate_invalid": "The rate is out of range.",
+      "daily_cap_invalid": "The daily cap is out of range.",
+      "license_invalid": "The license tier is invalid.",
+      "readings_invalid": "Choose the readings it gives.",
+      "name_invalid": "The name is at most 80 characters."
+    }
   }
 }

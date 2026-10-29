@@ -61,7 +61,11 @@
     "expandMenu": "展开导航",
     "closeTab": "关闭{name}",
     "governance": "管理能力迁移中枢",
-    "governanceDescription": "P0-007E 将在此基础上逐项迁入菜单、权限、CRUD、审计和通用工具能力。"
+    "governanceDescription": "P0-007E 将在此基础上逐项迁入菜单、权限、CRUD、审计和通用工具能力。",
+    "supplyChannels": "来源目录",
+    "supplySites": "待审网站",
+    "supplyGaps": "缺口清单",
+    "supplyQueue": "队列监控"
   },
   "settings": {
     "title": "界面设置",
@@ -82,5 +86,236 @@
   "InfoCrawl": {
     "title": "资讯采集",
     "description": "Knowfeed Admin 领域采集与分发控制台"
+  },
+  "supply": {
+    "loading": "加载中…",
+    "failed": "没有取到，请稍后再试。",
+    "limits": "每分钟 {rate} 次，每天 {cap} 份",
+    "hours": "{n} 小时",
+    "channels": {
+      "title": "来源目录",
+      "lead": "渠道就是能取到数据的地方，加上取的方式与规矩。加渠道是登记一条记录，不改代码；审过才会被用上，按这里的先后试。",
+      "howItWorks": "放行之前要先试采一次，看得到结果才能放行，并写明凭什么。渠道连续失败 {n} 次会自动暂停；暂停时作业等着，恢复后接着跑。停用后在等它的需求转「无法满足」。",
+      "up": "把 {name} 往前挪",
+      "down": "把 {name} 往后挪",
+      "openRegister": "登记渠道",
+      "closeRegister": "收起登记",
+      "registered": "已登记，待审。先试采，再审核。"
+    },
+    "sites": {
+      "title": "待审网站",
+      "lead": "通用网页按网站审：用户给的网址落在没登记的网站上，会自动建一条待审的渠道，需求等审核。",
+      "howItWorks": "一个网站审一次，审过以后同一网站照这条走。超过 {days} 天没人审，在等它的需求转「无法满足」并通知用户。",
+      "none": "没有待审的网站。",
+      "alert": {
+        "too_many_pending": "待审网站已有 {count} 个以上，请尽快审。",
+        "waiting_too_long": "有网站已经等了 {hours} 小时以上，请尽快审。"
+      }
+    },
+    "gaps": {
+      "title": "缺口清单",
+      "lead": "需求里「无法满足」的汇总，按类型分组，据此补渠道。只写几项、几个人要过，看不出是谁。",
+      "howItWorks": "「这类数据还取不到」是来源目录里没有能供的渠道（或供它的渠道停用了），是补渠道的主要依据；「渠道里没有这一份」「网站审不过或没人审」一并列出。",
+      "kind": "哪种",
+      "none": "没有这一种缺口。"
+    },
+    "queue": {
+      "title": "队列监控",
+      "lead": "各渠道的作业排着几个、在跑几个、等重试几个，一天里成败几个，最近失败的原因。",
+      "failuresInRow": "连续失败 {n} 次",
+      "tiers": "没办完的作业按先后档：",
+      "tier": "第 {tier} 档 {n} 个",
+      "noOpen": "没有",
+      "failuresTitle": "一天里失败的原因",
+      "jobsTitle": "作业",
+      "noJobs": "没有这种状态的作业。",
+      "attemptsTitle": "每次尝试",
+      "requeue": "马上再排",
+      "requeued": "已再排。"
+    },
+    "col": {
+      "order": "先后",
+      "name": "名称",
+      "kind": "大类",
+      "review": "审核",
+      "status": "状态",
+      "license": "许可档",
+      "limits": "限速与日上限",
+      "failures": "连续失败",
+      "docTypes": "能提供的类型",
+      "at": "时间",
+      "action": "做了什么",
+      "actor": "谁",
+      "reason": "凭什么",
+      "site": "网站",
+      "since": "待审起",
+      "waited": "等了",
+      "waitingItems": "在等的需求项",
+      "users": "几个人",
+      "gapKind": "哪种",
+      "docType": "类型",
+      "items": "几项",
+      "subjects": "几个主体",
+      "lastAt": "最近一次",
+      "queued": "排着",
+      "running": "在跑",
+      "waiting": "等重试",
+      "failedRecent": "一天内失败",
+      "doneRecent": "一天内办成",
+      "oldest": "最早那个排了",
+      "channel": "渠道",
+      "key": "描述",
+      "tier": "档",
+      "attempts": "尝试次数",
+      "lastError": "最近的错误",
+      "createdAt": "建于"
+    },
+    "kind": {
+      "catalog": "有目录的披露渠道",
+      "feed": "订阅源",
+      "web": "通用网页",
+      "search": "搜索服务"
+    },
+    "review": {
+      "pending": "待审",
+      "approved": "已放行",
+      "rejected": "审不过"
+    },
+    "status": {
+      "active": "在用",
+      "paused": "暂停",
+      "disabled": "停用"
+    },
+    "license": {
+      "self": "只许本人用",
+      "via_expert": "可以经专家给别人用",
+      "sale": "可以出售"
+    },
+    "reading": {
+      "original": "原件",
+      "text": "正文文字",
+      "pages": "按页文字",
+      "table": "抽好的表"
+    },
+    "action": {
+      "pause": "暂停",
+      "resume": "恢复",
+      "disable": "停用",
+      "enable": "启用",
+      "approve": "放行",
+      "reject": "审不过"
+    },
+    "event": {
+      "register": "登记",
+      "update": "改登记",
+      "approve": "放行",
+      "reject": "审不过",
+      "pause": "暂停",
+      "resume": "恢复",
+      "disable": "停用",
+      "enable": "启用",
+      "reorder": "改先后",
+      "auto_pause": "连续失败自动暂停",
+      "site_found": "用户的网址落在这个网站，自动建为待审"
+    },
+    "form": {
+      "registerTitle": "登记渠道",
+      "editTitle": "改登记",
+      "channelId": "渠道编号（小写字母、数字、连字符）",
+      "name": "名称",
+      "kind": "大类",
+      "plugin": "插件",
+      "docTypes": "能提供的类型（词表细类，逗号分开）",
+      "readings": "能给的读法",
+      "license": "取来的数据属于哪一档许可",
+      "rate": "每分钟最多取几次",
+      "dailyCap": "每天最多取几份",
+      "domain": "网站（域名）",
+      "terms": "条款链接",
+      "render": "可以用无头浏览器渲染",
+      "robots": "守 robots",
+      "reason": "为什么改",
+      "save": "保存",
+      "register": "登记"
+    },
+    "detail": {
+      "statusTitle": "在用、暂停、停用",
+      "statusReason": "原因（暂停、停用要写）",
+      "done": {
+        "pause": "已暂停。",
+        "resume": "已恢复，等着的作业已再排。",
+        "disable": "已停用，在等它的需求已转「无法满足」。",
+        "enable": "已启用。",
+        "trial": "已排试采，结果出来会显示在下面。",
+        "approve": "已放行。",
+        "reject": "已记为审不过。",
+        "update": "已改登记。改过要重新试采才能放行。"
+      },
+      "trialTitle": "试采",
+      "trialLead": "对一条样例描述跑一次「列」和「取」，看得到结果才能放行。试采在后台跑，不留存、不交付。",
+      "reviewTitle": "审核",
+      "reviewLead": "每个渠道审一次。放行定许可档；审不过的，在等它的需求转「无法满足」。都要写凭什么。",
+      "reviewReason": "凭什么",
+      "needTrial": "最近一次试采没有成功，还不能放行。",
+      "editTitle": "改登记",
+      "edit": "改登记",
+      "eventsTitle": "审核记录",
+      "noEvents": "还没有记录。"
+    },
+    "trial": {
+      "subject": "主体（证券代码带市场）",
+      "docType": "类型",
+      "periodStart": "期间起",
+      "periodEnd": "期间止",
+      "run": "试采",
+      "none": "还没有试采过。",
+      "status": {
+        "queued": "排着",
+        "running": "在跑",
+        "ok": "成功",
+        "failed": "没成"
+      },
+      "fetched": "取回 {type}，{size} 字节"
+    },
+    "gapKind": {
+      "all": "全部",
+      "uncovered": "这类数据还取不到",
+      "absent": "渠道里没有这一份",
+      "site": "网站审不过或没人审"
+    },
+    "jobStatus": {
+      "all": "全部",
+      "queued": "排着",
+      "running": "在跑",
+      "waiting": "等重试",
+      "failed": "失败",
+      "done": "办成"
+    },
+    "errors": {
+      "generic": "没有办成，请稍后再试。",
+      "trial_required": "放行之前要先试采成功一次。",
+      "trial_outdated": "试采之后改过登记，请重新试采。",
+      "reason_required": "请写明原因。",
+      "channel_exists": "这个编号或网站已经登记过了。",
+      "status_move_invalid": "现在的状态不能这样改。",
+      "not_approved": "这条渠道还没放行，不能启用或恢复。",
+      "plugin_unknown": "没有这个插件。",
+      "plugin_kind_mismatch": "插件和大类对不上。",
+      "doc_type_unknown": "有类型不在词表里。",
+      "domain_required": "通用网页按网站审，要写网站。",
+      "domain_invalid": "网站要写成域名，如 www.example.gov.cn。",
+      "url_invalid": "条款链接要是 http 或 https 的网址。",
+      "channel_id_invalid": "渠道编号只能用小写字母、数字和连字符。",
+      "order_invalid": "先后里每条渠道要列一次。",
+      "channel_disabled": "停用的渠道不能试采。",
+      "channel_not_active": "渠道没在用，先恢复渠道。",
+      "job_not_open": "只有排着或等重试的作业能再排。",
+      "kind_fixed": "大类和插件不能改，请另登记一条。",
+      "rate_invalid": "限速超出范围。",
+      "daily_cap_invalid": "日上限超出范围。",
+      "license_invalid": "许可档不对。",
+      "readings_invalid": "请选能给的读法。",
+      "name_invalid": "名称最多 80 个字。"
+    }
   }
 }
