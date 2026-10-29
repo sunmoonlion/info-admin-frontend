@@ -90,7 +90,7 @@
   "supply": {
     "loading": "加载中…",
     "failed": "没有取到，请稍后再试。",
-    "limits": "每分钟 {rate} 次，每天 {cap} 份",
+    "limits": "每分钟 {rate} 次，每天 {cap} 份，同时 {running} 个",
     "hours": "{n} 小时",
     "channels": {
       "title": "来源目录",
@@ -121,7 +121,7 @@
     },
     "queue": {
       "title": "队列监控",
-      "lead": "各渠道的作业排着几个、在跑几个、等重试几个，一天里成败几个，最近失败的原因。",
+      "lead": "各渠道的作业排着几个、在跑几个、等着几个（等重试、渠道暂停或今天的份数用完），一天里成败几个，最近失败的原因。",
       "failuresInRow": "连续失败 {n} 次",
       "tiers": "没办完的作业按先后档：",
       "tier": "第 {tier} 档 {n} 个",
@@ -131,7 +131,8 @@
       "noJobs": "没有这种状态的作业。",
       "attemptsTitle": "每次尝试",
       "requeue": "马上再排",
-      "requeued": "已再排。"
+      "requeued": "已再排。",
+      "processing": "加工（上传的资料）"
     },
     "col": {
       "order": "先后",
@@ -159,7 +160,7 @@
       "lastAt": "最近一次",
       "queued": "排着",
       "running": "在跑",
-      "waiting": "等重试",
+      "waiting": "等着",
       "failedRecent": "一天内失败",
       "doneRecent": "一天内办成",
       "oldest": "最早那个排了",
@@ -230,6 +231,7 @@
       "license": "取来的数据属于哪一档许可",
       "rate": "每分钟最多取几次",
       "dailyCap": "每天最多取几份",
+      "maxRunning": "同时最多跑几个作业",
       "domain": "网站（域名）",
       "terms": "条款链接",
       "render": "可以用无头浏览器渲染",
@@ -287,7 +289,7 @@
       "all": "全部",
       "queued": "排着",
       "running": "在跑",
-      "waiting": "等重试",
+      "waiting": "等着",
       "failed": "失败",
       "done": "办成"
     },
@@ -309,10 +311,11 @@
       "order_invalid": "先后里每条渠道要列一次。",
       "channel_disabled": "停用的渠道不能试采。",
       "channel_not_active": "渠道没在用，先恢复渠道。",
-      "job_not_open": "只有排着或等重试的作业能再排。",
+      "job_not_open": "只有排着或等着的作业能再排。",
       "kind_fixed": "大类和插件不能改，请另登记一条。",
       "rate_invalid": "限速超出范围。",
       "daily_cap_invalid": "日上限超出范围。",
+      "max_running_invalid": "同时最多跑几个要在 1 到 10 之间。",
       "license_invalid": "许可档不对。",
       "readings_invalid": "请选能给的读法。",
       "name_invalid": "名称最多 80 个字。"

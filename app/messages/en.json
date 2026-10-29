@@ -90,7 +90,7 @@
   "supply": {
     "loading": "Loading…",
     "failed": "Could not load. Please try again later.",
-    "limits": "{rate} a minute, {cap} a day",
+    "limits": "{rate} a minute, {cap} a day, {running} at a time",
     "hours": "{n} h",
     "channels": {
       "title": "Source catalog",
@@ -121,7 +121,7 @@
     },
     "queue": {
       "title": "Queue monitor",
-      "lead": "Per channel: jobs queued, running and waiting to retry, done and failed in a day, and recent failure reasons.",
+      "lead": "Per channel: jobs queued, running and waiting (to retry, for a paused channel or for tomorrow's daily cap), done and failed in a day, and recent failure reasons.",
       "failuresInRow": "{n} failures in a row",
       "tiers": "Open jobs by tier: ",
       "tier": "tier {tier}: {n}",
@@ -131,7 +131,8 @@
       "noJobs": "No jobs in this status.",
       "attemptsTitle": "Attempts",
       "requeue": "Queue now",
-      "requeued": "Queued again."
+      "requeued": "Queued again.",
+      "processing": "Processing (uploaded materials)"
     },
     "col": {
       "order": "Order",
@@ -159,7 +160,7 @@
       "lastAt": "Latest",
       "queued": "Queued",
       "running": "Running",
-      "waiting": "Waiting to retry",
+      "waiting": "Waiting",
       "failedRecent": "Failed in a day",
       "doneRecent": "Done in a day",
       "oldest": "Oldest queued for",
@@ -230,6 +231,7 @@
       "license": "License tier of fetched data",
       "rate": "Fetches per minute at most",
       "dailyCap": "Documents per day at most",
+      "maxRunning": "Jobs at a time at most",
       "domain": "Site (domain)",
       "terms": "Terms link",
       "render": "May render with a headless browser",
@@ -287,7 +289,7 @@
       "all": "All",
       "queued": "Queued",
       "running": "Running",
-      "waiting": "Waiting to retry",
+      "waiting": "Waiting",
       "failed": "Failed",
       "done": "Done"
     },
@@ -313,6 +315,7 @@
       "kind_fixed": "Kind and plugin cannot change; register another channel.",
       "rate_invalid": "The rate is out of range.",
       "daily_cap_invalid": "The daily cap is out of range.",
+      "max_running_invalid": "Jobs at a time must be between 1 and 10.",
       "license_invalid": "The license tier is invalid.",
       "readings_invalid": "Choose the readings it gives.",
       "name_invalid": "The name is at most 80 characters."

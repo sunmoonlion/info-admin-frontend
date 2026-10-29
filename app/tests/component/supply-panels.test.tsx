@@ -4,6 +4,8 @@ import { NextIntlClientProvider } from 'next-intl'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { ChannelsPanel, GapsPanel, QueuePanel, SitesPanel } from '@/features/supply'
+import { channelSchema } from '@/contracts/supply'
+import { RegistrationForm } from '@/features/supply/ui/registration-form'
 import messages from '@/messages/zh-CN.json'
 
 // 后端答复的样子（knowfeed-backend `app/interfaces/http/admin/supply.py`）
@@ -21,6 +23,7 @@ const cninfo = {
   priority: 10,
   rate_per_minute: 20,
   daily_cap: 3000,
+  max_running: 1,
   consecutive_failures: 0,
   domain: 'cninfo.com.cn',
   terms_url: null,
@@ -240,6 +243,19 @@ describe('队列监控', () => {
               done_recent: 7,
               oldest_open_at: '2026-10-29T10:00:00Z',
             },
+            {
+              channel_id: '_processing',
+              name: '加工（上传的资料）',
+              status: 'active',
+              status_reason: null,
+              consecutive_failures: 0,
+              queued: 2,
+              running: 0,
+              waiting: 0,
+              failed_recent: 0,
+              done_recent: 0,
+              oldest_open_at: null,
+            },
           ],
           tiers: [{ tier: 1, open: 5 }],
           failures: [{ channel_id: 'cninfo', reason: 'knowbase_error', count: 1 }],
@@ -268,10 +284,37 @@ describe('队列监控', () => {
     expect(within(row).getByText('连续失败 2 次')).toBeInTheDocument()
     expect(within(row).getByText('2 小时')).toBeInTheDocument()
     expect(screen.getByText(/第 1 档 5 个/)).toBeInTheDocument()
+    // 加工队列不是渠道，名字按界面语言写
+    expect(screen.getByText('加工（上传的资料）')).toBeInTheDocument()
     fireEvent.click(
       await screen.findByRole('button', { name: '600519.SH · annual_report · 2025-12-31' }),
     )
     fireEvent.click(await screen.findByRole('button', { name: '马上再排' }))
     expect(await screen.findByText('已再排。')).toBeInTheDocument()
+  })
+})
+
+describe('登记表', () => {
+  it('改登记带上同时最多跑几个，适配器配置原样带回', async () => {
+    const onSubmit = vi.fn()
+    show(
+      <RegistrationForm
+        plugins={[{ name: 'cninfo-irm', kind: 'catalog' }]}
+        initial={channelSchema.parse({
+          ...cninfo,
+          plugin: 'cninfo-irm',
+          config: { markets: ['SZ'] },
+        })}
+        pending={false}
+        onSubmit={onSubmit}
+      />,
+    )
+    fireEvent.change(screen.getByLabelText('同时最多跑几个作业'), { target: { value: '2' } })
+    fireEvent.change(screen.getByLabelText('为什么改'), { target: { value: '源站放宽' } })
+    fireEvent.click(screen.getByRole('button', { name: '保存' }))
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+    const [input] = onSubmit.mock.calls[0]
+    expect(input.max_running).toBe(2)
+    expect(input.config).toEqual({ markets: ['SZ'] })
   })
 })

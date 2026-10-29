@@ -104,7 +104,13 @@ export function ChannelsPanel({ csrfToken }: { csrfToken: string }) {
                     ) : null}
                   </td>
                   <td>{t(`license.${c.license}`)}</td>
-                  <td>{t('limits', { rate: c.rate_per_minute, cap: c.daily_cap })}</td>
+                  <td>
+                    {t('limits', {
+                      rate: c.rate_per_minute,
+                      cap: c.daily_cap,
+                      running: c.max_running,
+                    })}
+                  </td>
                   <td>{c.consecutive_failures}</td>
                 </tr>
               ))}

@@ -20,6 +20,8 @@ export const channelSchema = z
     priority: z.number().int(),
     rate_per_minute: z.number().int(),
     daily_cap: z.number().int(),
+    // 同时最多跑几个作业（登记的并发，0045 第 3.3 节）
+    max_running: z.number().int(),
     consecutive_failures: z.number().int(),
     domain: z.string().nullable(),
     terms_url: z.string().nullable(),
@@ -191,10 +193,13 @@ export type RegistrationInput = {
   license: 'self' | 'via_expert' | 'sale'
   rate_per_minute: number
   daily_cap: number
+  max_running: number
   domain?: string | null
   terms_url?: string | null
   render_allowed: boolean
   obey_robots: boolean
+  // 适配器配置：表单不改，改登记时原样带回（如互动易的 markets）
+  config?: Record<string, unknown>
 }
 
 export type TrialInput = {

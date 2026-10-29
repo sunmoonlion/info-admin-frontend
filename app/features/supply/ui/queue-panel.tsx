@@ -7,9 +7,11 @@ import { useJob, useJobs, useQueue, useRequeue } from '../api/supply'
 import { codeOf, hoursSince } from '../model/supply'
 import { useErrorText } from './error-text'
 
+const PROCESS_QUEUE = '_processing'
+
 const STATUSES = ['', 'queued', 'running', 'waiting', 'failed', 'done'] as const
 
-// 队列监控（0045 第 3.3 节）：各渠道排着、在跑、等重试的作业，一天里成败几个，最近失败的
+// 队列监控（0045 第 3.3 节）：各渠道排着、在跑、等着的作业，一天里成败几个，最近失败的
 // 原因；点一个作业看每次尝试，等着的可以马上再排。暂停渠道在「来源目录」里做
 export function QueuePanel({ csrfToken }: { csrfToken: string }) {
   const t = useTranslations('supply')
@@ -55,7 +57,8 @@ export function QueuePanel({ csrfToken }: { csrfToken: string }) {
                 <tbody>
                   {queue.data.channels.map((c) => (
                     <tr key={c.channel_id}>
-                      <td>{c.name}</td>
+                      {/* 加工队列不是渠道（上传资料的加工），名字按界面语言写 */}
+                      <td>{c.channel_id === PROCESS_QUEUE ? t('queue.processing') : c.name}</td>
                       <td>
                         {t(`status.${c.status}`)}
                         {c.consecutive_failures ? (
@@ -154,7 +157,7 @@ export function QueuePanel({ csrfToken }: { csrfToken: string }) {
                         className="font-mono text-xs underline"
                         onClick={() => setPicked(j.job_id)}
                       >
-                        {[j.key.subject, j.key.doc_type, j.key.period_end]
+                        {[j.key.subject, j.key.doc_type, j.key.period_end, j.key.material_id]
                           .filter(Boolean)
                           .join(' · ')}
                       </button>

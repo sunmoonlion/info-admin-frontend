@@ -38,6 +38,7 @@ export function RegistrationForm({ plugins, initial, pending, onSubmit }: Props)
   )
   const [rate, setRate] = useState(String(initial?.rate_per_minute ?? 10))
   const [cap, setCap] = useState(String(initial?.daily_cap ?? 500))
+  const [running, setRunning] = useState(String(initial?.max_running ?? 1))
   const [domain, setDomain] = useState(initial?.domain ?? '')
   const [terms, setTerms] = useState(initial?.terms_url ?? '')
   const [render, setRender] = useState(initial?.render_allowed ?? false)
@@ -49,7 +50,8 @@ export function RegistrationForm({ plugins, initial, pending, onSubmit }: Props)
     plugin &&
     (editing ? reason.trim() : channelId.trim()) &&
     Number(rate) > 0 &&
-    Number(cap) > 0
+    Number(cap) > 0 &&
+    Number(running) > 0
 
   function toggle(reading: RegistrationInput['readings'][number]) {
     setReadings((current) =>
@@ -74,10 +76,12 @@ export function RegistrationForm({ plugins, initial, pending, onSubmit }: Props)
             license,
             rate_per_minute: Number(rate),
             daily_cap: Number(cap),
+            max_running: Number(running),
             domain: domain.trim() || null,
             terms_url: terms.trim() || null,
             render_allowed: render,
             obey_robots: robots,
+            config: initial?.config ?? {},
           },
           { channelId: channelId.trim(), reason: reason.trim() },
         )
@@ -182,6 +186,17 @@ export function RegistrationForm({ plugins, initial, pending, onSubmit }: Props)
           min={1}
           value={cap}
           onChange={(e) => setCap(e.target.value)}
+        />
+      </div>
+      <div className="schema-field">
+        <label htmlFor="supply-running">{t('form.maxRunning')}</label>
+        <input
+          id="supply-running"
+          type="number"
+          min={1}
+          max={10}
+          value={running}
+          onChange={(e) => setRunning(e.target.value)}
         />
       </div>
       <div className="schema-field">

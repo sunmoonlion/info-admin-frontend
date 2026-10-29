@@ -66,7 +66,13 @@ export function ChannelDetail({ channelId, plugins, csrfToken }: Props) {
         <dt>{t('col.docTypes')}</dt>
         <dd className="font-mono text-xs">{channel.doc_types.join(', ') || '—'}</dd>
         <dt>{t('col.limits')}</dt>
-        <dd>{t('limits', { rate: channel.rate_per_minute, cap: channel.daily_cap })}</dd>
+        <dd>
+          {t('limits', {
+            rate: channel.rate_per_minute,
+            cap: channel.daily_cap,
+            running: channel.max_running,
+          })}
+        </dd>
       </dl>
       {message ? (
         <p role="status" className="reference-notice">
