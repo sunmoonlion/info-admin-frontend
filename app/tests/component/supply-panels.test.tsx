@@ -17,6 +17,7 @@ const cninfo = {
   doc_types: ['annual_report'],
   readings: ['original', 'pages', 'table'],
   license: 'via_expert',
+  zone: 'disclosure',
   review: 'approved',
   status: 'active',
   status_reason: null,
@@ -142,6 +143,55 @@ describe('来源目录', () => {
       '放行之前要先试采成功一次。',
     )
     expect(calls.at(-1)?.body).toEqual({ decision: 'reject', reason: '要登录' })
+    // 放行时要定「区」：默认取渠道现在的
+    expect(within(detail).getByLabelText('区')).toHaveValue('disclosure')
+  })
+})
+
+describe('试采的样例按大类给', () => {
+  it('通用网页的渠道试采给这个网站上的网址，站内搜索给话题', async () => {
+    const site = {
+      ...cninfo,
+      channel_id: 'site-www-stats-gov-cn',
+      name: 'www.stats.gov.cn',
+      kind: 'web',
+      plugin: 'web',
+      review: 'pending',
+      domain: 'www.stats.gov.cn',
+    }
+    serve({
+      'GET /api/admin/v1/supply/channels': () => Response.json({ ...list, items: [site] }),
+      'GET /api/admin/v1/supply/channels/site-www-stats-gov-cn': () =>
+        Response.json({ channel: site, events: [], trials: [] }),
+      'POST /api/admin/v1/supply/channels/site-www-stats-gov-cn/trials': () =>
+        Response.json(
+          {
+            trial_id: 't-1',
+            key: { url: 'https://www.stats.gov.cn/sj/a.html' },
+            status: 'queued',
+            requested_by: 'op',
+            created_at: '2026-10-29T08:00:00Z',
+            finished_at: null,
+            listed: [],
+            fetched: null,
+            error: null,
+          },
+          { status: 202 },
+        ),
+    })
+    show(<ChannelsPanel csrfToken="csrf-token-0123456789-0123456789-abcd" />)
+    fireEvent.click(await screen.findByRole('button', { name: 'www.stats.gov.cn' }))
+    const detail = await screen.findByRole('region', { name: 'www.stats.gov.cn' })
+    expect(within(detail).queryByLabelText('主体（证券代码带市场）')).toBeNull()
+    fireEvent.change(within(detail).getByLabelText('样例网址（要在登记的网站上）'), {
+      target: { value: 'https://www.stats.gov.cn/sj/a.html' },
+    })
+    fireEvent.click(within(detail).getByRole('button', { name: '试采' }))
+    await vi.waitFor(() =>
+      expect(calls.find((c) => c.method === 'POST')?.body).toEqual({
+        url: 'https://www.stats.gov.cn/sj/a.html',
+      }),
+    )
   })
 })
 

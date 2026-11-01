@@ -13,6 +13,8 @@ export const channelSchema = z
     doc_types: z.array(z.string()),
     readings: z.array(z.string()),
     license: z.string(),
+    // 区：法定披露（进公开原件层）/ 为用户采集（每位受益人各得一份）
+    zone: z.enum(['disclosure', 'collected']),
     // 审核结论：待审、放行、审不过；状态：在用、暂停、停用
     review: z.enum(['pending', 'approved', 'rejected']),
     status: z.enum(['active', 'paused', 'disabled']),
@@ -202,9 +204,8 @@ export type RegistrationInput = {
   config?: Record<string, unknown>
 }
 
-export type TrialInput = {
-  subject: string
-  doc_type: string
-  period_start?: string
-  period_end?: string
-}
+// 试采的样例：目录型给描述；通用网页、订阅源给这个网站上的网址；站内搜索给话题
+export type TrialInput =
+  | { subject: string; doc_type: string; period_start?: string; period_end?: string }
+  | { url: string }
+  | { topic: string }

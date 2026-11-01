@@ -137,6 +137,7 @@ export function useReview(csrfToken: string) {
       decision: 'approve' | 'reject'
       reason: string
       license?: 'self' | 'via_expert' | 'sale'
+      zone?: 'disclosure' | 'collected'
     }) =>
       read(channelSchema, `${BASE}/channels/${seg(id)}/review`, {
         method: 'POST',

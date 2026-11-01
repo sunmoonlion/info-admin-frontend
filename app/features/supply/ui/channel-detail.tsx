@@ -3,7 +3,7 @@
 import { useFormatter, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-import type { Channel, Trial } from '@/contracts/supply'
+import type { Channel, Trial, TrialInput } from '@/contracts/supply'
 
 import { useChannel, useReview, useStatus, useTrial, useUpdate } from '../api/supply'
 import { codeOf, latestTrialOk, statusActions, trialRunning } from '../model/supply'
@@ -195,58 +195,79 @@ function TrialBox({
   channel: Channel
   trials: readonly Trial[]
   pending: boolean
-  onRun(input: {
-    subject: string
-    doc_type: string
-    period_start?: string
-    period_end?: string
-  }): void
+  onRun(input: TrialInput): void
 }) {
   const t = useTranslations('supply')
   const [subject, setSubject] = useState('')
   const [docType, setDocType] = useState(channel.doc_types[0] ?? '')
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
+  const [url, setUrl] = useState(channel.domain ? `https://${channel.domain}/` : '')
+  const [topic, setTopic] = useState('')
   const running = trialRunning(trials)
+  // 样例按大类给（SDD 0045 第 3.2 节）：目录型给描述；通用网页、订阅源给这个网站上的网址；
+  // 站内搜索给话题
+  const sample: TrialInput | null =
+    channel.kind === 'catalog'
+      ? subject.trim() && docType.trim()
+        ? {
+            subject: subject.trim(),
+            doc_type: docType.trim(),
+            period_start: start || undefined,
+            period_end: end || undefined,
+          }
+        : null
+      : channel.kind === 'search'
+        ? topic.trim()
+          ? { topic: topic.trim() }
+          : null
+        : url.trim()
+          ? { url: url.trim() }
+          : null
   return (
     <>
       <h3>{t('detail.trialTitle')}</h3>
-      <p className="text-muted-foreground text-sm">{t('detail.trialLead')}</p>
+      <p className="text-muted-foreground text-sm">{t(`detail.trialLeadBy.${channel.kind}`)}</p>
       <div className="reference-actions">
-        <input
-          aria-label={t('trial.subject')}
-          placeholder="600519.SH"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-        />
-        <input
-          aria-label={t('trial.docType')}
-          value={docType}
-          onChange={(e) => setDocType(e.target.value)}
-        />
-        <input
-          aria-label={t('trial.periodStart')}
-          type="date"
-          value={start}
-          onChange={(e) => setStart(e.target.value)}
-        />
-        <input
-          aria-label={t('trial.periodEnd')}
-          type="date"
-          value={end}
-          onChange={(e) => setEnd(e.target.value)}
-        />
+        {channel.kind === 'catalog' ? (
+          <>
+            <input
+              aria-label={t('trial.subject')}
+              placeholder="600519.SH"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            <input
+              aria-label={t('trial.docType')}
+              value={docType}
+              onChange={(e) => setDocType(e.target.value)}
+            />
+            <input
+              aria-label={t('trial.periodStart')}
+              type="date"
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+            />
+            <input
+              aria-label={t('trial.periodEnd')}
+              type="date"
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+            />
+          </>
+        ) : channel.kind === 'search' ? (
+          <input
+            aria-label={t('trial.topic')}
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+          />
+        ) : (
+          <input aria-label={t('trial.url')} value={url} onChange={(e) => setUrl(e.target.value)} />
+        )}
         <button
           type="button"
-          disabled={pending || running || !subject.trim() || !docType.trim()}
-          onClick={() =>
-            onRun({
-              subject: subject.trim(),
-              doc_type: docType.trim(),
-              period_start: start || undefined,
-              period_end: end || undefined,
-            })
-          }
+          disabled={pending || running || sample === null}
+          onClick={() => sample && onRun(sample)}
         >
           {t('trial.run')}
         </button>
@@ -296,11 +317,14 @@ function ReviewBox({
     decision: 'approve' | 'reject'
     reason: string
     license?: 'self' | 'via_expert' | 'sale'
+    zone?: 'disclosure' | 'collected'
   }): void
 }) {
   const t = useTranslations('supply')
   const [reason, setReason] = useState('')
   const [license, setLicense] = useState(channel.license as 'self' | 'via_expert' | 'sale')
+  // 区（SDD 0045 第 3.5 节）：网站审过不等于页面是法定披露，放行时由审核的人定
+  const [zone, setZone] = useState(channel.zone as 'disclosure' | 'collected')
   return (
     <>
       <h3>{t('detail.reviewTitle')}</h3>
@@ -317,6 +341,17 @@ function ReviewBox({
             </option>
           ))}
         </select>
+        <select
+          aria-label={t('form.zone')}
+          value={zone}
+          onChange={(e) => setZone(e.target.value as 'disclosure' | 'collected')}
+        >
+          {(['collected', 'disclosure'] as const).map((z) => (
+            <option key={z} value={z}>
+              {t(`zone.${z}`)}
+            </option>
+          ))}
+        </select>
         <input
           aria-label={t('detail.reviewReason')}
           placeholder={t('detail.reviewReason')}
@@ -327,7 +362,7 @@ function ReviewBox({
           type="button"
           className="primary-button"
           disabled={pending || !canApprove || !reason.trim()}
-          onClick={() => onReview({ decision: 'approve', reason: reason.trim(), license })}
+          onClick={() => onReview({ decision: 'approve', reason: reason.trim(), license, zone })}
         >
           {t('action.approve')}
         </button>

@@ -238,7 +238,8 @@
       "robots": "Obey robots",
       "reason": "Why change it",
       "save": "Save",
-      "register": "Register"
+      "register": "Register",
+      "zone": "Zone"
     },
     "detail": {
       "statusTitle": "Active, paused, disabled",
@@ -254,7 +255,6 @@
         "update": "Registration changed. Run a new trial before approving."
       },
       "trialTitle": "Trial",
-      "trialLead": "Run one list and one fetch for a sample description; approve only when it shows results. Trials run in the background and are neither kept nor delivered.",
       "reviewTitle": "Review",
       "reviewLead": "Each channel is reviewed once. Approving sets the license tier; rejecting turns waiting demands into unsatisfiable. Always say why.",
       "reviewReason": "Why",
@@ -262,7 +262,13 @@
       "editTitle": "Change registration",
       "edit": "Change registration",
       "eventsTitle": "Review record",
-      "noEvents": "No records yet."
+      "noEvents": "No records yet.",
+      "trialLeadBy": {
+        "catalog": "Run one list and fetch on a sample description; approve only after seeing a result. Trials run in the background and keep nothing.",
+        "web": "Fetch one sample URL on this site (obeying robots, rendering as reviewed); approve only after seeing a result. Trials run in the background and keep nothing.",
+        "feed": "Watch a feed or column page once and fetch the first item; approve only after seeing a result. Trials run in the background and keep nothing.",
+        "search": "Run the site search on a sample topic; approve only when it finds candidates. Trials run in the background and keep nothing."
+      }
     },
     "trial": {
       "subject": "Subject (security code with market)",
@@ -277,7 +283,9 @@
         "ok": "Succeeded",
         "failed": "Failed"
       },
-      "fetched": "Fetched {type}, {size} bytes"
+      "fetched": "Fetched {type}, {size} bytes",
+      "url": "Sample URL (on the registered site)",
+      "topic": "Sample topic"
     },
     "gapKind": {
       "all": "All",
@@ -319,6 +327,10 @@
       "license_invalid": "The license tier is invalid.",
       "readings_invalid": "Choose the readings it gives.",
       "name_invalid": "The name is at most 80 characters."
+    },
+    "zone": {
+      "disclosure": "Statutory disclosure (public originals)",
+      "collected": "Collected for users (one copy each)"
     }
   }
 }
