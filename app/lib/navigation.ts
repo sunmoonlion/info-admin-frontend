@@ -5,7 +5,6 @@ import {
   Globe,
   ListChecks,
   ListOrdered,
-  Rss,
   Settings,
   TableProperties,
   type LucideIcon,
@@ -19,7 +18,6 @@ export type AdminNavigationItem = {
     | 'reference'
     | 'richReference'
     | 'settings'
-    | 'infoCrawl'
     | 'supplyChannels'
     | 'supplySites'
     | 'supplyGaps'
@@ -64,14 +62,6 @@ export const adminNavigation: readonly AdminNavigationItem[] = [
     path: '/knowfeed/queue',
     labelKey: 'supplyQueue',
     icon: ListOrdered,
-    requiredRoles: ['admin', 'operator'],
-  },
-  // 旧通用采集，退旧线时删（SDD 0045 第六节）
-  {
-    key: 'knowfeed-crawl',
-    path: '/knowfeed/crawl',
-    labelKey: 'infoCrawl',
-    icon: Rss,
     requiredRoles: ['admin', 'operator'],
   },
   {
